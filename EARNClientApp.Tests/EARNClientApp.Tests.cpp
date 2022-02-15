@@ -3,9 +3,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace EARNClientTests
+namespace EARNClientAppTests
 {
-	TEST_CLASS(EARNClientTests)
+	TEST_CLASS(EARNClientAppTests)
 	{
 	public:
 		

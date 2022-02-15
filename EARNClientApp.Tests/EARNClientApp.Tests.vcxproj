@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{435A85A3-62D2-4BFE-86B9-BF7CBF5D1280}</ProjectGuid>
+    <ProjectGuid>{4FC81E77-2C25-4955-B9CD-339EE80F52AC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>EARNClientTests</RootNamespace>
+    <RootNamespace>EARNClientAppTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
@@ -156,7 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EARNClient.Tests.cpp" />
+    <ClCompile Include="EARNClientApp.Tests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
