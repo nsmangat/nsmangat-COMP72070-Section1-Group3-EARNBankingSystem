@@ -13,6 +13,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNNetworkAPI.Tests", "EAR
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNClientApp.Tests", "EARNClientApp.Tests\EARNClientApp.Tests.vcxproj", "{4FC81E77-2C25-4955-B9CD-339EE80F52AC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientApp", "ClientApp", "{1CF27122-C5A1-4177-B343-CC58880EE316}"
+	ProjectSection(SolutionItems) = preProject
+		EARNClientApp\clientapp.cpp = EARNClientApp\clientapp.cpp
+		EARNClientApp\clientapp.h = EARNClientApp\clientapp.h
+		EARNClientApp\clientapp.ui = EARNClientApp\clientapp.ui
+		EARNClientApp\EARNClientApp.pro = EARNClientApp\EARNClientApp.pro
+		EARNClientApp\main.cpp = EARNClientApp\main.cpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
