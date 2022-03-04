@@ -9,14 +9,15 @@ using namespace std;
 
  class DataTypes {
 	
-	int AccountID;
+ protected:
+	int accountID;
 
  public:
 	 virtual void setAccountID() = 0;
-
  };
 
- class createAccount: public DataTypes {
+ class CreateAccount: public DataTypes {
+
 	 string firstName;
 	 string lastName;
 	 string userName;
@@ -29,105 +30,71 @@ using namespace std;
 
  public:
 
-	 void setFirstName(string fName) {
-		 
-		 this->firstName = fName;
-	 }
+	 CreateAccount(string firstName, string lastName, string userName, string password, string email, string phoneNumber, string streetName, string city, string province, int accountID);	
 
-	 string getFirstName() {
-		 
-		 return this->firstName;
-	 }
+	 void setFirstName(string fName);
 
-	 void setLastName(string lName) {
-		 
-		 this->lastName = lName;
-	 }
+	 string getFirstName(); 
+
+	 void setLastName(string lName); 
 	 
-	 string getLastName() {
+	 string getLastName();
 
-		 return this->lastName;
-	 }
+	 void setUserName(string uName);
 
-	 void setUserName(string uName) {
+	 string getUserName(); 
 
-		 this->userName = uName;
-	 }
+	 void setpassword(string pass); 
 
-	 string getUserName() {
+	 string getPassword(); 
 
-		 return this->userName;
-	 }
+	 void setEmail(string email); 
 
-	 void setpassword(string pass) {
+	 string getEmail(); 
 
-		 this->password = pass;
-	 }
+	 void setPhoneNumber(string pNumber); 
 
-	 string getPassword() {
+	 string getPhoneNumber(); 
 
-		 return this->password;
-	 }
+	 void setStreetName(string StName);
 
-	 void setEmail(string email) {
+	 string getStreetName(); 
 
-		 this->email = email;
-	 }
+	 void setCity(string cName);
 
-	 string getEmail() {
+	 string getCity(); 
 
-		 return this->email;
-	 }
+	 void setProvince(string province); 
 
-	 void setPhoneNumber(string pNumber) {
+	 string getProvince(); 
 
-		 this->phoneNumber = pNumber;
-	 }
-
-	 string getPhoneNumber() {
-
-		 return this->phoneNumber;
-	 }
-
-	 void setStreetName(string StName) {
-
-		 this->streetName = StName;
-	 }
-
-	 string getStreetName() {
-
-		 return this->streetName;
-	 }
-
-	 void setCity(string cName) {
-
-		 this->city = cName;
-	 }
-
-	 string getCity() {
-
-		 return this->city;
-	 }
-
-	 void setProvince(string province) {
-		 this->province = province;
-	 }
-
-	 string getProvince() {
-		 return this->province;
-	 }
+	 void setAccountID(int accountID);
 };
 
- class login : public DataTypes {
+ class Login : public DataTypes {
+
 	 string userName;
 	 string password;
 	 int bankNumber;
 
  public:
 
+	 Login(string Username, string password); 
+	 Login(int bankNumber, string password); 
+
+	 string getUserName(); 
+	 void setUserName(string userName); 
+
+	 string getPassword(); 
+	 void setPassword(string userName); 
+
+	 int getBankNumber(); 
+	 void setBankNumber(int bankNumber);
+
+	 void setAccountID(int accountID); 
  };
 
- class deposit : public DataTypes {
+ class Deposit : public DataTypes {
 
 	 int amount;
 	 int depositType;
@@ -135,23 +102,62 @@ using namespace std;
 
  public:
 
+	 Deposit(int amount, int depositType, int DepositID);
+
+	 void setAmount(int amount);
+	 int getAmount();
+
+	 void setDepositType(int Type);
+	 int getDepositType();
+
+	 void setDepositID(int ID);
+	 int getDepositID();
+
+	 void setAccountID(int accountID);
 
  };
 
  class Withdraw : public DataTypes {
+
 	 int amount;
 	 int withdrawType;
 	 int withdrawTypeID;
 
  public:
 
+	 Withdraw(int amount, int withdrawType, int withdrawTypeID);
+
+	 void setAmount(int amount);
+	 int getAmount();
+
+	 void setWithdrawType(int Type);
+	 int getWithdrawType();
+
+	 void setWithdrawTypeID(int ID);
+	 int getWithdrawTypeID();
+
+	 void setAccountID(int accountID);
  };
 
- class transferBetweenAccount : public Datatypes {
+ class TransferBetweenAccount : public DataTypes {
+
 	 int amount;
 	 int receiverAccountID;
 	 int transferID;
 
  public:
+
+	 TransferBetweenAccount(int amount, int receiverAccountID, int transferID);
+
+	 void setAmount(int amount);
+	 int getAmount();
+
+	 void setReceiverAccountID(int receiverAccountID);
+	 int getReceiverAccountID();
+
+	 void setTransferID(int transferID);
+	 int getTransferID();
+
+	 void setAccountID(int accountID);
 
  };
