@@ -89,33 +89,33 @@ int main(void)
 
 	//char* Data[128];
 
-	char firstName[30] = "firstname";
-	char lastName[30] = "lastname";
-	char username[30] = "username";
-	char password[30] = "password";
-	char email[30] = "email";
-	char phoneNumber[30] = "phone number";
-	char streetName[30] = "street name";
-	char city[30] = "city";
-	char province[30] = "province";
-	int accID = 234;
+	//char firstName[30] = "firstname";
+	//char lastName[30] = "lastname";
+	//char username[30] = "username";
+	//char password[30] = "password";
+	//char email[30] = "email";
+	//char phoneNumber[30] = "phone number";
+	//char streetName[30] = "street name";
+	//char city[30] = "city";
+	//char province[30] = "province";
+	//int accID = 234;
 
-	CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
+	//CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
 
-	int size = sizeof(testAccount);
-	Packet testPacket(&testAccount, size, 5);
+	//int size = sizeof(testAccount);
+	//Packet testPacket(&testAccount, size, 5);
 
-	
-	int sendSize = 0;
-	char* txBuffer = testPacket.serialize(sendSize);
-	char rxBuffer[500] = {};
 
-	//memcpy header to find operationtype
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[500] = {};
 
-	memcpy(rxBuffer, txBuffer + 132, 290);
-	CreateAccount testAccountReceive(rxBuffer);
+	////memcpy header to find operationtype
 
-	testAccountReceive.display();
+	//memcpy(rxBuffer, txBuffer + 132, 290);
+	//CreateAccount testAccountReceive(rxBuffer);
+
+	//testAccountReceive.display();
 
 
 
@@ -127,7 +127,7 @@ int main(void)
 
 	//cout << "size of login: " << sizeof(testLogin) << endl;
 
-	
+
 	//int sendSize = 0;
 	//char* txBuffer = testPacket.serialize(sendSize);
 
@@ -136,7 +136,7 @@ int main(void)
 
 	//char rxBuffer[300] = {};
 
-	
+
 	//memcpy(rxBuffer, txBuffer + 132, 68);
 
 	//int num1;
@@ -169,5 +169,94 @@ int main(void)
 	//cout << num8 << endl;
 	//cout << num9 << endl;
 
+
+
+
+	//char username[30] = "username";
+	//char password[30] = "password";	
+
+	//Login testLogin(username, password);
+
+	//int size = sizeof(testLogin);
+	//Packet testPacket(&testLogin, size, 5);
+
+
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[500] = {};
+
+	////memcpy header to find operationtype
+
+	//memcpy(rxBuffer, txBuffer + 132, 80);
+	//Login testLoginReceive(rxBuffer);
+
+	//testLoginReceive.display();
+
+
+
+	//int amount = 200;
+	//int depositID = 2;
+	//int depositType = 123;
+
+	//Deposit testDeposit(amount, depositID, depositType);
+
+	//int size = sizeof(testDeposit);
+	//Packet testPacket(&testDeposit, size, 5);
+
+
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[500] = {};
+
+	////memcpy header to find operationtype
+
+	//memcpy(rxBuffer, txBuffer + 132, 32);
+	//Deposit testDepositReceive(rxBuffer);
+
+	//testDepositReceive.display();
+
+
+	//int amount = 200;
+	//int depositID = 2;
+	//int depositType = 123;
+
+	//Withdraw testWithdraw(amount, depositID, depositType);
+
+	//int size = sizeof(testWithdraw);
+	//Packet testPacket(&testWithdraw, size, 5);
+
+
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[500] = {};
+
+	////memcpy header to find operationtype
+
+	//memcpy(rxBuffer, txBuffer + 132, 32);
+	//Withdraw testDepositReceive(rxBuffer);
+
+	//testDepositReceive.display();
+
+
+	int amount = 200;
+	int depositID = 2;
+	int depositType = 123;
+
+	TransferBetweenAccount testWithdraw(amount, depositID, depositType);
+
+	int size = sizeof(testWithdraw);
+	Packet testPacket(&testWithdraw, size, 5);
+
+
+	int sendSize = 0;
+	char* txBuffer = testPacket.serialize(sendSize);
+	char rxBuffer[500] = {};
+
+	//memcpy header to find operationtype
+
+	memcpy(rxBuffer, txBuffer + 132, 32);
+	TransferBetweenAccount testDepositReceive(rxBuffer);
+
+	testDepositReceive.display();
 
 }

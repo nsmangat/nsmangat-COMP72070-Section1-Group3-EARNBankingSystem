@@ -22,26 +22,26 @@ CreateAccount::CreateAccount(char* src) {
 
 	int count = 0;
 	int startBase = 16;
-	
+
 	memcpy(&accountID, src + 8, sizeof(int));
 	memcpy(this->firstName, src + startBase, sizeof(firstName));
 	count++;
 	memcpy(this->lastName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
 	memcpy(this->userName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	count++; 
+	count++;
 	memcpy(this->password, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	count++; 
+	count++;
 	memcpy(this->email, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
 	memcpy(this->phoneNumber, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	count++; 
+	count++;
 	memcpy(this->streetName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	count++; 
+	count++;
 	memcpy(this->city, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	count++; 
+	count++;
 	memcpy(this->province, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	
+
 }
 
 void CreateAccount::setFirstName(char* fName) {
@@ -147,10 +147,10 @@ void CreateAccount::display() {
 	cout << "password: " << password << endl;
 	cout << "email: " << email << endl;
 	cout << "phone Number: " << phoneNumber << endl;
-	cout << "streetname: " << streetName<< endl;
-	cout << "city: "<< city << endl;
-	cout << "province: "<< province << endl;
-	cout << "accountID: "<< accountID << endl;
+	cout << "streetname: " << streetName << endl;
+	cout << "city: " << city << endl;
+	cout << "province: " << province << endl;
+	cout << "accountID: " << accountID << endl;
 }
 
 // Login Functions
@@ -199,7 +199,7 @@ char* Login::getUserName() {
 }
 
 void Login::setUserName(char* userName) {
-	
+
 	strcpy(this->userName, userName);
 }
 
@@ -209,7 +209,7 @@ char* Login::getPassword() {
 }
 
 void Login::setPassword(char* password) {
-	
+
 	strcpy(this->password, password);
 }
 
@@ -232,6 +232,26 @@ Deposit::Deposit(int amount, int depositType, int DepositID) {
 	this->amount = amount;
 	this->depositType = depositType;
 	this->depositID = DepositID;
+}
+
+Deposit::Deposit(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + 8, sizeof(int));
+	memcpy(&amount, src + startBase, sizeof(int));
+	count++;
+	memcpy(&depositType, src + startBase + (count * sizeof(int)), sizeof(int));
+	count++;
+	memcpy(&depositID, src + startBase + (count * sizeof(int)), sizeof(int));
+}
+
+void Deposit::display() {
+
+	cout << "amount: " << amount << endl;
+	cout << "depositType: " << depositType << endl;
+	cout << "depositID: " << depositID << endl;
 }
 
 void Deposit::setAmount(int amount) {
@@ -263,6 +283,7 @@ void Deposit::setAccountID(int accountID) {
 }
 
 int Deposit::getAccountID() {
+
 	return this->accountID;
 }
 int Deposit::getDepositID() {
@@ -281,6 +302,27 @@ Withdraw::Withdraw(int amount, int withdrawType, int withdrawTypeID) {
 	this->amount = amount;
 	this->withdrawType = withdrawType;
 	this->withdrawTypeID = withdrawTypeID;
+}
+
+Withdraw::Withdraw(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + 8, sizeof(int));
+	memcpy(&amount, src + startBase + (count * sizeof(int)), sizeof(int));
+	count++;
+	memcpy(&withdrawType, src + startBase + (count * sizeof(int)), sizeof(int));
+	count++;
+	memcpy(&withdrawTypeID, src + startBase + (count * sizeof(int)), sizeof(int));
+
+}
+
+void Withdraw::display() {
+
+	cout << "amount: " << amount << endl;
+	cout << "withdrawType: " << withdrawType << endl;
+	cout << "withdrawID: " << withdrawTypeID << endl;
 }
 
 void Withdraw::setAmount(int amount) {
@@ -320,34 +362,63 @@ void Withdraw::setAccountID(int accountID) {
 //TransferBetweenAccounts Functions
 
 TransferBetweenAccount::TransferBetweenAccount(int amount, int receiverAccountID, int transferID) {
+
 	this->amount = amount;
 	this->receiverAccountID = receiverAccountID;
 	this->transferID = transferID;
 }
 
+TransferBetweenAccount::TransferBetweenAccount(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + 8, sizeof(int));
+	memcpy(&amount, src + startBase + (count * sizeof(int)), sizeof(int));
+	count++;
+	memcpy(&receiverAccountID, src + startBase + (count * sizeof(int)), sizeof(int));
+	count++;
+	memcpy(&transferID, src + startBase + (count * sizeof(int)), sizeof(int));
+
+}
+
+void TransferBetweenAccount::display() {
+
+	cout << "amount: " << amount << endl;
+	cout << "receiverAccountID: " << receiverAccountID << endl;
+	cout << "transferID: " << transferID << endl;
+}
+
 void TransferBetweenAccount::setAmount(int amount) {
+
 	this->amount = amount;
 }
 int TransferBetweenAccount::getAmount() {
+
 	return this->amount;
 }
 
 void TransferBetweenAccount::setReceiverAccountID(int receiverAccountID) {
+
 	this->receiverAccountID = receiverAccountID;
 }
 
 int TransferBetweenAccount::getReceiverAccountID() {
+
 	return this->receiverAccountID;
 }
 
 void TransferBetweenAccount::setTransferID(int transferID) {
+
 	this->transferID = transferID;
 }
 
 int TransferBetweenAccount::getTransferID() {
+
 	return this->transferID;
 }
 
 void TransferBetweenAccount::setAccountID(int accountID) {
+
 	this->accountID;
 }

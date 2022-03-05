@@ -73,7 +73,7 @@ using namespace std;
 	 void display();
 };
 
- class Login : public DataTypes {		//size 44
+ class Login : public DataTypes {		//size 80
 
 	 //string userName;
 	 //string password;
@@ -120,6 +120,7 @@ using namespace std;
  public:
 
 	 Deposit(int amount, int depositType, int DepositID);
+	 Deposit(char* src);
 
 	 void setAmount(int amount);
 	 int getAmount();
@@ -133,6 +134,7 @@ using namespace std;
 	 void setAccountID(int accountID);
 	 int getAccountID();
 
+	 void display();
  };
 
  class Withdraw : public DataTypes {		//size 12
@@ -144,6 +146,7 @@ using namespace std;
  public:
 
 	 Withdraw(int amount, int withdrawType, int withdrawTypeID);
+	 Withdraw(char* src);
 
 	 void setAmount(int amount);
 	 int getAmount();
@@ -155,6 +158,8 @@ using namespace std;
 	 int getWithdrawTypeID();
 
 	 void setAccountID(int accountID);
+	 void display();
+
  };
 
  class TransferBetweenAccount : public DataTypes {		//size 12
@@ -166,6 +171,7 @@ using namespace std;
  public:
 
 	 TransferBetweenAccount(int amount, int receiverAccountID, int transferID);
+	 TransferBetweenAccount(char* src);
 
 	 void setAmount(int amount);
 	 int getAmount();
@@ -177,5 +183,5 @@ using namespace std;
 	 int getTransferID();
 
 	 void setAccountID(int accountID);
-
+	 void display();
  };
