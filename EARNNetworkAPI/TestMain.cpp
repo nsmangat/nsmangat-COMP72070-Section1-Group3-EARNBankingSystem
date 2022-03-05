@@ -1,8 +1,20 @@
-//change deserialize from just data to parsing whole received data
+//[DONE]	Change deserialize from just data to parsing whole received data		
 //^use sizeof(header) 
 //
 //change sizeof time
 //
+
+
+
+//Loop for checking the datatypes in serverMain
+	//Create packet with just header info and use that to get the opType
+	//Then use that in swicth case to determine what constructor needs to be called	
+//Variable to determine DataType from the user input, need this to choose constructor on client side 
+//Loop to make sure server and client dont shutdown
+//Menu
+//
+
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <ctime>
@@ -89,35 +101,63 @@ int main(void)
 
 	//char* Data[128];
 
-	//char firstName[30] = "firstname";
-	//char lastName[30] = "lastname";
-	//char username[30] = "username";
-	//char password[30] = "password";
-	//char email[30] = "email";
-	//char phoneNumber[30] = "phone number";
-	//char streetName[30] = "street name";
-	//char city[30] = "city";
-	//char province[30] = "province";
-	//int accID = 234;
-
-	//CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
-
-	//int size = sizeof(testAccount);
-	//Packet testPacket(&testAccount, size, 5);
 
 
-	//int sendSize = 0;
-	//char* txBuffer = testPacket.serialize(sendSize);
-	//char rxBuffer[500] = {};
 
-	////memcpy header to find operationtype
+	char firstName[30] = "firstname";
+	char lastName[30] = "lastname";
+	char username[30] = "username";
+	char password[30] = "password";
+	char email[30] = "email";
+	char phoneNumber[30] = "phone number";
+	char streetName[30] = "street name";
+	char city[30] = "city";
+	char province[30] = "province";
+	int accID = 234;
 
-	//memcpy(rxBuffer, txBuffer + 132, 290);
-	//CreateAccount testAccountReceive(rxBuffer);
+	CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
+
+	int size = sizeof(testAccount);
+	Packet testPacket(&testAccount, size, 5);
+	
+
+	int sendSize = 0;
+	char* txBuffer = testPacket.serialize(sendSize);
+	char rxBuffer[500] = {};
+
+	
+
+	
+	//memcpy header to find operationtype
+
+	memcpy(rxBuffer, txBuffer, sendSize);
+	CreateAccount testAccountReceive(rxBuffer);
 
 	//testAccountReceive.display();
 
+	//int tail;
 
+	//memcpy(&tail, rxBuffer + 132 + 288, sizeof(int));
+
+	//cout << tail << endl;
+
+	Packet test2(rxBuffer);
+	int size2 = 0;
+	
+	char* Buffer = test2.serialize(size2);
+
+	int num = 0;
+	memcpy(&num, Buffer + 132, sizeof(int));
+	cout << num << endl;
+	Packet checkcrc(Buffer);
+	int crc = checkcrc.getTail();
+	//cout << crc << endl;
+
+	int opType = test2.getOperationType();
+
+	char *testTime = test2.getTime();
+	//cout << opType << endl;
+	//cout << testTime << endl;
 
 	// garbage
 	//Login testLogin(username, password);
@@ -238,25 +278,32 @@ int main(void)
 	//testDepositReceive.display();
 
 
-	int amount = 200;
-	int depositID = 2;
-	int depositType = 123;
+	//int amount = 200;
+	//int depositID = 2;
+	//int depositType = 123;
 
-	TransferBetweenAccount testWithdraw(amount, depositID, depositType);
+	//TransferBetweenAccount testWithdraw(amount, depositID, depositType);
 
-	int size = sizeof(testWithdraw);
-	Packet testPacket(&testWithdraw, size, 5);
+	//int size = sizeof(testWithdraw);
+	//Packet testPacket(&testWithdraw, size, 5);
 
 
-	int sendSize = 0;
-	char* txBuffer = testPacket.serialize(sendSize);
-	char rxBuffer[500] = {};
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[500] = {};
 
-	//memcpy header to find operationtype
+	////memcpy header to find operationtype
 
-	memcpy(rxBuffer, txBuffer + 132, 32);
-	TransferBetweenAccount testDepositReceive(rxBuffer);
+	//memcpy(rxBuffer, txBuffer + 132, 32);
+	//TransferBetweenAccount testDepositReceive(rxBuffer);
 
-	testDepositReceive.display();
+	//testDepositReceive.display();
 
+	////for getting info from Header
+	//Packet test2(txBuffer);
+	//int opType = test2.getOperationType();
+
+	//char *testTime = test2.getTime();
+	//cout << opType << endl;
+	//cout << testTime << endl;
 }

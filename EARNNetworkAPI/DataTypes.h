@@ -7,12 +7,16 @@
 #include <fstream>
 
 #define STRING_LENGTH 30
+const int HeadSize = 132;
 
 using namespace std;
 
 //bytes 8-12 are the accountID
 //bytes 1-16 are together in the beginnning 
-//last 4 bytes are after the child object
+//last 2 bytes are after the child object
+//Total bytes are 18
+//crc is after data
+//ie src + head size + data = 132+288 if create account, then crc right after ie starting at 422
 
  class DataTypes {
 	
@@ -20,8 +24,8 @@ using namespace std;
 	int accountID;
 
  public:
-	 virtual void setAccountID(int num) = 0;
-	 //virtual void display() = 0;
+	 //virtual void setAccountID(int num) = 0;
+	 virtual void display() = 0;
  };
 
  class CreateAccount: public DataTypes {		//size 290
@@ -87,7 +91,7 @@ using namespace std;
 	 //Login(string Username, string password);
 	 Login(char* Username, char* password); 
 	 //Login(int bankNumber, string password); 
-	 Login(int bankNumber, char* password); 
+	 //Login(int bankNumber, char* password); 
 
 	 Login(char* src);
 
@@ -103,8 +107,8 @@ using namespace std;
 	 char* getPassword(); 
 	 void setPassword(char* userName); 
 
-	 int getBankNumber(); 
-	 void setBankNumber(int bankNumber);
+	/* int getBankNumber(); 
+	 void setBankNumber(int bankNumber);*/
 
 	 void setAccountID(int accountID); 
 

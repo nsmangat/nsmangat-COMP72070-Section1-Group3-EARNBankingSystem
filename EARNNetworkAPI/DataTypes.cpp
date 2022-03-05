@@ -2,6 +2,8 @@
 
 #include "DataTypes.h"
 #define START_BASE
+
+
 using namespace std;
 
 CreateAccount::CreateAccount(char* firstName, char* lastName, char* userName, char* password, char* email, char* phoneNumber, char* streetName, char* city, char* province, int accountID)
@@ -23,24 +25,25 @@ CreateAccount::CreateAccount(char* src) {
 	int count = 0;
 	int startBase = 16;
 
-	memcpy(&accountID, src + 8, sizeof(int));
-	memcpy(this->firstName, src + startBase, sizeof(firstName));
+
+	memcpy(&accountID, src + HeadSize +  8, sizeof(int));
+	memcpy(this->firstName, src + HeadSize + startBase, sizeof(firstName));
 	count++;
-	memcpy(this->lastName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->lastName, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->userName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->userName, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->password, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->password, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->email, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->email, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->phoneNumber, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->phoneNumber, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->streetName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->streetName, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->city, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->city, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 	count++;
-	memcpy(this->province, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(this->province, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
 
 }
 
@@ -186,10 +189,10 @@ Login::Login(char* src) {
 	int count = 0;
 	int startBase = 16;
 
-	memcpy(&accountID, src + 8, sizeof(int));
-	memcpy(this->userName, src + startBase + (count * STRING_LENGTH), STRING_LENGTH);
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(this->userName, src + HeadSize + startBase + (count * STRING_LENGTH), STRING_LENGTH);
 	count++;
-	memcpy(this->password, src + startBase + (count * STRING_LENGTH), STRING_LENGTH);
+	memcpy(this->password, src + HeadSize + startBase + (count * STRING_LENGTH), STRING_LENGTH);
 
 }
 
@@ -239,12 +242,12 @@ Deposit::Deposit(char* src) {
 	int count = 0;
 	int startBase = 16;
 
-	memcpy(&accountID, src + 8, sizeof(int));
-	memcpy(&amount, src + startBase, sizeof(int));
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&amount, src + HeadSize + startBase, sizeof(int));
 	count++;
-	memcpy(&depositType, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&depositType, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 	count++;
-	memcpy(&depositID, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&depositID, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 }
 
 void Deposit::display() {
@@ -309,12 +312,12 @@ Withdraw::Withdraw(char* src) {
 	int count = 0;
 	int startBase = 16;
 
-	memcpy(&accountID, src + 8, sizeof(int));
-	memcpy(&amount, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&amount, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 	count++;
-	memcpy(&withdrawType, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&withdrawType, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 	count++;
-	memcpy(&withdrawTypeID, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&withdrawTypeID, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 
 }
 
@@ -373,12 +376,12 @@ TransferBetweenAccount::TransferBetweenAccount(char* src) {
 	int count = 0;
 	int startBase = 16;
 
-	memcpy(&accountID, src + 8, sizeof(int));
-	memcpy(&amount, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&amount, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 	count++;
-	memcpy(&receiverAccountID, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&receiverAccountID, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 	count++;
-	memcpy(&transferID, src + startBase + (count * sizeof(int)), sizeof(int));
+	memcpy(&transferID, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
 
 }
 
