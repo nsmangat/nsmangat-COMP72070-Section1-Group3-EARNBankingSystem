@@ -4,7 +4,7 @@
 #include <ctime>
 
 //
-#define IP_SIZE 9
+#define IP_SIZE 10
 #define IP_ADDR "127.0.0.1"
 
 
@@ -29,7 +29,7 @@ class Packet {
 
 public:
 
-	Packet(DataTypes data, int size, int OpType) {
+	Packet(DataTypes *data, int size, int OpType) {
 
 		if (Data) {
 
@@ -37,9 +37,9 @@ public:
 		}
 		Data = new char[size];
 
-		memcpy(Data, &data, size);
+		memcpy(Data, data, size);
 
-		strcpy(HEAD.toIP, IP_ADDR);
+		strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
 		strcpy(HEAD.fromIP, IP_ADDR);
 		
 		HEAD.operationType = OpType;
@@ -66,15 +66,18 @@ public:
 			delete TxBuffer;
 		}
 
-		int TotalSize = sizeof(Header) + size + sizeof(int);
+		size = sizeof(Header) + HEAD.dataSize + sizeof(int);
 
-		TxBuffer = new char[TotalSize];
+		TxBuffer = new char[size];
 
 		setTime();
 
+		//cout << "HEad size: " << sizeof(Header);
+		
+
 		memcpy(TxBuffer, &HEAD, sizeof(Header));
-		memcpy(TxBuffer + sizeof(Header), Data, size);
-		memcpy(TxBuffer + sizeof(Header) + size, &Tail, sizeof(Tail));
+		memcpy(TxBuffer + sizeof(Header), Data, HEAD.dataSize);
+		memcpy(TxBuffer + sizeof(Header) + HEAD.dataSize, &Tail, sizeof(Tail));
 
 		return TxBuffer;
 	}
@@ -89,9 +92,7 @@ public:
 		cout << "Branch ID:" << HEAD.branchID << endl;
 
 		cout << "Tail:" << Tail << endl;
-
-		cout << "Data:" << Data << endl;
-
+		cout << "Data:" << &Data << endl;
 	}
 
 

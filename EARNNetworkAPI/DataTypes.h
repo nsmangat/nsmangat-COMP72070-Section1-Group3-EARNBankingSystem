@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #pragma once
 
 #include <memory>
@@ -6,6 +8,9 @@
 
 using namespace std;
 
+//bytes 8-12 are the accountID
+//bytes 1-16 are together in the beginnning 
+//last 4 bytes are after the child object
 
  class DataTypes {
 	
@@ -13,7 +18,7 @@ using namespace std;
 	int accountID;
 
  public:
-	 virtual void setAccountID() = 0;
+	 virtual void setAccountID(int num) = 0;
  };
 
  class CreateAccount: public DataTypes {
@@ -73,20 +78,31 @@ using namespace std;
 
  class Login : public DataTypes {
 
-	 string userName;
-	 string password;
+	 //string userName;
+	 //string password;
+
+	 char userName[20];
+	 char password[20];
 	 int bankNumber;
 
  public:
 
-	 Login(string Username, string password); 
-	 Login(int bankNumber, string password); 
+	 //Login(string Username, string password);
+	 Login(char* Username, char* password); 
+	 //Login(int bankNumber, string password); 
+	 Login(int bankNumber, char* password); 
 
-	 string getUserName(); 
-	 void setUserName(string userName); 
+	 //string getUserName(); 
+	 //void setUserName(string userName); 
 
-	 string getPassword(); 
-	 void setPassword(string userName); 
+	 //string getPassword(); 
+	 //void setPassword(string userName); 
+
+	 char* getUserName(); 
+	 void setUserName(char* userName); 
+
+	 char* getPassword(); 
+	 void setPassword(char* userName); 
 
 	 int getBankNumber(); 
 	 void setBankNumber(int bankNumber);
@@ -94,7 +110,7 @@ using namespace std;
 	 void setAccountID(int accountID); 
  };
 
- class Deposit : public DataTypes {
+ class Deposit : public DataTypes{
 
 	 int amount;
 	 int depositType;
@@ -114,6 +130,7 @@ using namespace std;
 	 int getDepositID();
 
 	 void setAccountID(int accountID);
+	 int getAccountID();
 
  };
 

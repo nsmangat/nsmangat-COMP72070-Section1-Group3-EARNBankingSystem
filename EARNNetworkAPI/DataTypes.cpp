@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "DataTypes.h"
 
 using namespace std;
@@ -114,30 +116,66 @@ void CreateAccount::setAccountID(int accountID) {
 
 // Login Functions
 
-Login::Login(string Username, string password) {
-	this->userName = userName;
-	this->password = password;
+//Login::Login(string Username, string password) {
+//	this->userName = userName;
+//	this->password = password;
+//}
+
+//Login::Login(int bankNumber, string password) {
+//	this->bankNumber = bankNumber;
+//	this->password = password;
+//}
+
+Login::Login(char* Username, char* password) {
+
+	strcpy(this->userName, Username);
+	strcpy(this->password, password);
+	this->bankNumber = 0;
+	//this->userName = userName;
+	//this->password = password;
 }
 
-Login::Login(int bankNumber, string password) {
+Login::Login(int bankNumber, char* password) {
 	this->bankNumber = bankNumber;
-	this->password = password;
+	//this->password = password;
+	strcpy(this->password, password);
+	strcpy(this->userName, "");
 }
 
-string Login::getUserName() {
+//string Login::getUserName() {
+//	return this->userName;
+//}
+
+//void Login::setUserName(string userName) {
+//	this->userName = userName;
+//}
+
+//string Login::getPassword() {
+//	return this->userName;
+//}
+
+//void Login::setPassword(string userName) {
+//	this->userName = userName;
+//}
+
+char* Login::getUserName() {
 	return this->userName;
 }
 
-void Login::setUserName(string userName) {
-	this->userName = userName;
+void Login::setUserName(char* userName) {
+	//this->userName = userName;
+
+	strcpy(this->userName, userName);
 }
 
-string Login::getPassword() {
-	return this->userName;
+char* Login::getPassword() {
+	return this->password;
 }
 
-void Login::setPassword(string userName) {
-	this->userName = userName;
+void Login::setPassword(char* password) {
+	//this->password = password;
+
+	strcpy(this->password, password);
 }
 
 int Login::getBankNumber() {
@@ -185,15 +223,21 @@ void Deposit::setDepositID(int ID) {
 
 	this->depositID = ID;
 }
+void Deposit::setAccountID(int accountID) {
+	this->accountID = accountID;
+}
 
+int Deposit::getAccountID() {
+	return this->accountID;
+}
 int Deposit::getDepositID() {
 
 	return this->depositID;
 }
 
-void Deposit::setAccountID(int accountID) {
-	this->accountID;
-}
+
+
+
 
 //Withdrawal Functions
 
