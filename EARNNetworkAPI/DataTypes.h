@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 
+#define STRING_LENGTH 30
+
 using namespace std;
 
 //bytes 8-12 are the accountID
@@ -19,78 +21,75 @@ using namespace std;
 
  public:
 	 virtual void setAccountID(int num) = 0;
+	 //virtual void display() = 0;
  };
 
- class CreateAccount: public DataTypes {
+ class CreateAccount: public DataTypes {		//size 290
 
-	 string firstName;
-	 string lastName;
-	 string userName;
-	 string password;
-	 string email;
-	 string phoneNumber;
-	 string streetName;
-	 string city;
-	 string province;
+	 char firstName[STRING_LENGTH];
+	 char lastName[STRING_LENGTH];
+	 char userName[STRING_LENGTH];
+	 char password[STRING_LENGTH];
+	 char email[STRING_LENGTH];
+	 char phoneNumber[STRING_LENGTH];
+	 char streetName[STRING_LENGTH];
+	 char city[STRING_LENGTH];
+	 char province[STRING_LENGTH];
 
  public:
 
-	 CreateAccount(string firstName, string lastName, string userName, string password, string email, string phoneNumber, string streetName, string city, string province, int accountID);	
+	 CreateAccount(char* firstName, char* lastName, char* userName, char* password, char* email, char* phoneNumber, char* streetName, char* city, char* province, int accountID);	
+	 CreateAccount(char* src);
 
-	 void setFirstName(string fName);
+	 void setFirstName(char* fName);
+	 char* getFirstName(); 
 
-	 string getFirstName(); 
+	 void setLastName(char* lName); 
+	 char* getLastName();
 
-	 void setLastName(string lName); 
-	 
-	 string getLastName();
+	 void setUserName(char* uName);
+	 char* getUserName(); 
 
-	 void setUserName(string uName);
+	 void setpassword(char* pass); 
+	 char* getPassword(); 
 
-	 string getUserName(); 
+	 void setEmail(char* email); 
+	 char* getEmail(); 
 
-	 void setpassword(string pass); 
+	 void setPhoneNumber(char* pNumber); 
+	 char* getPhoneNumber(); 
 
-	 string getPassword(); 
+	 void setStreetName(char* StName);
+	 char* getStreetName(); 
 
-	 void setEmail(string email); 
+	 void setCity(char* cName);
+	 char* getCity(); 
 
-	 string getEmail(); 
-
-	 void setPhoneNumber(string pNumber); 
-
-	 string getPhoneNumber(); 
-
-	 void setStreetName(string StName);
-
-	 string getStreetName(); 
-
-	 void setCity(string cName);
-
-	 string getCity(); 
-
-	 void setProvince(string province); 
-
-	 string getProvince(); 
+	 void setProvince(char* province); 
+	 char* getProvince(); 
 
 	 void setAccountID(int accountID);
+
+	 void display();
 };
 
- class Login : public DataTypes {
+ class Login : public DataTypes {		//size 44
 
 	 //string userName;
 	 //string password;
 
-	 char userName[20];
-	 char password[20];
-	 int bankNumber;
-
+	 char userName[STRING_LENGTH];
+	 char password[STRING_LENGTH];
+	//int bankNumber;
+	 
  public:
 
 	 //Login(string Username, string password);
 	 Login(char* Username, char* password); 
 	 //Login(int bankNumber, string password); 
 	 Login(int bankNumber, char* password); 
+
+	 Login(char* src);
 
 	 //string getUserName(); 
 	 //void setUserName(string userName); 
@@ -108,9 +107,11 @@ using namespace std;
 	 void setBankNumber(int bankNumber);
 
 	 void setAccountID(int accountID); 
+
+	 void display();
  };
 
- class Deposit : public DataTypes{
+ class Deposit : public DataTypes{		//Size 12
 
 	 int amount;
 	 int depositType;
@@ -134,7 +135,7 @@ using namespace std;
 
  };
 
- class Withdraw : public DataTypes {
+ class Withdraw : public DataTypes {		//size 12
 
 	 int amount;
 	 int withdrawType;
@@ -156,7 +157,7 @@ using namespace std;
 	 void setAccountID(int accountID);
  };
 
- class TransferBetweenAccount : public DataTypes {
+ class TransferBetweenAccount : public DataTypes {		//size 12
 
 	 int amount;
 	 int receiverAccountID;

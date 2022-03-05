@@ -1,109 +1,135 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "DataTypes.h"
-
+#define START_BASE
 using namespace std;
 
-CreateAccount::CreateAccount(string firstName, string lastName, string userName, string password, string email, string phoneNumber, string streetName, string city, string province, int accountID)
+CreateAccount::CreateAccount(char* firstName, char* lastName, char* userName, char* password, char* email, char* phoneNumber, char* streetName, char* city, char* province, int accountID)
 {
-	this->firstName = firstName;
-	this->lastName = lastName;
-	this->userName = userName;
-	this->password = password;
-	this->email = email;
-	this->phoneNumber = phoneNumber;
-	this->streetName = streetName;
-	this->city = city;
-	this->province = province;
+	strcpy(this->firstName, firstName);
+	strcpy(this->lastName, lastName);
+	strcpy(this->userName, userName);
+	strcpy(this->password, password);
+	strcpy(this->email, email);
+	strcpy(this->phoneNumber, phoneNumber);
+	strcpy(this->streetName, streetName);
+	strcpy(this->city, city);
+	strcpy(this->province, province);
 	this->accountID = accountID;
 }
 
-void CreateAccount::setFirstName(string fName) {
+CreateAccount::CreateAccount(char* src) {
 
-	this->firstName = fName;
+	int count = 0;
+	int startBase = 16;
+	
+	memcpy(&accountID, src + 8, sizeof(int));
+	memcpy(this->firstName, src + startBase, sizeof(firstName));
+	count++;
+	memcpy(this->lastName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++;
+	memcpy(this->userName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++; 
+	memcpy(this->password, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++; 
+	memcpy(this->email, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++;
+	memcpy(this->phoneNumber, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++; 
+	memcpy(this->streetName, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++; 
+	memcpy(this->city, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	count++; 
+	memcpy(this->province, src + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	
 }
 
-string CreateAccount::getFirstName() {
+void CreateAccount::setFirstName(char* fName) {
+
+	strcpy(this->firstName, fName);
+}
+
+char* CreateAccount::getFirstName() {
 
 	return this->firstName;
 }
 
-void CreateAccount::setLastName(string lName) {
+void CreateAccount::setLastName(char* lName) {
 
-	this->lastName = lName;
+	strcpy(this->lastName, lName);
 }
 
-string CreateAccount::getLastName() {
+char* CreateAccount::getLastName() {
 
 	return this->lastName;
 }
 
-void CreateAccount::setUserName(string uName) {
+void CreateAccount::setUserName(char* uName) {
 
-	this->userName = uName;
+	strcpy(this->userName, uName);
 }
 
-string CreateAccount::getUserName() {
+char* CreateAccount::getUserName() {
 
 	return this->userName;
 }
 
-void CreateAccount::setpassword(string pass) {
+void CreateAccount::setpassword(char* pass) {
 
-	this->password = pass;
+	strcpy(this->password, pass);
 }
 
-string CreateAccount::getPassword() {
+char* CreateAccount::getPassword() {
 
 	return this->password;
 }
 
-void CreateAccount::setEmail(string email) {
+void CreateAccount::setEmail(char* email) {
 
-	this->email = email;
+	strcpy(this->email, email);
 }
 
-string CreateAccount::getEmail() {
+char* CreateAccount::getEmail() {
 
 	return this->email;
 }
 
-void CreateAccount::setPhoneNumber(string pNumber) {
+void CreateAccount::setPhoneNumber(char* pNumber) {
 
-	this->phoneNumber = pNumber;
+	strcpy(this->phoneNumber, pNumber);
 }
 
-string CreateAccount::getPhoneNumber() {
+char* CreateAccount::getPhoneNumber() {
 
 	return this->phoneNumber;
 }
 
-void CreateAccount::setStreetName(string StName) {
+void CreateAccount::setStreetName(char* StName) {
 
-	this->streetName = StName;
+	strcpy(this->streetName, StName);
 }
 
-string CreateAccount::getStreetName() {
+char* CreateAccount::getStreetName() {
 
 	return this->streetName;
 }
 
-void CreateAccount::setCity(string cName) {
+void CreateAccount::setCity(char* cName) {
 
-	this->city = cName;
+	strcpy(this->city, cName);
 }
 
-string CreateAccount::getCity() {
+char* CreateAccount::getCity() {
 
 	return this->city;
 }
 
-void CreateAccount::setProvince(string province) {
+void CreateAccount::setProvince(char* province) {
 
-	this->province = province;
+	strcpy(this->province, province);
 }
 
-string CreateAccount::getProvince() {
+char* CreateAccount::getProvince() {
 
 	return this->province;
 }
@@ -113,6 +139,19 @@ void CreateAccount::setAccountID(int accountID) {
 	this->accountID;
 }
 
+void CreateAccount::display() {
+
+	cout << "firstName: " << firstName << endl;
+	cout << "lastName: " << lastName << endl;
+	cout << "username: " << userName << endl;
+	cout << "password: " << password << endl;
+	cout << "email: " << email << endl;
+	cout << "phone Number: " << phoneNumber << endl;
+	cout << "streetname: " << streetName<< endl;
+	cout << "city: "<< city << endl;
+	cout << "province: "<< province << endl;
+	cout << "accountID: "<< accountID << endl;
+}
 
 // Login Functions
 
@@ -130,65 +169,61 @@ Login::Login(char* Username, char* password) {
 
 	strcpy(this->userName, Username);
 	strcpy(this->password, password);
-	this->bankNumber = 0;
+	//this->bankNumber = 3;
 	//this->userName = userName;
 	//this->password = password;
 }
 
-Login::Login(int bankNumber, char* password) {
-	this->bankNumber = bankNumber;
-	//this->password = password;
-	strcpy(this->password, password);
-	strcpy(this->userName, "");
+//Login::Login(int bankNumber, char* password) {
+//	this->bankNumber = bankNumber;
+//	//this->password = password;
+//	strcpy(this->password, password);
+//	strcpy(this->userName, "");
+//}
+
+Login::Login(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + 8, sizeof(int));
+	memcpy(this->userName, src + startBase + (count * STRING_LENGTH), STRING_LENGTH);
+	count++;
+	memcpy(this->password, src + startBase + (count * STRING_LENGTH), STRING_LENGTH);
+
 }
 
-//string Login::getUserName() {
-//	return this->userName;
-//}
-
-//void Login::setUserName(string userName) {
-//	this->userName = userName;
-//}
-
-//string Login::getPassword() {
-//	return this->userName;
-//}
-
-//void Login::setPassword(string userName) {
-//	this->userName = userName;
-//}
-
 char* Login::getUserName() {
+
 	return this->userName;
 }
 
 void Login::setUserName(char* userName) {
-	//this->userName = userName;
-
+	
 	strcpy(this->userName, userName);
 }
 
 char* Login::getPassword() {
+
 	return this->password;
 }
 
 void Login::setPassword(char* password) {
-	//this->password = password;
-
+	
 	strcpy(this->password, password);
 }
 
-int Login::getBankNumber() {
-	return this->bankNumber;
-}
-
-void Login::setBankNumber(int bankNumber) {
-	this->bankNumber = bankNumber;
-}
 
 void Login::setAccountID(int accountID) {
-	this->accountID;
+	this->accountID = accountID;
 }
+
+void Login::display() {
+
+	cout << "userName: " << userName << endl;
+	cout << "password: " << password << endl;
+}
+
 
 //Deposit Functions
 
