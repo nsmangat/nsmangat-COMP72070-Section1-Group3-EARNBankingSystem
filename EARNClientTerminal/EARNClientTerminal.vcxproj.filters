@@ -18,12 +18,18 @@
     <ClCompile Include="ClientMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClientFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\EARNNetworkAPI\DataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\EARNNetworkAPI\Packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

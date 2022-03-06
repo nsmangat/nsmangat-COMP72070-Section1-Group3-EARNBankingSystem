@@ -8,6 +8,7 @@
 
 #define STRING_LENGTH 30
 const int HeadSize = 136;
+enum dataTypeChoice { CreateUserType, LoginType, DepositType, WithdrawType, TransferType, LogoffType};
 
 using namespace std;
 

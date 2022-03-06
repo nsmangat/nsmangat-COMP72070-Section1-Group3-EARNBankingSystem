@@ -60,19 +60,87 @@ int main(void) {
 		return 0;
 	}
 
-	char rxBuffer[500] = {};
+	bool killSwitch = true;
+
+	while (killSwitch)
+	{
+		char rxBuffer[500] = {};
 
 
-	recv(ConnectionSocket, rxBuffer, sizeof(rxBuffer), 0);
+		recv(ConnectionSocket, rxBuffer, sizeof(rxBuffer), 0);
 
-	CreateAccount testAccountReceive(rxBuffer);
-	testAccountReceive.display();
+		Packet checkOperation(rxBuffer);		//get just the headerswit
 
-	Packet test2(rxBuffer);
-	int opType = test2.getOperationType();
-	char* testTime = test2.getTime();
-	cout << opType << endl;
-	cout << testTime << endl;
+		//check crc
+		int operation = checkOperation.getOperationType();
+
+		char TxBuffer[500] = {};
+		int sendSize = 0;
+		//switch cases
+
+		switch (operation) {
+
+		case CreateUserType:
+		{
+			CreateAccount newUser(rxBuffer);
+
+			newUser.display();
+			killSwitch = false;
+			break;
+		}
+		case LoginType:
+		{
+			Login newLogin(rxBuffer);
+
+			break;
+		}
+		case DepositType:
+		{
+			Deposit newDeposit(rxBuffer);
+
+			break;
+		}
+
+		case WithdrawType:
+		{
+			Withdraw newWithdraw(rxBuffer);
+			int thing = 0;
+
+
+			break;
+		}
+		case TransferType:
+		{
+			TransferBetweenAccount newTransfer(rxBuffer);
+			//database stuff
+
+
+
+			//buffertransfer
+
+			break;
+		}
+		case LogoffType:
+		{			
+			//database stuff
+
+			//buffertransfer
+			killSwitch = false;
+			break;
+		}
+		default:
+		{
+			killSwitch = false;
+
+			break;
+		}
+
+		}
+
+		//send(ConnectionSocket, txBuffer, sendSize, 0);
+	}
+
+
 
 
 

@@ -10,6 +10,7 @@
 
 #include "../EARNNetworkAPI/DataTypes.h"
 #include "../EARNNetworkAPI/Packet.h"
+#include "ClientFunctions.h"
 
 
 using namespace std;
@@ -40,23 +41,25 @@ int main(void) {
 		return 0;
 	}
 
+	CreateAccount test = inputAccountInfo();
 
+	test.display();
 
-	char firstName[30] = "firstname";
-	char lastName[30] = "lastname";
-	char username[30] = "username";
-	char password[30] = "password";
-	char email[30] = "email";
-	char phoneNumber[30] = "phone number";
-	char streetName[30] = "street name";
-	char city[30] = "city";
-	char province[30] = "province";
-	int accID = 234;
+	///*char firstName[30] = "firstname";
+	//char lastName[30] = "lastname";
+	//char username[30] = "username";
+	//char password[30] = "password";
+	//char email[30] = "email";
+	//char phoneNumber[30] = "phone number";
+	//char streetName[30] = "street name";
+	//char city[30] = "city";
+	//char province[30] = "province";
+	//int accID = 234;
 
-	CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
+	//CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
 
-	int size = sizeof(testAccount);
-	Packet testPacket(&testAccount, size, 1);
+	int size = sizeof(test);
+	Packet testPacket(&test, size, 0);
 
 
 	int sendSize = 0;
@@ -64,20 +67,15 @@ int main(void) {
 
 
 
-	//Packet packetEmptyTest;
-
-
-
 	send(ClientSocket, txBuffer, sendSize, 0);
-
-
-
 
 
 	closesocket(ClientSocket);
 
 	//frees Winsock DLL resources
 	WSACleanup();
+
+
 
 
 
