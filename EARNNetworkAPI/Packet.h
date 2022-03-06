@@ -17,6 +17,7 @@ class Packet {
 		int dataSize;
 		char TimeOfSend[100];
 		int branchID;
+		int accountType;				//chequing or savings
 
 	}HEAD;
 
@@ -30,7 +31,7 @@ public:
 
 	Packet(char* src);									//to populate header
 
-	Packet(int OpType);
+	Packet(int OpType, int AccType);
 
 	void setTime();
 
@@ -41,6 +42,10 @@ public:
 	void display();
 
 	int getOperationType();							//get operations for header 
+
+	int getAccountType();
+
+	void setAccountType(int accountType);
 
 	char* getTime();
 

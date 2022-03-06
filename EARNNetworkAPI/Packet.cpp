@@ -19,6 +19,7 @@ Packet::Packet(DataTypes* data, int size, int OpType) {
 	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
 	strcpy(HEAD.fromIP, IP_ADDR);
 
+	HEAD.accountType = 0;
 	HEAD.operationType = OpType;
 	HEAD.dataSize = size;
 	HEAD.branchID = 1;
@@ -38,12 +39,13 @@ Packet::Packet(char* src)									//to populate header on server
 	memcpy(&Tail, src + HeadSize + previousSize, sizeof(int));
 }
 
-Packet::Packet(int OpType) {								//for client side for a request not requiring datatype ie view account 
+Packet::Packet(int OpType, int AccType) {								//for client side for a request not requiring datatype ie view account 
 
 	
 	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
 	strcpy(HEAD.fromIP, IP_ADDR);
 
+	HEAD.accountType = AccType;
 	HEAD.operationType = OpType;
 	HEAD.dataSize = 0;
 	HEAD.branchID = 1;
@@ -122,4 +124,14 @@ char* Packet::getTime() {
 int Packet::getTail() {
 
 	return Tail;
+}
+
+int Packet::getAccountType() {
+
+	return HEAD.accountType;
+}
+
+void Packet::setAccountType(int accountType) {
+
+	HEAD.accountType = accountType;
 }

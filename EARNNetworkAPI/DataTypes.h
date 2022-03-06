@@ -7,7 +7,7 @@
 #include <fstream>
 
 #define STRING_LENGTH 30
-const int HeadSize = 132;
+const int HeadSize = 136;
 
 using namespace std;
 
@@ -188,4 +188,20 @@ using namespace std;
 
 	 void setAccountID(int accountID);
 	 void display();
+ };
+
+ class TransactionConfirmation : public DataTypes {
+
+	 int currentBalance;
+	 int transactionID;
+
+ public:
+	 TransactionConfirmation(char* src);							//client receives confirmation
+
+	 int getCurrentBalance();
+	 void setCurrentBalance(int currentBalance);
+
+	 int getTransactionID();
+	 void setTransactionID(int transactionID);
+
  };

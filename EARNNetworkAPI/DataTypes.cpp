@@ -425,3 +425,39 @@ void TransferBetweenAccount::setAccountID(int accountID) {
 
 	this->accountID;
 }
+
+
+// TransactionConfirmation
+
+TransactionConfirmation::TransactionConfirmation(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&currentBalance, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
+	count++;
+	memcpy(&transactionID, src + HeadSize + startBase + (count * sizeof(int)), sizeof(int));
+
+}
+
+int TransactionConfirmation::getCurrentBalance() {
+
+	return currentBalance;
+}
+
+void TransactionConfirmation::setCurrentBalance(int num) {
+
+	this->currentBalance = num;
+}
+
+int TransactionConfirmation::getTransactionID() {
+
+	return transactionID;
+}
+
+void TransactionConfirmation::setTransactionID(int num) {
+
+	this->transactionID = num;
+}
+
