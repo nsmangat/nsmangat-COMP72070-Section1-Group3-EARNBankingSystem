@@ -153,6 +153,10 @@ namespace EarnDB {
 		return outputZip;
 	}
 
+	DBClientInfo DBClient::getClientInfo() {
+		return this->clientInfo;
+	}
+
 	//Set functions
 
 	void DBClient::setFirstName(char newFirst[VARCHARLEN]) {
@@ -389,6 +393,10 @@ namespace EarnDB {
 
 	int DBTransaction::getTransactionSecondaryAcc() {
 		return this->transactionInfo.secondaryAccount;
+	}
+
+	DBTransactionInfo DBTransaction::getTransactionInfo() {
+		return this->transactionInfo;
 	}
 
 	//Set functions

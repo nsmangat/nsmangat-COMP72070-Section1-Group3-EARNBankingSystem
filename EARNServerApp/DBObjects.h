@@ -116,6 +116,9 @@ namespace EarnDB {
 		//get zip code as Cpp string
 		string getZip();
 
+		//Get Client info as a struct
+		DBClientInfo getClientInfo();
+
 		//Set functions
 
 		//set first name from C string
@@ -280,6 +283,9 @@ namespace EarnDB {
 
 		//get other account connected (relationship is implied through transaction type...)
 		int getTransactionSecondaryAcc();
+
+		//Get transaction info as a struct
+		DBTransactionInfo getTransactionInfo();
 
 		//Set functions
 		
