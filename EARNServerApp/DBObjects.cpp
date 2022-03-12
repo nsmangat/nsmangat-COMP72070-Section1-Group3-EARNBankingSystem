@@ -1,6 +1,8 @@
+#include <string>
+#include <vector>
+
 #include "DBObjects.h"
 #include "DBAccess.h"
-
 //DBObject class source code, splitting up namespace to make it easier to read & collapse code areas...
 namespace EarnDB {
 	//Constructors
@@ -8,7 +10,7 @@ namespace EarnDB {
 	DBObject::DBObject() {
 		this->setDBOType(DBONULL);	//type is null telling me it is unallocated...
 	}
-	
+
 	DBObject::DBObject(const DBObject& copyObject) : DBAccessInterface(copyObject) {
 		this->setDBOType(copyObject.objectType);
 	}
@@ -34,7 +36,7 @@ namespace EarnDB {
 namespace EarnDB {
 	//Constructors
 
-	DBClient::DBClient() {
+	DBClient::DBClient() :DBObject(CLIENT, 0) {
 		//manually allocate them as null just in case (could ignore, but wanted the assurance...)
 		this->setFirstName(NULL);
 		this->setLastName(NULL);
@@ -46,7 +48,7 @@ namespace EarnDB {
 		this->setZip(NULL);
 	}
 
-	DBClient::DBClient(const DBClientInfo copyInfo) {
+	DBClient::DBClient(const DBClientInfo copyInfo) :DBObject(CLIENT, 0) {
 		this->setFirstName(copyInfo.firstName);
 		this->setLastName(copyInfo.lastName);
 		this->setEmail(copyInfo.email);
@@ -54,7 +56,7 @@ namespace EarnDB {
 		this->setStreet(copyInfo.street);
 		this->setCity(copyInfo.city);
 		this->setProvince(copyInfo.province);
-		this->setZip(copyInfo.zipcode);	
+		this->setZip(copyInfo.zipcode);
 	}
 
 	DBClient::DBClient(const DBClient& copyClient) : DBObject::DBObject(copyClient) {
@@ -85,26 +87,26 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;	//since it will always be an array of 45
 		return (const char*)(this->clientInfo.firstName);	//cast pointer to first name as a const so it cannot be altered...
 	}
-	string DBClient::getFirstName() {
-		string outputFirstName(this->clientInfo.firstName);	//simplest way to do this...
+	std::string DBClient::getFirstName() {
+		std::string outputFirstName(this->clientInfo.firstName);	//simplest way to do this...
 		return outputFirstName;
 	}
 
 	const char* DBClient::getLastName(int& lenOfArray) {
-		lenOfArray - VARCHARLEN;
+		lenOfArray = VARCHARLEN;
 		return (const char*)(this->clientInfo.lastName);
 	}
-	string DBClient::getLastName() {
-		string outputLastName(this->clientInfo.lastName);
+	std::string DBClient::getLastName() {
+		std::string outputLastName(this->clientInfo.lastName);
 		return outputLastName;
 	}
 
 	const char* DBClient::getEmail(int& lenOfArray) {
-		lenOfArray - VARCHARLEN;
+		lenOfArray = VARCHARLEN;
 		return (const char*)(this->clientInfo.email);
 	}
-	string DBClient::getEmail() {
-		string outputEmail(this->clientInfo.email);
+	std::string DBClient::getEmail() {
+		std::string outputEmail(this->clientInfo.email);
 		return outputEmail;
 	}
 
@@ -112,8 +114,8 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;
 		return (const char*)(this->clientInfo.phoneNumber);
 	}
-	string DBClient::getPhoneNum() {
-		string outputPhoneNum(this->clientInfo.phoneNumber);
+	std::string DBClient::getPhoneNum() {
+		std::string outputPhoneNum(this->clientInfo.phoneNumber);
 		return outputPhoneNum;
 	}
 
@@ -121,8 +123,8 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;
 		return (const char*)(this->clientInfo.street);
 	}
-	string DBClient::getStreet() {
-		string outputStreet(this->clientInfo.street);
+	std::string DBClient::getStreet() {
+		std::string outputStreet(this->clientInfo.street);
 		return outputStreet;
 	}
 
@@ -130,8 +132,8 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;
 		return (const char*)(this->clientInfo.city);
 	}
-	string DBClient::getCity() {
-		string outputCity(this->clientInfo.city);
+	std::string DBClient::getCity() {
+		std::string outputCity(this->clientInfo.city);
 		return outputCity;
 	}
 
@@ -139,8 +141,8 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;
 		return (const char*)(this->clientInfo.province);
 	}
-	string DBClient::getProvince() {
-		string outputProvince(this->clientInfo.province);
+	std::string DBClient::getProvince() {
+		std::string outputProvince(this->clientInfo.province);
 		return outputProvince;
 	}
 
@@ -148,8 +150,8 @@ namespace EarnDB {
 		lenOfArray = ZIPLEN;
 		return (const char*)(this->clientInfo.zipcode);
 	}
-	string DBClient::getZip() {
-		string outputZip(this->clientInfo.zipcode);
+	std::string DBClient::getZip() {
+		std::string outputZip(this->clientInfo.zipcode);
 		return outputZip;
 	}
 
@@ -162,78 +164,78 @@ namespace EarnDB {
 	void DBClient::setFirstName(char newFirst[VARCHARLEN]) {
 		memcpy(this->clientInfo.firstName, newFirst, VARCHARLEN);
 	}
-	void DBClient::setFirstName(string newFirst) {
+	void DBClient::setFirstName(std::string newFirst) {
 		memcpy(this->clientInfo.firstName, newFirst.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setLastName(char newLast[VARCHARLEN]) {
 		memcpy(this->clientInfo.lastName, newLast, VARCHARLEN);
 	}
-	void DBClient::setLastName(string newLast) {
+	void DBClient::setLastName(std::string newLast) {
 		memcpy(this->clientInfo.lastName, newLast.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setEmail(char newEmail[VARCHARLEN]) {
 		memcpy(this->clientInfo.email, newEmail, VARCHARLEN);
 	}
-	void DBClient::setEmail(string newEmail) {
+	void DBClient::setEmail(std::string newEmail) {
 		memcpy(this->clientInfo.email, newEmail.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setPhoneNum(char newPhone[VARCHARLEN]) {
 		memcpy(this->clientInfo.phoneNumber, newPhone, VARCHARLEN);
 	}
-	void DBClient::setPhoneNum(string newPhone) {
+	void DBClient::setPhoneNum(std::string newPhone) {
 		memcpy(this->clientInfo.phoneNumber, newPhone.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setStreet(char newStreet[VARCHARLEN]) {
 		memcpy(this->clientInfo.street, newStreet, VARCHARLEN);
 	}
-	void DBClient::setStreet(string newStreet) {
+	void DBClient::setStreet(std::string newStreet) {
 		memcpy(this->clientInfo.street, newStreet.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setCity(char newCity[VARCHARLEN]) {
 		memcpy(this->clientInfo.city, newCity, VARCHARLEN);
 	}
-	void DBClient::setCity(string newCity) {
+	void DBClient::setCity(std::string newCity) {
 		memcpy(this->clientInfo.city, newCity.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setProvince(char newProvince[VARCHARLEN]) {
 		memcpy(this->clientInfo.province, newProvince, VARCHARLEN);
 	}
-	void DBClient::setProvince(string newProvince) {
+	void DBClient::setProvince(std::string newProvince) {
 		memcpy(this->clientInfo.province, newProvince.c_str(), VARCHARLEN);
 	}
 
 	void DBClient::setZip(char newZip[ZIPLEN]) {
 		memcpy(this->clientInfo.zipcode, newZip, ZIPLEN);
 	}
-	void DBClient::setZip(string newZip) {
+	void DBClient::setZip(std::string newZip) {
 		memcpy(this->clientInfo.zipcode, newZip.c_str(), ZIPLEN);
 	}
 
 	//Inherited functions
 
-	//string DBClient::displayInfo() {
+	//std::string DBClient::displayInfo() {
 
 	//}
 
-	//string DBClient::getLogData() {
+	//std::string DBClient::getLogData() {
 
 	//}
 
-	//string DBClient::addInfoToDB() {
+	//std::string DBClient::addInfoToDB() {
 
 	//}
 
-	//string DBClient::modifyInfoInDB() {
+	//std::string DBClient::modifyInfoInDB() {
 
 	//}
 
-	//string DBClient::deleteInfoInDB() {
+	//std::string DBClient::deleteInfoInDB() {
 
 	//}
 }
@@ -242,13 +244,13 @@ namespace EarnDB {
 namespace EarnDB {
 	//Constructors
 
-	DBCredentials::DBCredentials() {
+	DBCredentials::DBCredentials() :DBObject(CREDENTIALS, 0) {
 		this->setUsernameOrNum(NULL);
 		this->setPasswordHash(NULL);
 	}
 
 	//struct constructor, for use after deserializing
-	DBCredentials::DBCredentials(const DBCredentialInfo copyInfo):DBObject(CREDENTIALS, 0) {
+	DBCredentials::DBCredentials(const DBCredentialInfo copyInfo) :DBObject(CREDENTIALS, 0) {
 		this->setUsernameOrNum(copyInfo.usernameORNum);
 		this->setPasswordHash(copyInfo.userPasswordHash);
 	}
@@ -271,8 +273,8 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;
 		return (const char*)(this->credentialInfo.usernameORNum);
 	}
-	string DBCredentials::getUsernameOrNum() {
-		string outputUsernameOrNum(this->credentialInfo.usernameORNum);
+	std::string DBCredentials::getUsernameOrNum() {
+		std::string outputUsernameOrNum(this->credentialInfo.usernameORNum);
 		return outputUsernameOrNum;
 	}
 
@@ -280,8 +282,9 @@ namespace EarnDB {
 		lenOfArray = VARCHARLEN;
 		return (const char*)(this->credentialInfo.userPasswordHash);
 	}
-	string DBCredentials::getPasswordHash() {
-		string outputPasswordHash(this->credentialInfo.userPasswordHash);
+	std::string DBCredentials::getPasswordHash() {
+		std::string outputPasswordHash(this->credentialInfo.userPasswordHash);
+		return outputPasswordHash;
 	}
 
 	DBCredentialInfo DBCredentials::getCredentialInfo() {
@@ -293,36 +296,36 @@ namespace EarnDB {
 	void DBCredentials::setUsernameOrNum(char newUsernameOrNum[VARCHARLEN]) {
 		memcpy(this->credentialInfo.usernameORNum, newUsernameOrNum, VARCHARLEN);
 	}
-	void DBCredentials::setUsernameOrNum(string newUsernameOrNum) {
+	void DBCredentials::setUsernameOrNum(std::string newUsernameOrNum) {
 		memcpy(this->credentialInfo.usernameORNum, newUsernameOrNum.c_str(), VARCHARLEN);
 	}
 
 	void DBCredentials::setPasswordHash(char newPasswordHash[VARCHARLEN]) {
-		memcpy(this->credentialInfo.userPasswordHash,newPasswordHash,VARCHARLEN)
+		memcpy(this->credentialInfo.userPasswordHash, newPasswordHash, VARCHARLEN);
 	}
-	void DBCredentials::setPasswordHash(string newPasswordHash) {
+	void DBCredentials::setPasswordHash(std::string newPasswordHash) {
 		memcpy(this->credentialInfo.userPasswordHash, newPasswordHash.c_str(), VARCHARLEN);
 	}
 
 	//Inherited functions
 
-	//string DBCredentials::displayInfo() {
+	//std::string DBCredentials::displayInfo() {
 
 	//}
 
-	//string DBCredentials::getLogData() {
+	//std::string DBCredentials::getLogData() {
 
 	//}
 
-	//string DBCredentials::addInfoToDB() {
+	//std::string DBCredentials::addInfoToDB() {
 
 	//}
 
-	//string DBCredentials::modifyInfoInDB() {
+	//std::string DBCredentials::modifyInfoInDB() {
 
 	//}
 
-	//string DBCredentials::deleteInfoInDB() {
+	//std::string DBCredentials::deleteInfoInDB() {
 
 	//}
 }
@@ -331,13 +334,13 @@ namespace EarnDB {
 namespace EarnDB {
 	//Constructors
 
-	DBAccount::DBAccount() {
+	DBAccount::DBAccount() :DBObject(ACCOUNT, 0) {
 		this->setAccountClientID(0);
 		this->setAccountType(DBANULL);
 		this->setBalance(NULL);
 	}
-	
-	DBAccount::DBAccount(const DBAccountInfo copyInfo):DBObject(ACCOUNT, 0) {
+
+	DBAccount::DBAccount(const DBAccountInfo copyInfo) :DBObject(ACCOUNT, 0) {
 		this->setAccountClientID(copyInfo.clientID);
 		this->setAccountType(copyInfo.accountType);
 		this->setBalance(copyInfo.accountBalance);
@@ -393,23 +396,23 @@ namespace EarnDB {
 
 	//Inherited functions
 
-	//string DBAccount::displayInfo() {
+	//std::string DBAccount::displayInfo() {
 
 	//}
 
-	//string DBAccount::getLogData() {
+	//std::string DBAccount::getLogData() {
 
 	//}
 
-	//string DBAccount::addInfoToDB() {
+	//std::string DBAccount::addInfoToDB() {
 
 	//}
 
-	//string DBAccount::modifyInfoInDB() {
+	//std::string DBAccount::modifyInfoInDB() {
 
 	//}
 
-	//string DBAccount::deleteInfoInDB() {
+	//std::string DBAccount::deleteInfoInDB() {
 
 	//}
 }
@@ -419,7 +422,7 @@ namespace EarnDB {
 	//Constructors
 
 	//default constructor
-	DBTransaction::DBTransaction() {
+	DBTransaction::DBTransaction() :DBObject(TRANSACTION, 0) {
 		this->setTransactionAccountID(0);
 		this->setTransactionType(DBTNULL);
 		this->setTransactionTime(NULL);
@@ -429,7 +432,7 @@ namespace EarnDB {
 	}
 
 	//struct constructor, for use after deserializing
-	DBTransaction::DBTransaction(const DBTransactionInfo copyInfo):DBObject(TRANSACTION,0) {
+	DBTransaction::DBTransaction(const DBTransactionInfo copyInfo) :DBObject(TRANSACTION, 0) {
 		this->setTransactionAccountID(copyInfo.accountID);
 		this->setTransactionType(copyInfo.transactionType);
 		this->setTransactionTime(copyInfo.transactionTime);
@@ -516,23 +519,23 @@ namespace EarnDB {
 
 	//Inherited functions
 
-	//string DBTransaction::displayInfo() {
+	//std::string DBTransaction::displayInfo() {
 
 	//}
 
-	//string DBTransaction::getLogData() {
+	//std::string DBTransaction::getLogData() {
 
 	//}
 
-	//string DBTransaction::addInfoToDB() {
+	//std::string DBTransaction::addInfoToDB() {
 
 	//}
 
-	//string DBTransaction::modifyInfoInDB() {
+	//std::string DBTransaction::modifyInfoInDB() {
 
 	//}
 
-	//string DBTransaction::deleteInfoInDB() {
+	//std::string DBTransaction::deleteInfoInDB() {
 
 	//}
 }

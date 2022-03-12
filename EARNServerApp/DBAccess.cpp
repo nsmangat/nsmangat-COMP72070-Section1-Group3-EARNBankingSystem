@@ -1,3 +1,6 @@
+#include <string>
+#include <vector>
+
 #include"DBAccess.h"
 #include "DBObjects.h"
 
@@ -34,15 +37,50 @@ namespace EarnDB {
 	}
 }
 
+/*
 //DBReader source code
 namespace EarnDB {
-	//Subfunctions for checkID exists
+	//Subfunctions for checkIDExists
+
+	bool DBReader::checkClientIDExists(int checkClientID);
+
+	bool DBReader::checkAccountIDExists(int checkAccountID);
+
+	bool DBReader::checkTransactionIDExists(int checkTransactionID);
 
 	//Get single objects
 
-	//Get multiple objects
+	int DBReader::getObjectInfo(int objectID, DBClient& copyClient);
 
-	//check ID exists public
+	int DBReader::getObjectInfo(int objectID, DBAccount& copyAccount);
+
+	int DBReader::getObjectInfo(int objectID, DBTransaction& copyTransaction);
+
+	//Get all objects from a higher level ID
+
+	int DBReader::getObjectsInfo(int& numOfClients, vector<DBClient>& clientsVec);
+
+	int DBReader::getObjectsInfo(int clientID, int& numOfAccounts, vector<DBAccount>& clientAccountsVec);
+
+	int DBReader::getObjectsInfo(int accountID, int& numOfTransactions, vector<DBTransaction>& accountTransactionsVec);
+
+	//Subfunctions for checkID exists
+
+	bool DBReader::checkIDExists(int checkID, DBOType idType) {
+		bool outputResponse = false;
+
+		if (CLIENT == idType) {
+			outputResponse = this->checkClientIDExists(checkID);
+		}
+		else if (ACCOUNT == idType) {
+			outputResponse = this->checkAccountIDExists(checkID);
+		}
+		else if (TRANSACTION == idType) {
+			outputResponse = this->checkAccountIDExists(checkID);
+		}
+
+		return outputResponse;
+	}
 }
 
 //DBValidation source code
@@ -62,3 +100,5 @@ namespace EarnDB {
 	//Delete object in database
 
 }
+
+*/

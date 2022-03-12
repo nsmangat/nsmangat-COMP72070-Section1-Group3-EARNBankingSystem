@@ -1,15 +1,8 @@
 #pragma once
-#include <Windows.h>
-#include <sql.h>
-#include <sqltypes.h>
-#include <sqlext.h>
 #include <string>
 #include <vector>
 
-#include "DBObjects.h"
-
 namespace EarnDB {
-	using namespace std;
 
 	//virtual access interface for DB
 	class DBAccessInterface {
@@ -23,7 +16,7 @@ namespace EarnDB {
 
 		//copy constructor
 		DBAccessInterface(const DBAccessInterface& copyAccessObject);
-		
+
 		//parametrized constructor
 		DBAccessInterface(int newObjectID);
 
@@ -34,10 +27,21 @@ namespace EarnDB {
 		void setObjectID(int newObjectID);
 
 		//Virtualized functions for lower level implementations
-		virtual string addInfoToDB() = 0;
-		virtual string modifyInfoInDB() = 0;
-		virtual string deleteInfoInDB() = 0;
+
+		//Add info from object into database
+		virtual std::string addInfoToDB() = 0;
+
+		//Modify info of object in database related to object
+		virtual std::string modifyInfoInDB() = 0;
+
+		//Delete info of object in database related to object
+		virtual std::string deleteInfoInDB() = 0;
 	};
+
+	/*
+	//need to include DBObjects here since DBAccessInterface causes a compiler loop if it has the include above
+
+	#include "DBObjects.h"
 
 	class DBReader {
 		//Subfunctions for checkIDExists
@@ -63,7 +67,7 @@ namespace EarnDB {
 		//Get Transaction from database (-2 if ID doesn't exist / -1 for error)
 		int getObjectInfo(int objectID, DBTransaction& copyTransaction);
 
-		//Get all objects from a higher level ID 
+		//Get all objects from a higher level ID
 
 		//Get all Clients from database (-2 if ID doesn't exist / -1 for error)
 		int getObjectsInfo(int& numOfClients, vector<DBClient>& clientsVec);
@@ -98,4 +102,5 @@ namespace EarnDB {
 		//Delete object in database (-2 if ID doesn't exist / -1 for error)
 		int deleteObject(DBObject inputObj);
 	};
+	*/
 }
