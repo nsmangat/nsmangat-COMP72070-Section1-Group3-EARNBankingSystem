@@ -68,7 +68,7 @@ namespace EarnDB {
 		this->setZip(copyClient.clientInfo.zipcode);
 	}
 
-	DBClient::DBClient(int inputobjectID, char inputFirst[VARCHARLEN], char inputLast[VARCHARLEN], char inputEmail[VARCHARLEN], char inputPhone[VARCHARLEN], char inputStreet[VARCHARLEN], char inputCity[VARCHARLEN], char inputProvince[VARCHARLEN], char inputZip[ZIPLEN]) :DBObject(CLIENT, inputobjectID) {
+	DBClient::DBClient(int inputObjectID, char inputFirst[VARCHARLEN], char inputLast[VARCHARLEN], char inputEmail[VARCHARLEN], char inputPhone[VARCHARLEN], char inputStreet[VARCHARLEN], char inputCity[VARCHARLEN], char inputProvince[VARCHARLEN], char inputZip[ZIPLEN]) :DBObject(CLIENT, inputObjectID) {
 		this->setFirstName(inputFirst);
 		this->setLastName(inputLast);
 		this->setEmail(inputEmail);
@@ -238,6 +238,95 @@ namespace EarnDB {
 	//}
 }
 
+//DBCredential class source code
+namespace EarnDB {
+	//Constructors
+
+	DBCredentials::DBCredentials() {
+		this->setUsernameOrNum(NULL);
+		this->setPasswordHash(NULL);
+	}
+
+	//struct constructor, for use after deserializing
+	DBCredentials::DBCredentials(const DBCredentialInfo copyInfo):DBObject(CREDENTIALS, 0) {
+		this->setUsernameOrNum(copyInfo.usernameORNum);
+		this->setPasswordHash(copyInfo.userPasswordHash);
+	}
+
+	//copy constructor
+	DBCredentials::DBCredentials(const DBCredentials& copyCredentials) :DBObject(copyCredentials) {
+		this->setUsernameOrNum(copyCredentials.credentialInfo.usernameORNum);
+		this->setPasswordHash(copyCredentials.credentialInfo.userPasswordHash);
+	}
+
+	//parametrized constructor
+	DBCredentials::DBCredentials(int inputObjectID, char inputUserNameOrNum[VARCHARLEN], char inputPasswordHash[VARCHARLEN]) :DBObject(CREDENTIALS, inputObjectID) {
+		this->setUsernameOrNum(inputUserNameOrNum);
+		this->setPasswordHash(inputPasswordHash);
+	}
+
+	//Get functions
+
+	const char* DBCredentials::getUsernameOrNum(int& lenOfArray) {
+		lenOfArray = VARCHARLEN;
+		return (const char*)(this->credentialInfo.usernameORNum);
+	}
+	string DBCredentials::getUsernameOrNum() {
+		string outputUsernameOrNum(this->credentialInfo.usernameORNum);
+		return outputUsernameOrNum;
+	}
+
+	const char* DBCredentials::getPasswordHash(int& lenOfArray) {
+		lenOfArray = VARCHARLEN;
+		return (const char*)(this->credentialInfo.userPasswordHash);
+	}
+	string DBCredentials::getPasswordHash() {
+		string outputPasswordHash(this->credentialInfo.userPasswordHash);
+	}
+
+	DBCredentialInfo DBCredentials::getCredentialInfo() {
+		return this->credentialInfo;
+	}
+
+	//Set functions
+
+	void DBCredentials::setUsernameOrNum(char newUsernameOrNum[VARCHARLEN]) {
+		memcpy(this->credentialInfo.usernameORNum, newUsernameOrNum, VARCHARLEN);
+	}
+	void DBCredentials::setUsernameOrNum(string newUsernameOrNum) {
+		memcpy(this->credentialInfo.usernameORNum, newUsernameOrNum.c_str(), VARCHARLEN);
+	}
+
+	void DBCredentials::setPasswordHash(char newPasswordHash[VARCHARLEN]) {
+		memcpy(this->credentialInfo.userPasswordHash,newPasswordHash,VARCHARLEN)
+	}
+	void DBCredentials::setPasswordHash(string newPasswordHash) {
+		memcpy(this->credentialInfo.userPasswordHash, newPasswordHash.c_str(), VARCHARLEN);
+	}
+
+	//Inherited functions
+
+	//string DBCredentials::displayInfo() {
+
+	//}
+
+	//string DBCredentials::getLogData() {
+
+	//}
+
+	//string DBCredentials::addInfoToDB() {
+
+	//}
+
+	//string DBCredentials::modifyInfoInDB() {
+
+	//}
+
+	//string DBCredentials::deleteInfoInDB() {
+
+	//}
+}
+
 //DBAccount class source code
 namespace EarnDB {
 	//Constructors
@@ -248,7 +337,7 @@ namespace EarnDB {
 		this->setBalance(NULL);
 	}
 	
-	DBAccount::DBAccount(const DBAccountInfo copyInfo) {
+	DBAccount::DBAccount(const DBAccountInfo copyInfo):DBObject(ACCOUNT, 0) {
 		this->setAccountClientID(copyInfo.clientID);
 		this->setAccountType(copyInfo.accountType);
 		this->setBalance(copyInfo.accountBalance);
@@ -340,7 +429,7 @@ namespace EarnDB {
 	}
 
 	//struct constructor, for use after deserializing
-	DBTransaction::DBTransaction(const DBTransactionInfo copyInfo) {
+	DBTransaction::DBTransaction(const DBTransactionInfo copyInfo):DBObject(TRANSACTION,0) {
 		this->setTransactionAccountID(copyInfo.accountID);
 		this->setTransactionType(copyInfo.transactionType);
 		this->setTransactionTime(copyInfo.transactionTime);

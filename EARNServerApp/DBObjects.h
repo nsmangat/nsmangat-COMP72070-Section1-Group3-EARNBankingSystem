@@ -15,7 +15,7 @@ namespace EarnDB {
 	const int ZIPLEN = 6;		
 
 	//enummeration for different types of DBObjects
-	enum DBOType {DBONULL, CLIENT, ACCOUNT, TRANSACTION };
+	enum DBOType {DBONULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };
 
 	//DBObject Interface / abstract class, used by client, account, etc...
 	class DBObject : public DBAccessInterface {
@@ -72,7 +72,7 @@ namespace EarnDB {
 		DBClient(const DBClient& copyClient);
 
 		//parametrized constructor
-		DBClient(int inputobjectID, char inputFirst[VARCHARLEN], char inputLast[VARCHARLEN], char inputEmail[VARCHARLEN], char inputPhone[VARCHARLEN], char inputStreet[VARCHARLEN], char inputCity[VARCHARLEN], char inputProvince[VARCHARLEN], char inputZip[ZIPLEN]);
+		DBClient(int inputObjectID, char inputFirst[VARCHARLEN], char inputLast[VARCHARLEN], char inputEmail[VARCHARLEN], char inputPhone[VARCHARLEN], char inputStreet[VARCHARLEN], char inputCity[VARCHARLEN], char inputProvince[VARCHARLEN], char inputZip[ZIPLEN]);
 
 		//Get functions
 
@@ -170,6 +170,66 @@ namespace EarnDB {
 		string deleteInfoInDB();
 	};
 
+	//struct for DBCredentials so it can be easier to serialize & deserialize using DBValidation
+	struct DBCredentialInfo {
+		char usernameORNum[VARCHARLEN];
+		char userPasswordHash[VARCHARLEN];
+	};
+
+	//class for credential / validation in the database,
+	class DBCredentials: DBObject {
+		DBCredentialInfo credentialInfo;
+
+	public:
+		//Constructors
+
+		//default constructor
+		DBCredentials();
+
+		//struct constructor, for use after deserializing
+		DBCredentials(const DBCredentialInfo copyInfo);
+
+		//copy constructor
+		DBCredentials(const DBCredentials& copyCredentials);
+
+		//parametrized constructor
+		DBCredentials(int inputObjectID, char inputUserNameOrNum[VARCHARLEN], char inputPasswordHash[VARCHARLEN]);
+
+		//Get functions
+		
+		//get Username or Usernumber as C string
+		const char* getUsernameOrNum(int& lenOfArray);
+		//get Username or Usernumber as Cpp string
+		string getUsernameOrNum();
+
+		//get PasswordHash as C string
+		const char* getPasswordHash(int& lenOfArray);
+		//get PasswordHash as Cpp string
+		string getPasswordHash();
+
+		//Get Credential info as a struct
+		DBCredentialInfo getCredentialInfo();
+
+		//Set functions
+
+		//set Username or Usernumber from C string
+		void setUsernameOrNum(char newUsernameOrNum[VARCHARLEN]);
+		//set Username or Usernumber from Cpp string
+		void setUsernameOrNum(string newUsernameOrNum);
+
+		//set PasswordHash from C string
+		void setPasswordHash(char newPasswordHash[VARCHARLEN]);
+		//set PasswordHash from Cpp string
+		void setPasswordHash(string newPasswordHash);
+
+		//Inherited functions
+
+		string displayInfo();
+		//string getLogData();
+		string addInfoToDB();
+		string modifyInfoInDB();
+		string deleteInfoInDB();
+	};
 	//enummeration for Account types
 	enum DBAType{DBANULL, CHEQUINGS, SAVINGS};
 
