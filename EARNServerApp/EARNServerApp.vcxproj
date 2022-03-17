@@ -81,6 +81,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)EARNNetworkAPI;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>C:\Program Files\MySQL\Connector C++ 8.0\include\jdbc;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,14 +138,18 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)EARNNetworkAPI\$(Configuration);C:\Program Files\MySQL\Connector C++ 8.0\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>*.obj;mysqlcppconn-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DBAccess.cpp" />
+    <ClCompile Include="DBDrivers.cpp" />
     <ClCompile Include="DBObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBAccess.h" />
+    <ClInclude Include="DBDrivers.h" />
     <ClInclude Include="DBObjects.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

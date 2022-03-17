@@ -21,12 +21,18 @@
     <ClCompile Include="DBObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DBDrivers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBAccess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DBObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBDrivers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

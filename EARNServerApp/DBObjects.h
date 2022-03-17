@@ -1,18 +1,19 @@
 #pragma once
+#include "DBAccess.h"
+
 #include <string>
 #include <time.h>
 
-#include "DBAccess.h"
-
-namespace EarnDB {
-	//macros for EarnDB...
-
-	//length of varchars, so we don't overwrite in database
+namespace EarnDB  {
+	//Macros for EarnDB objects (length of strings...
+	
+	//Length of varchars, so we don't overwrite in database
 	const int VARCHARLEN = 45;
-	//length of zip codes, since they are always the same
+	
+	//Length of zip codes, since they are always the same
 	const int ZIPLEN = 6;
 
-	//enummeration for different types of DBObjects
+	//Enummeration for different types of DBObjects
 	enum DBOType { DBONULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };
 
 	//DBObject Interface / abstract class, used by client, account, etc...
@@ -22,26 +23,26 @@ namespace EarnDB {
 	public:
 		//Constructors...
 
-		//default constructor
+		//Default constructor
 		DBObject();
 
-		//copy constructor
+		//Copy constructor
 		DBObject(const DBObject& copyObject);
 
-		//parametrized constructor
+		//Parametrized constructor
 		DBObject(DBOType initalizeType, int objectID);
 
-		//get function for DBOType
+		//Get function for DBOType
 		DBOType getDBOType();
 
-		//set function for DBType
+		//Set function for DBType
 		void setDBOType(DBOType inputType);
 
-		//display Info about Object to terminal (debugging purposes).
+		//Display Info about Object to terminal (debugging purposes).
 		virtual std::string displayInfo() = 0;
 	};
 
-	//struct for the DBClient so it can be easier to serialize & deserialize using networkAPI
+	//Structure for DBClient object's info, to ease serialization
 	struct DBClientInfo {
 		char firstName[VARCHARLEN];
 		char lastName[VARCHARLEN];
@@ -53,65 +54,65 @@ namespace EarnDB {
 		char zipcode[ZIPLEN];
 	};
 
-	//class for client in the database, with all the overloaded abstract functions for DBAccess & Logging
+	//DBClient object class
 	class DBClient :public DBObject {
 		DBClientInfo clientInfo;
 
 	public:
 		//Constructors
 
-		//default constructor
+		//Default constructor
 		DBClient();
 
-		//struct constructor, for use after deserializing
+		//Struct constructor, for use after deserializing
 		DBClient(const DBClientInfo copyInfo);
 
-		//copy constructor
+		//Copy constructor
 		DBClient(const DBClient& copyClient);
 
-		//parametrized constructor
+		//Parametrized constructor
 		DBClient(int inputObjectID, char inputFirst[VARCHARLEN], char inputLast[VARCHARLEN], char inputEmail[VARCHARLEN], char inputPhone[VARCHARLEN], char inputStreet[VARCHARLEN], char inputCity[VARCHARLEN], char inputProvince[VARCHARLEN], char inputZip[ZIPLEN]);
 
 		//Get functions
 
-		//get first name as C string
+		//Get first name as C string
 		const char* getFirstName(int& lenOfArray);
-		//get first name as Cpp string
+		//Get first name as Cpp string
 		std::string getFirstName();
 
-		//get last name as C string
+		//Get last name as C string
 		const char* getLastName(int& lenOfArray);
-		//get last name as Cpp string
+		//Get last name as Cpp string
 		std::string getLastName();
 
-		//get email as C string
+		//Get email as C string
 		const char* getEmail(int& lenOfArray);
-		//get email as Cpp string
+		//Get email as Cpp string
 		std::string getEmail();
 
-		//get phone number as C string
+		//Get phone number as C string
 		const char* getPhoneNum(int& lenOfArray);
-		//get phone number as Cpp string
+		//Get phone number as Cpp string
 		std::string getPhoneNum();
 
-		//get street as C string
+		//Get street as C string
 		const char* getStreet(int& lenOfArray);
-		//get street as Cpp string
+		//Get street as Cpp string
 		std::string getStreet();
 
-		//get city as C string
+		//Get city as C string
 		const char* getCity(int& lenOfArray);
-		//get city as Cpp string
+		//Get city as Cpp string
 		std::string getCity();
 
-		//get Province as C string
+		//Get Province as C string
 		const char* getProvince(int& lenOfArray);
-		//get province as Cpp string
+		//Get province as Cpp string
 		std::string getProvince();
 
-		//get zip code as C string
+		//Get zip code as C string
 		const char* getZip(int& lenOfArray);
-		//get zip code as Cpp string
+		//Get zip code as Cpp string
 		std::string getZip();
 
 		//Get Client info as a struct
@@ -119,52 +120,52 @@ namespace EarnDB {
 
 		//Set functions
 
-		//set first name from C string
+		//Set first name from C string
 		void setFirstName(char newFirst[VARCHARLEN]);
-		//set first name from Cpp string
+		//Set first name from Cpp string
 		void setFirstName(std::string newFirst);
 
-		//set last name from C string
+		//Set last name from C string
 		void setLastName(char newLast[VARCHARLEN]);
-		//set last name from Cpp string
+		//Set last name from Cpp string
 		void setLastName(std::string newLast);
 
-		//set email from C string
+		//Set email from C string
 		void setEmail(char newEmail[VARCHARLEN]);
-		//set email from Cpp string
+		//Set email from Cpp string
 		void setEmail(std::string newEmail);
 
-		//set phone number from C string
+		//Set phone number from C string
 		void setPhoneNum(char newPhone[VARCHARLEN]);
-		//set phone number from Cpp string
+		//Set phone number from Cpp string
 		void setPhoneNum(std::string newPhone);
 
-		//set street from C string
+		//Set street from C string
 		void setStreet(char newStreet[VARCHARLEN]);
-		//set street from Cpp string
+		//Set street from Cpp string
 		void setStreet(std::string newStreet);
 
-		//set city from C string
+		//Set city from C string
 		void setCity(char newCity[VARCHARLEN]);
-		//set city from Cpp string
+		//Set city from Cpp string
 		void setCity(std::string newCity);
 
-		//set province from C string
+		//Set province from C string
 		void setProvince(char newProvince[VARCHARLEN]);
-		//set province from Cpp string
+		//Set province from Cpp string
 		void setProvince(std::string newProvince);
 
-		//set zip code from C string
+		//Set zip code from C string
 		void setZip(char newZip[ZIPLEN]);
-		//set zip code from Cpp string
+		//Set zip code from Cpp string
 		void setZip(std::string newZip);
 
 		//Inherited functions
 
-		//display info of client as a string for terminal debugging
+		//Display info of client as a string for terminal debugging
 		std::string displayInfo();
 
-		//get log data format for client to be used in DBLogger
+		//Get log data format for client to be used in DBLogger
 		//std::string getLogData();
 
 		//Add Client info query for database
@@ -175,43 +176,54 @@ namespace EarnDB {
 
 		//Delete Client info query for client of the same client ID
 		std::string deleteInfoInDB();
+
+		//Check if client id is in database
+		std::string checkObjectExists();
 	};
 
-	//struct for DBCredentials so it can be easier to serialize & deserialize using DBValidation
+	//Structure for DBCredential object's info, to ease validation
 	struct DBCredentialInfo {
-		char usernameORNum[VARCHARLEN];
+		int clientID;
+		char username[VARCHARLEN];
+		int usernumber;
 		char userPasswordHash[VARCHARLEN];
 	};
 
-	//class for credential / validation in the database,
+	//DBCredential / validation object class
 	class DBCredentials :public DBObject {
 		DBCredentialInfo credentialInfo;
 
 	public:
 		//Constructors
 
-		//default constructor
+		//Default constructor
 		DBCredentials();
 
-		//struct constructor, for use after deserializing
+		//Struct constructor, for use after deserializing
 		DBCredentials(const DBCredentialInfo copyInfo);
 
-		//copy constructor
+		//Copy constructor
 		DBCredentials(const DBCredentials& copyCredentials);
 
-		//parametrized constructor
-		DBCredentials(int inputObjectID, char inputUserNameOrNum[VARCHARLEN], char inputPasswordHash[VARCHARLEN]);
+		//Parametrized constructor
+		DBCredentials(int inputObjectID, int inputClientID, char inputUserName[VARCHARLEN], int inputUserNumber, char inputPasswordHash[VARCHARLEN]);
 
 		//Get functions
 
-		//get Username or Usernumber as C string
-		const char* getUsernameOrNum(int& lenOfArray);
-		//get Username or Usernumber as Cpp string
-		std::string getUsernameOrNum();
+		//Get clientID as int
+		int getClientID();
 
-		//get PasswordHash as C string
+		//Get Username as C string
+		const char* getUsername(int& lenOfArray);
+		//Get Username as Cpp string
+		std::string getUsername();
+
+		//Get Usernumber as int
+		int getUsernumber();
+
+		//Get PasswordHash as C string
 		const char* getPasswordHash(int& lenOfArray);
-		//get PasswordHash as Cpp string
+		//Get PasswordHash as Cpp string
 		std::string getPasswordHash();
 
 		//Get Credential info as a struct
@@ -219,22 +231,28 @@ namespace EarnDB {
 
 		//Set functions
 
-		//set Username or Usernumber from C string
-		void setUsernameOrNum(char newUsernameOrNum[VARCHARLEN]);
-		//set Username or Usernumber from Cpp string
-		void setUsernameOrNum(std::string newUsernameOrNum);
+		//Set ClientID as int
+		void setClientID(int newClientID);
 
-		//set PasswordHash from C string
+		//Set Username or Usernumber from C string
+		void setUsername(char newUsername[VARCHARLEN]);
+		//Set Username or Usernumber from Cpp string
+		void setUsername(std::string newUsernameOrNum);
+
+		//Set Usernumber as int
+		void setUsernumber(int newUsernumber);
+
+		//Set PasswordHash from C string
 		void setPasswordHash(char newPasswordHash[VARCHARLEN]);
-		//set PasswordHash from Cpp string
+		//Set PasswordHash from Cpp string
 		void setPasswordHash(std::string newPasswordHash);
 
 		//Inherited functions
 
-		//display info of credentials as a string for terminal debugging
+		//Display info of credentials as a string for terminal debugging
 		std::string displayInfo();
 
-		//get log data format for credentials to be used in DBLogger
+		//Get log data format for credentials to be used in DBLogger
 		//std::string getLogData();
 
 		//Add Credential info query for database
@@ -245,68 +263,74 @@ namespace EarnDB {
 
 		//Delete Credential info query for credential of the same credential ID
 		std::string deleteInfoInDB();
+
+		//Check if Credential id is in database
+		std::string checkObjectExists();
 	};
-	//enummeration for Account types
+
+	//Enummeration for Account types
 	enum DBAType { DBANULL, CHEQUINGS, SAVINGS };
 
+	//Structure for DBAccount object's info, to ease serialization
 	struct DBAccountInfo {
 		int clientID;
 		DBAType accountType;
 		double accountBalance;
 	};
 
+	//DBAccount object class
 	class DBAccount :public DBObject {
 		DBAccountInfo accountInfo;
 
 	public:
 		//Constructors
 
-		//default constructor
+		//Default constructor
 		DBAccount();
 
-		//struct constructor, for use after deserializing
+		//Struct constructor, for use after deserializing
 		DBAccount(const DBAccountInfo copyInfo);
 
-		//copy constructor
+		//Copy constructor
 		DBAccount(const DBAccount& copyAccount);
 
-		//parametrized constructor
+		//Parametrized constructor
 		DBAccount(int inputObjectID, int inputClientID, DBAType inputAccountType, double inputBalance);
 
 		//Get functions
 
-		//get account type...
+		//Get account type...
 		DBAType getAccountType();
 
-		//get client ID for connected client
+		//Get client ID for connected client
 		int getAccountClientID();
 
-		//get balance for this account
+		//Get balance for this account
 		double getAccountBalance();
 
-		//get accountInfo struct, used in serializing...
+		//Get accountInfo struct, used in serializing...
 		DBAccountInfo getAccountInfo();
 
 		//Set functions
 
-		//set account type, in case user changes account to a different one...
+		//Set account type, in case user changes account to a different one...
 		void setAccountType(DBAType newType);
 
-		//set client ID, in case account is transferred for some reason?
+		//Set client ID, in case account is transferred for some reason?
 		void setAccountClientID(int newClientID);
 
-		//set account balance, due to a transaction etc...
+		//Set account balance, due to a transaction etc...
 		void setBalance(double newBalance);
 
-		//set account info, used in case everything is changed at once
+		//Set account info, used in case everything is changed at once
 		void setAccountInfo(DBAccountInfo newAccountInfo);
 
 		//Inherited functions
 
-		//display info of account as a string for terminal debugging
+		//Display info of account as a string for terminal debugging
 		std::string displayInfo();
 
-		//get log data format for account to be used in DBLogger
+		//Get log data format for account to be used in DBLogger
 		//std::string getLogData();
 
 		//Add Account info query for database
@@ -317,11 +341,15 @@ namespace EarnDB {
 
 		//Delete Account info query for account of the same account ID
 		std::string deleteInfoInDB();
+
+		//Check if Account id is in database
+		std::string checkObjectExists();
 	};
 
-	//enummeration for transaction types
+	//Enummeration for transaction types
 	enum DBTType { DBTNULL, ETRANSFER, CHEQUE, WITHDRAW, ACCOUNTTRANSFER };
 
+	//Structure for DBTransaction object's info, to ease serialization
 	struct DBTransactionInfo {
 		int accountID;
 		DBTType transactionType;
@@ -331,42 +359,45 @@ namespace EarnDB {
 		int secondaryAccount;
 	};
 
+	//DBTransaction object class
 	class DBTransaction :public DBObject {
 		DBTransactionInfo transactionInfo;
 
 	public:
 		//Constructors
 
-		//default constructor
+		//Default constructor
 		DBTransaction();
 
-		//struct constructor, for use after deserializing
+		//Struct constructor, for use after deserializing
 		DBTransaction(const DBTransactionInfo copyInfo);
 
-		//copy constructor
+		//Copy constructor
 		DBTransaction(DBTransaction& copyTransaction);
 
-		//parametrized constructor
+		//Parametrized constructor
 		DBTransaction(int inputObjectID, int inputAccountID, DBTType inputTransactionType, char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount);
 
 		//Get functions
 
-		//get account ID for connected account
+		//Get account ID for connected account
 		int getTransactionAccountID();
 
-		//get transaction type...
+		//Get transaction type...
 		DBTType getTransactionType();
 
-		//get time of transaction
-		char* getTransactionTime();
+		//Get time of transaction as C String
+		char* getTransactionTime(int& lenOfArray);
+		//Get time of transaction as Cpp String
+		std::string getTransactionTime();
 
-		//get balance before transaction
+		//Get balance before transaction
 		double getTransactionPreviousBal();
 
-		//get balance after transaction
+		//Get balance after transaction
 		double getTransactionNewBal();
 
-		//get other account connected (relationship is implied through transaction type...)
+		//Get other account connected (relationship is implied through transaction type...)
 		int getTransactionSecondaryAcc();
 
 		//Get transaction info as a struct
@@ -374,30 +405,30 @@ namespace EarnDB {
 
 		//Set functions
 
-		//set account ID for connected account
+		//Set account ID for connected account
 		void setTransactionAccountID(int newAccountID);
 
-		//set transaction type...
+		//Set transaction type...
 		void setTransactionType(DBTType newTransactionType);
 
-		//set time of transaction
+		//Set time of transaction
 		void setTransactionTime(char* newTransactionTime);
 
-		//set balance before transaction
+		//Set balance before transaction
 		void setTransactionPreviousBal(double newTransactionPB);
 
-		//set balance after transaction
+		//Set balance after transaction
 		void setTransactionNewBal(double newTransactionNB);
 
-		//set other account connected (relationship is implied through transaction type...)
+		//Set other account connected (relationship is implied through transaction type...)
 		void setTransactionSecondaryAcc(int newTransactionSA);
 
 		//Inherited functions
 
-		//display info of transaction as a string for terminal debugging
+		//Display info of transaction as a string for terminal debugging
 		std::string displayInfo();
 
-		//get log data format for transaction to be used in DBLogger
+		//Get log data format for transaction to be used in DBLogger
 		//std::string getLogData();
 
 		//Add Transaction info query for database
@@ -408,5 +439,8 @@ namespace EarnDB {
 
 		//Delete Transaction info query for transaction of the same transaction ID
 		std::string deleteInfoInDB();
+
+		//Check if Transaction id is in database
+		std::string checkObjectExists();
 	};
 }

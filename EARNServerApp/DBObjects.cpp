@@ -1,8 +1,10 @@
+#include "DBAccess.h"
+#include "DBObjects.h"
+
 #include <string>
 #include <vector>
+#include <sstream>
 
-#include "DBObjects.h"
-#include "DBAccess.h"
 //DBObject class source code, splitting up namespace to make it easier to read & collapse code areas...
 namespace EarnDB {
 	//Constructors
@@ -219,25 +221,106 @@ namespace EarnDB {
 
 	//Inherited functions
 
-	//std::string DBClient::displayInfo() {
+	std::string DBClient::displayInfo() {
 
-	//}
+		//Set formatted output for output string so that it has each var / line...
+		std::stringstream outputStream;
+		outputStream << "Client ID: " << this->getObjectID() << '\n';
+		outputStream << "First Name: " << this->getFirstName() << '\n';
+		outputStream << "Last Name: " << this->getLastName() << '\n';
+		outputStream << "Email: " << this->getEmail() << '\n';
+		outputStream << "Phone Number: " << this->getPhoneNum() << '\n';
+		outputStream << "Street: " << this->getStreet() << '\n';
+		outputStream << "City: " << this->getCity() << '\n';
+		outputStream << "Province: " << this->getProvince() << '\n';
+		outputStream << "Zip" << this->getZip() << '\n';
+
+		//lets me allocate it simpler (IMO)
+		return outputStream.str();
+	}
 
 	//std::string DBClient::getLogData() {
 
 	//}
 
-	//std::string DBClient::addInfoToDB() {
+	std::string DBClient::addInfoToDB() {
+		/*
+			IN input_firstName VARCHAR(45),
+			IN input_lastName VARCHAR(45),
+			IN input_email VARCHAR(45),
+			IN input_phone_number VARCHAR(45),
+			IN input_street VARCHAR(45),
+			IN input_city VARCHAR(45),
+			IN input_zipCode VARCHAR(6),
+			OUT new_client_id INT)
+		*/
 
-	//}
+		//setup output call based on addClient procedure in mySql DB (inputs above)
+		
+		std::stringstream outputQuery;
+		outputQuery << "CALL addClient(" << this->getFirstName();
+		outputQuery << ", " << this->getLastName();
+		outputQuery << ", " << this->getEmail();
+		outputQuery << ", " << this->getPhoneNum();
+		outputQuery << ", " << this->getStreet();
+		outputQuery << ", " << this->getCity();
+		outputQuery << ", " << this->getZip();
+		outputQuery << ", newID);";
 
-	//std::string DBClient::modifyInfoInDB() {
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
 
-	//}
+	std::string DBClient::modifyInfoInDB() {
+		/*
+			IN input_client_id INT,
+			IN input_firstName VARCHAR(45),
+			IN input_lastName VARCHAR(45),
+			IN input_email VARCHAR(45),
+			IN input_number VARCHAR(45),
+			IN input_street VARCHAR(45),
+			IN input_city VARCHAR(45),
+			IN input_zipCode VARCHAR(6)
+		*/
 
-	//std::string DBClient::deleteInfoInDB() {
+		//setup output call based on updateClient procedure in mySql DB (inputs above)
 
-	//}
+		std::stringstream outputQuery;
+		outputQuery << "CALL updateClient(" << this->getObjectID();
+		outputQuery << ", " << this->getFirstName();
+		outputQuery << ", " << this->getLastName();
+		outputQuery << ", " << this->getEmail();
+		outputQuery << ", " << this->getPhoneNum();
+		outputQuery << ", " << this->getStreet();
+		outputQuery << ", " << this->getCity();
+		outputQuery << ", " << this->getZip();
+		outputQuery << ");";
+
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
+
+	std::string DBClient::deleteInfoInDB() {
+		/*
+			IN input_client_id INT
+		*/
+
+		//setup output call based on deleteClient procedure in mySql DB (inputs above)
+		std::stringstream outputQuery;
+		outputQuery << "CALL deleteClient(" << this->getObjectID() << ");";
+		return outputQuery.str();
+	}
+
+	std::string DBClient::checkObjectExists() {
+		/*
+			IN check_client_id INT,
+			OUT check_result BOOL)
+		*/
+		//setup output call based on checkClientExists procedure in mySql DB (inputs above)
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkClientExists(" << this->getObjectID() << ", checkResult);";
+		return outputQuery.str();
+	}
 }
 
 //DBCredential class source code
@@ -245,36 +328,45 @@ namespace EarnDB {
 	//Constructors
 
 	DBCredentials::DBCredentials() :DBObject(CREDENTIALS, 0) {
-		this->setUsernameOrNum(NULL);
+		this->setClientID(NULL);
+		this->setUsername(NULL);
+		this->setUsernumber(NULL);
 		this->setPasswordHash(NULL);
 	}
 
-	//struct constructor, for use after deserializing
-	DBCredentials::DBCredentials(const DBCredentialInfo copyInfo) :DBObject(CREDENTIALS, 0) {
-		this->setUsernameOrNum(copyInfo.usernameORNum);
+	DBCredentials::DBCredentials(const DBCredentialInfo copyInfo) : DBObject(CREDENTIALS, 0) {
+		this->setClientID(copyInfo.clientID);
+		this->setUsername(copyInfo.username);
+		this->setUsernumber(copyInfo.usernumber);
 		this->setPasswordHash(copyInfo.userPasswordHash);
 	}
 
-	//copy constructor
-	DBCredentials::DBCredentials(const DBCredentials& copyCredentials) :DBObject(copyCredentials) {
-		this->setUsernameOrNum(copyCredentials.credentialInfo.usernameORNum);
+	DBCredentials::DBCredentials(const DBCredentials& copyCredentials) : DBObject(copyCredentials) {
+		this->setClientID(copyCredentials.credentialInfo.clientID);
+		this->setUsername(copyCredentials.credentialInfo.username);
+		this->setUsernumber(copyCredentials.credentialInfo.usernumber);
 		this->setPasswordHash(copyCredentials.credentialInfo.userPasswordHash);
 	}
 
-	//parametrized constructor
-	DBCredentials::DBCredentials(int inputObjectID, char inputUserNameOrNum[VARCHARLEN], char inputPasswordHash[VARCHARLEN]) :DBObject(CREDENTIALS, inputObjectID) {
-		this->setUsernameOrNum(inputUserNameOrNum);
+	DBCredentials::DBCredentials(int inputObjectID, int inputClientID, char inputUserName [VARCHARLEN], int inputUsernumber, char inputPasswordHash[VARCHARLEN]) : DBObject(CREDENTIALS, inputObjectID) {
+		this->setClientID(inputClientID);
+		this->setUsername(inputUserName);
+		this->setUsernumber(inputUsernumber);
 		this->setPasswordHash(inputPasswordHash);
 	}
 
 	//Get functions
 
-	const char* DBCredentials::getUsernameOrNum(int& lenOfArray) {
-		lenOfArray = VARCHARLEN;
-		return (const char*)(this->credentialInfo.usernameORNum);
+	int DBCredentials::getClientID() {
+		return this->credentialInfo.clientID;
 	}
-	std::string DBCredentials::getUsernameOrNum() {
-		std::string outputUsernameOrNum(this->credentialInfo.usernameORNum);
+
+	const char* DBCredentials::getUsername(int& lenOfArray) {
+		lenOfArray = VARCHARLEN;
+		return (const char*)(this->credentialInfo.username);
+	}
+	std::string DBCredentials::getUsername() {
+		std::string outputUsernameOrNum(this->credentialInfo.username);
 		return outputUsernameOrNum;
 	}
 
@@ -293,11 +385,19 @@ namespace EarnDB {
 
 	//Set functions
 
-	void DBCredentials::setUsernameOrNum(char newUsernameOrNum[VARCHARLEN]) {
-		memcpy(this->credentialInfo.usernameORNum, newUsernameOrNum, VARCHARLEN);
+	void DBCredentials::setClientID(int newClientID) {
+		this->credentialInfo.clientID = newClientID;
 	}
-	void DBCredentials::setUsernameOrNum(std::string newUsernameOrNum) {
-		memcpy(this->credentialInfo.usernameORNum, newUsernameOrNum.c_str(), VARCHARLEN);
+
+	void DBCredentials::setUsername(char newUsername [VARCHARLEN]) {
+		memcpy(this->credentialInfo.username, newUsername, VARCHARLEN);
+	}
+	void DBCredentials::setUsername(std::string newUsername) {
+		memcpy(this->credentialInfo.username, newUsername.c_str(), VARCHARLEN);
+	}
+
+	void DBCredentials::setUsernumber(int newUsernumber) {
+		this->credentialInfo.usernumber = newUsernumber;
 	}
 
 	void DBCredentials::setPasswordHash(char newPasswordHash[VARCHARLEN]) {
@@ -309,25 +409,92 @@ namespace EarnDB {
 
 	//Inherited functions
 
-	//std::string DBCredentials::displayInfo() {
+	std::string DBCredentials::displayInfo() {
+		std::stringstream outputStream;
+		outputStream << "Credential ID: " << this->getObjectID() << '\n';
+		outputStream << "Client ID: " << this->getClientID() << '\n';
+		outputStream << "Username: " << this->getUsername() << '\n';
+		outputStream << "Usernumber: " << this->getUsernumber() << '\n';
+		outputStream << "Password Hash: " << this->getPasswordHash() << '\n';
 
-	//}
+		return outputStream.str();
+	}
 
 	//std::string DBCredentials::getLogData() {
 
 	//}
 
-	//std::string DBCredentials::addInfoToDB() {
+	std::string DBCredentials::addInfoToDB() {
+		/*
+			IN input_client_id INT,
+			IN input_username VARCHAR(45),
+			IN input_usernumber INT,
+			IN input_password_hash VARCHAR(45),
+			OUT new_credential_id INT
+		*/
 
-	//}
+		//setup output call based on addCredential procedure in mySql DB (inputs above)
 
-	//std::string DBCredentials::modifyInfoInDB() {
+		std::stringstream outputQuery;
+		outputQuery << "CALL addCredential(" << this->getClientID();
+		outputQuery << ", " << this->getUsername();
+		outputQuery << ", " << this->getUsernumber();
+		outputQuery << ", " << this->getPasswordHash();
+		outputQuery << ", newID);";
 
-	//}
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
 
-	//std::string DBCredentials::deleteInfoInDB() {
+	std::string DBCredentials::modifyInfoInDB() {
+		/*
+			IN input_client_id INT,
+			IN input_username VARCHAR(45),
+			IN input_usernumber INT,
+			IN input_password_hash VARCHAR(45)
+		*/
 
-	//}
+		//setup output call based on updateCredential procedure in mySql DB (inputs above)
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL updateCredential(" << this->getClientID();
+		outputQuery << ", " << this->getUsername();
+		outputQuery << ", " << this->getUsernumber();
+		outputQuery << ", " << this->getPasswordHash();
+		outputQuery << ");";
+
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
+
+	std::string DBCredentials::deleteInfoInDB() {
+		/*
+			IN input_credential_id INT
+		*/
+
+		//setup output call based on deleteCredential procedure in mySql DB (inputs above)
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL deleteCredential(" << this->getClientID() << ");";
+
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
+
+	std::string DBCredentials::checkObjectExists() {
+		/*
+			IN check_credential_id INT,
+		    OUT check_result BOOL
+		*/
+
+		//setup output call based on checkCredentialExists procedure in mySql DB (inputs above)
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkCredentialExists(" << this->getClientID() << ", checkResult);";
+
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
 }
 
 //DBAccount class source code
@@ -396,32 +563,89 @@ namespace EarnDB {
 
 	//Inherited functions
 
-	//std::string DBAccount::displayInfo() {
+	std::string DBAccount::displayInfo() {
 
-	//}
+		//Set formatted output for output string so that it has each var / line...
+		std::stringstream outputStream;
+		outputStream << "Account ID: " << this->getObjectID() << '\n';
+		outputStream << "Client ID: " << this->getAccountClientID() << '\n';
+		outputStream << "Account Type: " << typeid(this->getAccountType()).name() << '\n';
+		outputStream << "Balance: " << this->getAccountBalance() << '\n';
+
+		//lets me allocate it simpler (IMO)
+		return outputStream.str();
+	}
 
 	//std::string DBAccount::getLogData() {
 
 	//}
 
-	//std::string DBAccount::addInfoToDB() {
+	std::string DBAccount::addInfoToDB() {
+		/*
+			IN input_client_id INT,
+			IN input_account_type INT,
+			OUT new_account_id INT
+		*/
 
-	//}
+		//setup output call based on addAccount procedure in mySql DB (inputs above)
 
-	//std::string DBAccount::modifyInfoInDB() {
+		std::stringstream outputQuery;
+		outputQuery << "CALL addAccount(" << this->getAccountClientID();
+		outputQuery << ", " << this->getAccountType();
+		outputQuery << ", newID);";
 
-	//}
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
 
-	//std::string DBAccount::deleteInfoInDB() {
+	std::string DBAccount::modifyInfoInDB() {
+		/*
+			IN input_account_id INT,
+			IN input_client_id INT,
+			IN input_account_type INT,
+			IN input_balance DOUBLE
+		*/
 
-	//}
+		//setup output call based on updateAccount procedure in mySql DB (inputs above)
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL updateAccount(" << this->getObjectID();
+		outputQuery << ", " << this->getAccountClientID();
+		outputQuery << ", " << this->getAccountType();
+		outputQuery << ", " << this->getAccountBalance();
+		outputQuery << ");";
+
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
+
+	std::string DBAccount::deleteInfoInDB() {
+		/*
+			IN input_account_id INT
+		*/
+
+		//setup output call based on deleteAccount procedure in mySql DB (inputs above)
+		std::stringstream outputQuery;
+		outputQuery << "CALL deleteAccount(" << this->getObjectID() << ");";
+		return outputQuery.str();
+	}
+
+	std::string DBAccount::checkObjectExists() {
+		/*
+			IN check_account_id INT,
+			OUT check_result BOOL
+		*/
+		//setup output call based on checkAccountExists procedure in mySql DB (inputs above)
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkAccountExists(" << this->getObjectID() << ", checkResult);";
+		return outputQuery.str();
+	}
 }
 
 //DBTransaction class source code
 namespace EarnDB {
 	//Constructors
 
-	//default constructor
 	DBTransaction::DBTransaction() :DBObject(TRANSACTION, 0) {
 		this->setTransactionAccountID(0);
 		this->setTransactionType(DBTNULL);
@@ -431,7 +655,6 @@ namespace EarnDB {
 		this->setTransactionSecondaryAcc(0);
 	}
 
-	//struct constructor, for use after deserializing
 	DBTransaction::DBTransaction(const DBTransactionInfo copyInfo) :DBObject(TRANSACTION, 0) {
 		this->setTransactionAccountID(copyInfo.accountID);
 		this->setTransactionType(copyInfo.transactionType);
@@ -441,7 +664,6 @@ namespace EarnDB {
 		this->setTransactionSecondaryAcc(copyInfo.secondaryAccount);
 	}
 
-	//copy constructor
 	DBTransaction::DBTransaction(DBTransaction& copyTransaction) :DBObject(copyTransaction) {
 		this->setTransactionAccountID(copyTransaction.transactionInfo.accountID);
 		this->setTransactionType(copyTransaction.transactionInfo.transactionType);
@@ -451,7 +673,6 @@ namespace EarnDB {
 		this->setTransactionSecondaryAcc(copyTransaction.transactionInfo.secondaryAccount);
 	}
 
-	//parametrized constructor
 	DBTransaction::DBTransaction(int inputObjectID, int inputAccountID, DBTType inputTransactionType, char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount) :DBObject(TRANSACTION, inputObjectID) {
 		this->setTransactionAccountID(inputAccountID);
 		this->setTransactionType(inputTransactionType);
@@ -471,8 +692,13 @@ namespace EarnDB {
 		return this->transactionInfo.transactionType;
 	}
 
-	char* DBTransaction::getTransactionTime() {
+	char* DBTransaction::getTransactionTime(int& lenOfArray) {
+		lenOfArray = strlen(this->transactionInfo.transactionTime);
 		return this->transactionInfo.transactionTime;
+	}
+	std::string DBTransaction::getTransactionTime() {
+		std::string outputTime(this->transactionInfo.transactionTime);
+		return outputTime;
 	}
 
 	double DBTransaction::getTransactionPreviousBal() {
@@ -519,23 +745,94 @@ namespace EarnDB {
 
 	//Inherited functions
 
-	//std::string DBTransaction::displayInfo() {
+	std::string DBTransaction::displayInfo() {
 
-	//}
+		//Set formatted output for output string so that it has each var / line...
+		std::stringstream outputStream;
+		outputStream << "Transaction ID: " << this->getObjectID() << '\n';
+		outputStream << "Account ID: " << this->getTransactionAccountID() << '\n';
+		outputStream << "Transactin Type: " << typeid(this->getTransactionType()).name() << '\n';
+		outputStream << "Transaction Time: " << this->getTransactionTime() << '\n';
+		outputStream << "Previous Balance: " << this->getTransactionPreviousBal() << '\n';
+		outputStream << "New Balance: " << this->getTransactionNewBal() << '\n';
+		outputStream << "Secondary Account: " << this->getTransactionSecondaryAcc() << '\n';
+
+		//lets me allocate it simpler (IMO)
+		return outputStream.str();
+	}
 
 	//std::string DBTransaction::getLogData() {
 
 	//}
 
-	//std::string DBTransaction::addInfoToDB() {
+	std::string DBTransaction::addInfoToDB() {
+		/*
+			IN input_account_id INT,
+			IN input_type_id INT,
+			IN input_previous_balance DOUBLE,
+			IN input_new_balance DOUBLE,
+			IN input_secondary_id INT,
+			OUT new_transaction_id INT
+		*/
 
-	//}
+		//setup output call based on addTransaction procedure in mySql DB (inputs above)
 
-	//std::string DBTransaction::modifyInfoInDB() {
+		std::stringstream outputQuery;
+		outputQuery << "CALL addTransaction(" << this->getTransactionAccountID();
+		outputQuery << ", " << this->getTransactionType();
+		outputQuery << ", " << this->getTransactionPreviousBal();
+		outputQuery << ", " << this->getTransactionNewBal();
+		outputQuery << ", " << this->getTransactionSecondaryAcc();
+		outputQuery << ", newID);";
 
-	//}
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
 
-	//std::string DBTransaction::deleteInfoInDB() {
+	std::string DBTransaction::modifyInfoInDB() {
+		/*
+			IN input_transaction_id INT,
+			IN input_account_id INT,
+			IN input_type_id INT,
+			IN input_previous_balance DOUBLE,
+			IN input_new_balance DOUBLE,
+			IN input_secondary_id INT
+		*/
 
-	//}
+		//setup output call based on updateTransaction procedure in mySql DB (inputs above)
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL updateTransaction(" << this->getObjectID();
+		outputQuery << ", " << this->getTransactionAccountID();
+		outputQuery << ", " << this->getTransactionType();
+		outputQuery << ", " << this->getTransactionPreviousBal();
+		outputQuery << ", " << this->getTransactionNewBal();
+		outputQuery << ", " << this->getTransactionSecondaryAcc();
+		outputQuery << ");";
+
+		//lets me allocate it simpler (IMO)
+		return outputQuery.str();
+	}
+
+	std::string DBTransaction::deleteInfoInDB() {
+		/*
+			IN input_transaction_id INT
+		*/
+
+		//setup output call based on deleteAccount procedure in mySql DB (inputs above)
+		std::stringstream outputQuery;
+		outputQuery << "CALL deleteTransaction(" << this->getObjectID() << ");";
+		return outputQuery.str();
+	}
+
+	std::string DBTransaction::checkObjectExists() {
+		/*
+			IN check_transaction_id INT,
+			OUT check_result BOOL
+		*/
+		//setup output call based on checkTransactionExists procedure in mySql DB (inputs above)
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkTransactionExists(" << this->getObjectID() << ", checkResult);";
+		return outputQuery.str();
+	}
 }
