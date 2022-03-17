@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`clients` (
   `client_province` VARCHAR(45) NOT NULL,
   `client_zipCode` VARCHAR(6) NOT NULL,
   PRIMARY KEY (`client_id`))
-ENGINE = InnoDB
+ENGINE = InnoDB 
 COMMENT = 'stores clients all of which have credentials for login.';
 
 
@@ -43,15 +43,15 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`account_type` (
     `account_name` VARCHAR(45) NULL,
     `account_interest` DOUBLE NULL,
     PRIMARY KEY (`account_type_id`)
-)  ENGINE=INNODB COMMENT='stores different types for accounts (chequeing, savings, etc).';
+)  ENGINE=INNODB 
+COMMENT='stores different types for accounts (chequeing, savings, etc).';
 
 INSERT INTO `EARNBankingDB`.`account_type` (
-	`account_type_id`,
-    `account_name`,
+	`account_name`,
     `account_interest`) 
     VALUES 
-	(1,'Chequings',0.03),
-    (2,'Savings',0.06);
+	('Chequings',0.03),
+    ('Savings',0.06);
 
 -- -----------------------------------------------------
 -- Table `EARNBankingDB`.`accounts`
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`accounts` (
     REFERENCES `EARNBankingDB`.`account_type` (`account_type_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
+ENGINE = InnoDB 
 COMMENT = 'stores accounts, all of which are tied to an associated client (user).';
 
 
@@ -86,17 +86,16 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`invoice_type` (
   `invoice_type_id` INT NOT NULL AUTO_INCREMENT,
   `invoice_name` VARCHAR(45) NULL,
   PRIMARY KEY (`invoice_type_id`))
-ENGINE = InnoDB
+ENGINE = InnoDB 
 COMMENT = 'stores different types for invoices / transactions (deposit, withdraw, transfer, etc).';
 
 INSERT INTO `EARNBankingDB`.`invoice_type` (
-	`invoice_type_id`,
-    `invoice_name`) 
+	`invoice_name`) 
     VALUES 
-	(1,'E-Transfer'),
-    (2,'Cheque'),
-    (3,'Withdraw'),
-    (4,'Account-Transfer');
+	('E-Transfer'),
+    ('Cheque'),
+    ('Withdraw'),
+    ('Account-Transfer');
 -- -----------------------------------------------------
 -- Table `EARNBankingDB`.`invoices`
 -- -----------------------------------------------------
@@ -120,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`invoices` (
     REFERENCES `EARNBankingDB`.`invoice_type` (`invoice_type_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
+ENGINE = InnoDB 
 COMMENT = 'stores invoices / transactions all of which are tied to an associated account';
 
 
@@ -140,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`credentials` (
     REFERENCES `EARNBankingDB`.`clients` (`client_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
+ENGINE = InnoDB 
 COMMENT = 'stores login info and is used to get associated client for validation.';
 
 USE `EARNBankingDB` ;
