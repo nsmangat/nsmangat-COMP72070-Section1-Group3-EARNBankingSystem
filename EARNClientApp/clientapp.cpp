@@ -1,6 +1,7 @@
 #include "clientapp.h"
 #include "ui_clientapp.h"
 #include <QMessageBox>
+#include <Q
 
 ClientApp::ClientApp(QWidget *parent)
     : QWidget(parent)
@@ -108,7 +109,10 @@ void ClientApp::on_ViewAcc_pushButton_clicked()
     ui->stackedWidget->setCurrentIndex(8);
 }
 
-
+void ClientApp::on_pushButton_4_clicked()
+{
+    ///
+}
 //Add Account Page
 void ClientApp::on_BackToMenu_pushButton_4_clicked()
 {
@@ -121,4 +125,54 @@ void ClientApp::on_Logout_pushButton_5_clicked()
     ui->stackedWidget->setCurrentIndex(0);
 
 }
+
+
+void ClientApp::on_ImageDisplayPushButton_clicked()
+{
+    QPixmap pic("C:/Users/letra/Downloads/TransactionActivities.png");
+    ui->labelImage->setPixmap(pic);
+}
+
+
+void ClientApp::on_BackToMenu_pushButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+}
+
+void ClientApp::on_Logout_pushButton_2_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+
+
+void ClientApp::on_ToOtherPeople_pushButton_clicked()
+{
+    ui->ToMyAcc_pushButton->setStyleSheet(QString("#%1 { background-color: grey; }"));
+    QPushButton* target = qobject_cast<QPushButton*>(sender());
+    
+        if (target != nullptr)
+        {
+            target->setStyleSheet(QString("#%1 { background-color: green; }").arg(target->objectName()));
+            
+        }
+}
+
+
+void ClientApp::on_ToMyAcc_pushButton_pressed()
+{
+    ui->ToOtherPeople_pushButton->setStyleSheet(QString("#%1 { background-color: grey; }"));
+    QPushButton* target = qobject_cast<QPushButton*>(sender());
+        if (target != nullptr)
+        {
+            target->setStyleSheet(QString("#%1 { background-color: red; }").arg(target->objectName()));
+        }
+}
+
+void ClientApp::setupUI()
+{
+   int index = ui->To_comboBox->findText("Saving Account", QtCore.Qt);
+}
+
 

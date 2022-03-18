@@ -63,6 +63,8 @@ public:
     QLabel *ViewStatement_label;
     QPushButton *Logout_pushButton_2;
     QPushButton *BackToMenu_pushButton;
+    QLabel *labelImage;
+    QPushButton *ImageDisplayPushButton;
     QWidget *page6_Transfer;
     QLabel *Transfer_label;
     QWidget *horizontalLayoutWidget;
@@ -115,6 +117,7 @@ public:
         stackedWidget = new QStackedWidget(ClientApp);
         stackedWidget->setObjectName(QString::fromUtf8("stackedWidget"));
         stackedWidget->setStyleSheet(QString::fromUtf8("color:white;"));
+        stackedWidget->setMidLineWidth(-5);
         page2_Login = new QWidget();
         page2_Login->setObjectName(QString::fromUtf8("page2_Login"));
         page2_Login->setStyleSheet(QString::fromUtf8("\n"
@@ -268,6 +271,15 @@ public:
         BackToMenu_pushButton = new QPushButton(page5_Statments);
         BackToMenu_pushButton->setObjectName(QString::fromUtf8("BackToMenu_pushButton"));
         BackToMenu_pushButton->setGeometry(QRect(20, 30, 111, 29));
+        labelImage = new QLabel(page5_Statments);
+        labelImage->setObjectName(QString::fromUtf8("labelImage"));
+        labelImage->setGeometry(QRect(140, 170, 491, 341));
+        labelImage->setFrameShape(QFrame::WinPanel);
+        labelImage->setFrameShadow(QFrame::Sunken);
+        labelImage->setScaledContents(true);
+        ImageDisplayPushButton = new QPushButton(page5_Statments);
+        ImageDisplayPushButton->setObjectName(QString::fromUtf8("ImageDisplayPushButton"));
+        ImageDisplayPushButton->setGeometry(QRect(310, 118, 141, 31));
         stackedWidget->addWidget(page5_Statments);
         page6_Transfer = new QWidget();
         page6_Transfer->setObjectName(QString::fromUtf8("page6_Transfer"));
@@ -437,7 +449,7 @@ public:
         BackToMenu_pushButton_5->setGeometry(QRect(30, 40, 111, 29));
         stackedWidget->addWidget(page9_MyAcc);
 
-        gridLayout->addWidget(stackedWidget, 0, 0, 1, 1);
+        gridLayout->addWidget(stackedWidget, 0, 1, 1, 1);
 
 
         retranslateUi(ClientApp);
@@ -473,6 +485,8 @@ public:
         ViewStatement_label->setText(QCoreApplication::translate("ClientApp", "Account's Activities", nullptr));
         Logout_pushButton_2->setText(QCoreApplication::translate("ClientApp", "Logout", nullptr));
         BackToMenu_pushButton->setText(QCoreApplication::translate("ClientApp", "Back to Menu", nullptr));
+        labelImage->setText(QString());
+        ImageDisplayPushButton->setText(QCoreApplication::translate("ClientApp", "Display Statments", nullptr));
         Transfer_label->setText(QCoreApplication::translate("ClientApp", "Transfer", nullptr));
         ToMyAcc_pushButton->setText(QCoreApplication::translate("ClientApp", "To My Account", nullptr));
         ToOtherPeople_pushButton->setText(QCoreApplication::translate("ClientApp", "To Other People", nullptr));

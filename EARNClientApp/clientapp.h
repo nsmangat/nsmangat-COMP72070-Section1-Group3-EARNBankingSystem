@@ -2,6 +2,9 @@
 #define CLIENTAPP_H
 
 #include <QWidget>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QPixmap>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClientApp; }
@@ -49,7 +52,18 @@ private slots:
 
     void on_Logout_pushButton_5_clicked();
 
+    void on_ImageDisplayPushButton_clicked();
+
+    void on_BackToMenu_pushButton_clicked();
+
+    void on_Logout_pushButton_2_clicked();
+
+    void on_ToOtherPeople_pushButton_clicked();
+
+    void on_ToMyAcc_pushButton_pressed();
+
 private:
     Ui::ClientApp *ui;
+
 };
 #endif // CLIENTAPP_H

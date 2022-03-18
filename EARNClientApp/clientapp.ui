@@ -19,6 +19,9 @@
      <property name="styleSheet">
       <string notr="true">color:white;</string>
      </property>
+     <property name="midLineWidth">
+      <number>-5</number>
+     </property>
      <widget class="QWidget" name="page2_Login">
       <property name="styleSheet">
        <string notr="true">
@@ -478,6 +481,41 @@ background-color:rgb(47, 47, 47)
        </property>
        <property name="text">
         <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelImage">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>170</y>
+         <width>491</width>
+         <height>341</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ImageDisplayPushButton">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>118</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Display Statments</string>
        </property>
       </widget>
      </widget>
