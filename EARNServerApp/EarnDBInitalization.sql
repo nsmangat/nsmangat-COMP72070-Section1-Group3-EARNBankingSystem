@@ -46,12 +46,13 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`account_type` (
 )  ENGINE=INNODB 
 COMMENT='stores different types for accounts (chequeing, savings, etc).';
 
-INSERT INTO `EARNBankingDB`.`account_type` (
+INSERT IGNORE INTO `EARNBankingDB`.`account_type` (
+	`account_type_id`,
 	`account_name`,
     `account_interest`) 
     VALUES 
-	('Chequings',0.03),
-    ('Savings',0.06);
+	(1, 'Chequings', 0.03),
+    (2, 'Savings', 0.06);
 
 -- -----------------------------------------------------
 -- Table `EARNBankingDB`.`accounts`
@@ -89,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`invoice_type` (
 ENGINE = InnoDB 
 COMMENT = 'stores different types for invoices / transactions (deposit, withdraw, transfer, etc).';
 
-INSERT INTO `EARNBankingDB`.`invoice_type` (
+INSERT IGNORE INTO `EARNBankingDB`.`invoice_type` (
 	`invoice_name`) 
     VALUES 
 	('E-Transfer'),
@@ -147,6 +148,7 @@ USE `EARNBankingDB` ;
 -- -----------------------------------------------------
 -- procedure getClientInfo
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `getClientInfo`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -161,6 +163,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getAccountInfo
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `getAccountInfo`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -175,6 +178,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getTransactionInfo
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `getTransactionInfo`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -189,6 +193,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getAllClientsInfo
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `getAllClientsInfo`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -202,6 +207,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getAccountsForClient
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `getAccountsForClient`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -216,6 +222,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getTransactionsForAccount
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `getTransactionsForAccount`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -230,6 +237,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkLoginNamePass
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `checkLoginNamePass`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -245,6 +253,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkLoginNumberPass
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `checkLoginNumberPass`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -260,6 +269,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addClient
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `addClient`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -285,6 +295,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addAccount
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `addAccount`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -312,6 +323,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addTransaction
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `addTransaction`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -339,6 +351,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteTransaction
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `deleteTransaction`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -353,6 +366,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteAccount
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `deleteAccount`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -369,6 +383,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteClient
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `deleteClient`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -390,6 +405,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateTransaction
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `updateTransaction`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -414,6 +430,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateClient
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `updateClient`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -443,6 +460,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateAccount
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `updateAccount`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -464,6 +482,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addCredential
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `addCredential`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -490,6 +509,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateCredential
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `updateCredential`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -511,6 +531,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkClientExists
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `checkClientExists`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -530,6 +551,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkAccountExists
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `checkAccountExists`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -549,6 +571,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkCredentialExists
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `checkCredentialExists`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -568,6 +591,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkTransactionExists
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `checkTransactionExists`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$
@@ -587,6 +611,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteCredential
 -- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `deleteCredential`;
 
 DELIMITER $$
 USE `EARNBankingDB`$$

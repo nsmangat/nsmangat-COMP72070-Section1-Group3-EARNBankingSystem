@@ -98,7 +98,7 @@ namespace EarnDB {
 		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<DBTransaction>& accountTransactionsVec);
 
 		//Check ID function(s) for given ID num, and specified ID type
-		bool checkIDExists(int checkID, DBOType idType);
+		bool checkIDExists(int checkID, EarnStructs::ObjectType idType);
 	};
 
 	//DB Validation class (used for login / finding client for associated username/Num & password

@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="EARNNetworkAPI.h" />
+    <ClInclude Include="EARNStructs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EARNNetworkAPI.cpp" />

@@ -1,24 +1,15 @@
 #pragma once
 #include "DBAccess.h"
+#include <EARNStructs.h>
 
 #include <string>
 #include <time.h>
 
 namespace EarnDB  {
-	//Macros for EarnDB objects (length of strings...
 	
-	//Length of varchars, so we don't overwrite in database
-	const int VARCHARLEN = 45;
-	
-	//Length of zip codes, since they are always the same
-	const int ZIPLEN = 6;
-
-	//Enummeration for different types of DBObjects
-	enum DBOType { DBONULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };
-
 	//DBObject Interface / abstract class, used by client, account, etc...
 	class DBObject :public DBAccessInterface {
-		DBOType objectType;
+		EarnStructs::ObjectType objectType;
 
 	public:
 		//Constructors...
@@ -30,33 +21,21 @@ namespace EarnDB  {
 		DBObject(const DBObject& copyObject);
 
 		//Parametrized constructor
-		DBObject(DBOType initalizeType, int objectID);
+		DBObject(EarnStructs::ObjectType initalizeType, int objectID);
 
 		//Get function for DBOType
-		DBOType getDBOType();
+		EarnStructs::ObjectType getDBOType();
 
 		//Set function for DBType
-		void setDBOType(DBOType inputType);
+		void setDBOType(EarnStructs::ObjectType inputType);
 
 		//Display Info about Object to terminal (debugging purposes).
 		virtual std::string displayInfo() = 0;
 	};
 
-	//Structure for DBClient object's info, to ease serialization
-	struct DBClientInfo {
-		char firstName[VARCHARLEN];
-		char lastName[VARCHARLEN];
-		char email[VARCHARLEN];
-		char phoneNumber[VARCHARLEN];
-		char street[VARCHARLEN];
-		char city[VARCHARLEN];
-		char province[VARCHARLEN];
-		char zipcode[ZIPLEN];
-	};
-
 	//DBClient object class
 	class DBClient :public DBObject {
-		DBClientInfo clientInfo;
+		EarnStructs::ClientInfo clientInfo;
 
 	public:
 		//Constructors
@@ -65,13 +44,13 @@ namespace EarnDB  {
 		DBClient();
 
 		//Struct constructor, for use after deserializing
-		DBClient(const DBClientInfo copyInfo);
+		DBClient(const EarnStructs::ClientInfo copyInfo);
 
 		//Copy constructor
 		DBClient(const DBClient& copyClient);
 
 		//Parametrized constructor
-		DBClient(int inputObjectID, char inputFirst[VARCHARLEN], char inputLast[VARCHARLEN], char inputEmail[VARCHARLEN], char inputPhone[VARCHARLEN], char inputStreet[VARCHARLEN], char inputCity[VARCHARLEN], char inputProvince[VARCHARLEN], char inputZip[ZIPLEN]);
+		DBClient(int inputObjectID, char inputFirst[EarnStructs::VARCHARLEN], char inputLast[EarnStructs::VARCHARLEN], char inputEmail[EarnStructs::VARCHARLEN], char inputPhone[EarnStructs::VARCHARLEN], char inputStreet[EarnStructs::VARCHARLEN], char inputCity[EarnStructs::VARCHARLEN], char inputProvince[EarnStructs::VARCHARLEN], char inputZip[EarnStructs::ZIPLEN]);
 
 		//Get functions
 
@@ -116,47 +95,47 @@ namespace EarnDB  {
 		std::string getZip();
 
 		//Get Client info as a struct
-		DBClientInfo getClientInfo();
+		EarnStructs::ClientInfo getClientInfo();
 
 		//Set functions
 
 		//Set first name from C string
-		void setFirstName(char newFirst[VARCHARLEN]);
+		void setFirstName(char newFirst[EarnStructs::VARCHARLEN]);
 		//Set first name from Cpp string
 		void setFirstName(std::string newFirst);
 
 		//Set last name from C string
-		void setLastName(char newLast[VARCHARLEN]);
+		void setLastName(char newLast[EarnStructs::VARCHARLEN]);
 		//Set last name from Cpp string
 		void setLastName(std::string newLast);
 
 		//Set email from C string
-		void setEmail(char newEmail[VARCHARLEN]);
+		void setEmail(char newEmail[EarnStructs::VARCHARLEN]);
 		//Set email from Cpp string
 		void setEmail(std::string newEmail);
 
 		//Set phone number from C string
-		void setPhoneNum(char newPhone[VARCHARLEN]);
+		void setPhoneNum(char newPhone[EarnStructs::VARCHARLEN]);
 		//Set phone number from Cpp string
 		void setPhoneNum(std::string newPhone);
 
 		//Set street from C string
-		void setStreet(char newStreet[VARCHARLEN]);
+		void setStreet(char newStreet[EarnStructs::VARCHARLEN]);
 		//Set street from Cpp string
 		void setStreet(std::string newStreet);
 
 		//Set city from C string
-		void setCity(char newCity[VARCHARLEN]);
+		void setCity(char newCity[EarnStructs::VARCHARLEN]);
 		//Set city from Cpp string
 		void setCity(std::string newCity);
 
 		//Set province from C string
-		void setProvince(char newProvince[VARCHARLEN]);
+		void setProvince(char newProvince[EarnStructs::VARCHARLEN]);
 		//Set province from Cpp string
 		void setProvince(std::string newProvince);
 
 		//Set zip code from C string
-		void setZip(char newZip[ZIPLEN]);
+		void setZip(char newZip[EarnStructs::ZIPLEN]);
 		//Set zip code from Cpp string
 		void setZip(std::string newZip);
 
@@ -181,17 +160,9 @@ namespace EarnDB  {
 		std::string checkObjectExists();
 	};
 
-	//Structure for DBCredential object's info, to ease validation
-	struct DBCredentialInfo {
-		int clientID;
-		char username[VARCHARLEN];
-		int usernumber;
-		char userPasswordHash[VARCHARLEN];
-	};
-
 	//DBCredential / validation object class
 	class DBCredentials :public DBObject {
-		DBCredentialInfo credentialInfo;
+		EarnStructs::CredentialInfo credentialInfo;
 
 	public:
 		//Constructors
@@ -200,13 +171,13 @@ namespace EarnDB  {
 		DBCredentials();
 
 		//Struct constructor, for use after deserializing
-		DBCredentials(const DBCredentialInfo copyInfo);
+		DBCredentials(const EarnStructs::CredentialInfo copyInfo);
 
 		//Copy constructor
 		DBCredentials(const DBCredentials& copyCredentials);
 
 		//Parametrized constructor
-		DBCredentials(int inputObjectID, int inputClientID, char inputUserName[VARCHARLEN], int inputUserNumber, char inputPasswordHash[VARCHARLEN]);
+		DBCredentials(int inputObjectID, int inputClientID, char inputUserName[EarnStructs::VARCHARLEN], int inputUserNumber, char inputPasswordHash[EarnStructs::VARCHARLEN]);
 
 		//Get functions
 
@@ -227,7 +198,7 @@ namespace EarnDB  {
 		std::string getPasswordHash();
 
 		//Get Credential info as a struct
-		DBCredentialInfo getCredentialInfo();
+		EarnStructs::CredentialInfo getCredentialInfo();
 
 		//Set functions
 
@@ -235,7 +206,7 @@ namespace EarnDB  {
 		void setClientID(int newClientID);
 
 		//Set Username or Usernumber from C string
-		void setUsername(char newUsername[VARCHARLEN]);
+		void setUsername(char newUsername[EarnStructs::VARCHARLEN]);
 		//Set Username or Usernumber from Cpp string
 		void setUsername(std::string newUsernameOrNum);
 
@@ -243,7 +214,7 @@ namespace EarnDB  {
 		void setUsernumber(int newUsernumber);
 
 		//Set PasswordHash from C string
-		void setPasswordHash(char newPasswordHash[VARCHARLEN]);
+		void setPasswordHash(char newPasswordHash[EarnStructs::VARCHARLEN]);
 		//Set PasswordHash from Cpp string
 		void setPasswordHash(std::string newPasswordHash);
 
@@ -268,19 +239,9 @@ namespace EarnDB  {
 		std::string checkObjectExists();
 	};
 
-	//Enummeration for Account types
-	enum DBAType { DBANULL, CHEQUINGS, SAVINGS };
-
-	//Structure for DBAccount object's info, to ease serialization
-	struct DBAccountInfo {
-		int clientID;
-		DBAType accountType;
-		double accountBalance;
-	};
-
 	//DBAccount object class
 	class DBAccount :public DBObject {
-		DBAccountInfo accountInfo;
+		EarnStructs::AccountInfo accountInfo;
 
 	public:
 		//Constructors
@@ -289,18 +250,18 @@ namespace EarnDB  {
 		DBAccount();
 
 		//Struct constructor, for use after deserializing
-		DBAccount(const DBAccountInfo copyInfo);
+		DBAccount(const EarnStructs::AccountInfo copyInfo);
 
 		//Copy constructor
 		DBAccount(const DBAccount& copyAccount);
 
 		//Parametrized constructor
-		DBAccount(int inputObjectID, int inputClientID, DBAType inputAccountType, double inputBalance);
+		DBAccount(int inputObjectID, int inputClientID, EarnStructs::AccountType inputAccountType, double inputBalance);
 
 		//Get functions
 
 		//Get account type...
-		DBAType getAccountType();
+		EarnStructs::AccountType getAccountType();
 
 		//Get client ID for connected client
 		int getAccountClientID();
@@ -309,12 +270,12 @@ namespace EarnDB  {
 		double getAccountBalance();
 
 		//Get accountInfo struct, used in serializing...
-		DBAccountInfo getAccountInfo();
+		EarnStructs::AccountInfo getAccountInfo();
 
 		//Set functions
 
 		//Set account type, in case user changes account to a different one...
-		void setAccountType(DBAType newType);
+		void setAccountType(EarnStructs::AccountType newType);
 
 		//Set client ID, in case account is transferred for some reason?
 		void setAccountClientID(int newClientID);
@@ -323,7 +284,7 @@ namespace EarnDB  {
 		void setBalance(double newBalance);
 
 		//Set account info, used in case everything is changed at once
-		void setAccountInfo(DBAccountInfo newAccountInfo);
+		void setAccountInfo(EarnStructs::AccountInfo newAccountInfo);
 
 		//Inherited functions
 
@@ -346,22 +307,9 @@ namespace EarnDB  {
 		std::string checkObjectExists();
 	};
 
-	//Enummeration for transaction types
-	enum DBTType { DBTNULL, ETRANSFER, CHEQUE, WITHDRAW, ACCOUNTTRANSFER };
-
-	//Structure for DBTransaction object's info, to ease serialization
-	struct DBTransactionInfo {
-		int accountID;
-		DBTType transactionType;
-		char* transactionTime;
-		double previousBalance;
-		double newBalance;
-		int secondaryAccount;
-	};
-
 	//DBTransaction object class
 	class DBTransaction :public DBObject {
-		DBTransactionInfo transactionInfo;
+		EarnStructs::TransactionInfo transactionInfo;
 
 	public:
 		//Constructors
@@ -370,13 +318,13 @@ namespace EarnDB  {
 		DBTransaction();
 
 		//Struct constructor, for use after deserializing
-		DBTransaction(const DBTransactionInfo copyInfo);
+		DBTransaction(const EarnStructs::TransactionInfo copyInfo);
 
 		//Copy constructor
 		DBTransaction(DBTransaction& copyTransaction);
 
 		//Parametrized constructor
-		DBTransaction(int inputObjectID, int inputAccountID, DBTType inputTransactionType, char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount);
+		DBTransaction(int inputObjectID, int inputAccountID, EarnStructs::TransactionType inputTransactionType, char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount);
 
 		//Get functions
 
@@ -384,7 +332,7 @@ namespace EarnDB  {
 		int getTransactionAccountID();
 
 		//Get transaction type...
-		DBTType getTransactionType();
+		EarnStructs::TransactionType getTransactionType();
 
 		//Get time of transaction as C String
 		char* getTransactionTime(int& lenOfArray);
@@ -401,7 +349,7 @@ namespace EarnDB  {
 		int getTransactionSecondaryAcc();
 
 		//Get transaction info as a struct
-		DBTransactionInfo getTransactionInfo();
+		EarnStructs::TransactionInfo getTransactionInfo();
 
 		//Set functions
 
@@ -409,7 +357,7 @@ namespace EarnDB  {
 		void setTransactionAccountID(int newAccountID);
 
 		//Set transaction type...
-		void setTransactionType(DBTType newTransactionType);
+		void setTransactionType(EarnStructs::TransactionType newTransactionType);
 
 		//Set time of transaction
 		void setTransactionTime(char* newTransactionTime);

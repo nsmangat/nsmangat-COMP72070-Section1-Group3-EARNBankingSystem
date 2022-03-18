@@ -7,6 +7,7 @@
 #include "DBDrivers.h"
 #include"DBAccess.h"
 #include "DBObjects.h"
+#include <EARNStructs.h>
 
 //DBReader source code
 namespace EarnDB {
@@ -110,16 +111,16 @@ namespace EarnDB {
 
 	//Check & Initalize functions
 
-	bool DBReader::checkIDExists(int checkID, DBOType idType) {
+	bool DBReader::checkIDExists(int checkID, EarnStructs::ObjectType idType) {
 		bool outputResponse = false;
 
-		if (CLIENT == idType) {
+		if (EarnStructs::CLIENT == idType) {
 			outputResponse = this->checkClientIDExists(checkID);
 		}
-		else if (ACCOUNT == idType) {
+		else if (EarnStructs::ACCOUNT == idType) {
 			outputResponse = this->checkAccountIDExists(checkID);
 		}
-		else if (TRANSACTION == idType) {
+		else if (EarnStructs::TRANSACTION == idType) {
 			outputResponse = this->checkAccountIDExists(checkID);
 		}
 
