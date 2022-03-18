@@ -18,6 +18,9 @@
     <ClInclude Include="EARNNetworkAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EARNStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EARNNetworkAPI.cpp">
