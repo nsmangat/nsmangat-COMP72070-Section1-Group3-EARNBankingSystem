@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Downloads\nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-master\nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-master\EARNNetworkAPI\EARNStructs.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="EARNNetworkAPI.h" />
     <ClInclude Include="Packet.h" />
