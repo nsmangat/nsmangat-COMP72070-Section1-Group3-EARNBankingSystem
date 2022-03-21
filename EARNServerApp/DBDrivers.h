@@ -1,12 +1,8 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <vector>
-
-#include "mysql_connection.h"
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/prepared_statement.h>
-
+#include <mysqlx\xdevapi.h>
 #include "DBAccess.h"
 #include "DBObjects.h"
 
@@ -37,11 +33,6 @@ namespace EarnDB {
 		//Will always use parametrized because of the const values needed...
 		DBDriverInterface(std::string inputServer, std::string inputSchema, std::string inputUsername, std::string inputPassword);// , DBLogger(DBLoggerPath);
 
-		//Inherited Initalization functions
-
-		//Initalize DBDriver & Connection for children, since it's the same each time... Also logs given an error
-		bool initalizeDBDriverConnection(sql::Driver* DBdriver, sql::Connection* DBConnection);
-
 		//Check & Initalize functions
 		
 		//Initalize DB if it doesn't exist, used in checkIFDBExists function and can be used as a static function when server boots up
@@ -62,7 +53,7 @@ namespace EarnDB {
 	};
 
 	//DB Reader class (used in initalizing one or more objects from the database, any read only functionality)
-	class DBReader {
+	class DBReader:DBDriverInterface {
 		//Subfunctions for checkIDExists
 
 		//Check if Client ID is in database

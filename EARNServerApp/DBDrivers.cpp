@@ -1,8 +1,7 @@
-#include <string>
+#include <iostream>
 #include <sstream>
 #include <Windows.h>
 #include <direct.h>
-#include <vector>
 
 #include "DBDrivers.h"
 #include"DBAccess.h"
@@ -21,6 +20,7 @@ namespace EarnDB {
 			this->initalizeDefaultDB();
 		}
 	}
+
 	//Check & Initalize functions
 
 	bool DBDriverInterface::initalizeDefaultDB() {
@@ -75,33 +75,26 @@ namespace EarnDB {
 		
 		//change dir back and tell server user
 		_chdir(workingDir);
-		std::cout << "Setting working directory back to: \"" << workingDir << "\"";		
+		std::cout << "Setting working directory back to: \"" << workingDir << "\"";
+		return true;
 	}
 
 	int DBDriverInterface::checkIfDBExists() {
 
-		//Create sql controller / driver vars
-		sql::Driver* driver;
-		sql::Connection* con;
-		
-		//Try to establish a connection
 		try
 		{
-			driver = get_driver_instance();
-			con = driver->connect(this->server, this->username, this->password);
+			// Connect to server on localhost as reader so nothing changes...
+			mysqlx::abi2::r0::Session mySession(this->server, 33060, this->username, this->password, this->schema);
 		}
-		catch (sql::SQLException e)
+		catch (const mysqlx::abi2::r0::Error& err)
 		{
-			std::cout << "Could not connect to server. Error message: " << e.what() << std::endl;
+			std::cout << "The database session could not be opened: " << err << std::endl;
+			bool returnBool = this->initalizeDefaultDB();
 
-			std::cout << "Creating DB from forewards engineer..." << std::endl;
-
-			bool initalizationResult = this->initalizeDefaultDB();
-
-			return initalizationResult;
+			// Exit with error code
+			return(returnBool);
 		}
 
-		delete con;	//think this is how to end connection...
 		return 0;
 	}
 }
@@ -109,7 +102,132 @@ namespace EarnDB {
 //DBReader source code
 namespace EarnDB {
 
-	//Check & Initalize functions
+	bool DBReader::checkClientIDExists(int checkClientID) {
+		
+		bool checkResult = false;	//bool we will be returning
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession("localhost", 33060, "EARNDBReader", "Gcugy6/fA{KR9H(r|:1Gp^qyd", "earnbankingdb");
+
+			try
+			{
+				mySession.sql("USE EARNBankingDB").execute();
+
+				std::cout << "checking if client is on DB..." << std::endl;
+				
+				mySession.sql("CALL checkClientExists(1, @my_var)").execute();
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @my_var").execute();
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				
+				std::cout << "check client ID returned: " << (bool) resultRow[0] << std::endl;
+
+				checkResult = (bool)resultRow[0];
+
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				exit(1);
+			}
+
+			// Note: session is closed automatically when session object
+			// is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			exit(1);
+		}
+		return checkResult;
+	}
+
+	bool DBReader::checkAccountIDExists(int checkAccountID) {
+		
+
+		bool checkResult = false;	//bool we will be returning
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession("localhost", 33060, "EARNDBReader", "Gcugy6/fA{KR9H(r|:1Gp^qyd", "earnbankingdb");
+
+			try
+			{
+				mySession.sql("USE EARNBankingDB").execute();
+
+				std::cout << "checking if account is on DB..." << std::endl;
+
+				mySession.sql("CALL checkAccountExists(1, @my_var)").execute();
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @my_var").execute();
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+
+				std::cout << "check account ID returned: " << (bool)resultRow[0] << std::endl;
+
+				checkResult = (bool)resultRow[0];
+
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				exit(1);
+			}
+
+			// Note: session is closed automatically when session object
+			// is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			exit(1);
+		}
+		return checkResult;
+	}
+
+	bool DBReader::checkTransactionIDExists(int checkTransactionID) {
+
+		bool checkResult = false;	//bool we will be returning
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession("localhost", 33060, "EARNDBReader", "Gcugy6/fA{KR9H(r|:1Gp^qyd", "earnbankingdb");
+
+			try
+			{
+				mySession.sql("USE EARNBankingDB").execute();
+
+				std::cout << "checking if trasaction is on DB..." << std::endl;
+
+				mySession.sql("CALL checkTransactionExists(1, @my_var)").execute();
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @my_var").execute();
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+
+				std::cout << "check transaction ID returned: " << (bool)resultRow[0] << std::endl;
+
+				checkResult = (bool)resultRow[0];
+
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				exit(1);
+			}
+
+			// Note: session is closed automatically when session object
+			// is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			exit(1);
+		}
+		return checkResult;
+	}
 
 	bool DBReader::checkIDExists(int checkID, EarnStructs::ObjectType idType) {
 		bool outputResponse = false;
@@ -125,6 +243,67 @@ namespace EarnDB {
 		}
 
 		return outputResponse;
+	}
+
+	int DBReader::getObjectInfo(int objectID, DBClient& copyClient) {
+
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession("localhost", 33060, "EARNDBReader", "Gcugy6/fA{KR9H(r|:1Gp^qyd", "earnbankingdb");
+
+			try
+			{
+				mySession.sql("USE EARNBankingDB").execute();
+
+				std::cout << "getting client from DB..." << std::endl;
+
+				std::stringstream getQuery;
+				getQuery << "CALL getClientInfo(" << objectID << ")";
+				
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql(getQuery.str()).execute();
+
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+
+				//print results
+				std::cout << "client returned:" << std::endl;
+				std::cout << "Client ID: " << resultRow[0] << std::endl;
+				std::cout << "Client First Name: " << resultRow[1] << std::endl;
+				std::cout << "Client Last Name: " << resultRow[2] << std::endl;
+				std::cout << "Client Email: " << resultRow[3] << std::endl;
+				std::cout << "Client Phone Number: " << resultRow[4] << std::endl;
+				std::cout << "Client Street: " << resultRow[5] << std::endl;
+				std::cout << "Client City: " << resultRow[6] << std::endl;
+				std::cout << "Client Province: " << resultRow[7] << std::endl;
+				std::cout << "Client ZIP Code: " << resultRow[8] << std::endl;
+
+				//now set the info into referenced client
+				copyClient.setFirstName((std::string)resultRow[1]);
+				copyClient.setLastName((std::string)resultRow[2]);
+				copyClient.setEmail((std::string)resultRow[3]);
+				copyClient.setPhoneNum((std::string)resultRow[4]);
+				copyClient.setStreet((std::string)resultRow[5]);
+				copyClient.setCity((std::string)resultRow[6]);
+				copyClient.setProvince((std::string)resultRow[7]);
+				copyClient.setZip((std::string)resultRow[9]);
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				exit(1);
+			}
+
+			// Note: session is closed automatically when session object
+			// is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			exit(1);
+		}
+		return checkResult;
 	}
 }
 

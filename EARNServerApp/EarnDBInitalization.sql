@@ -18,9 +18,9 @@ CREATE SCHEMA IF NOT EXISTS `EARNBankingDB` DEFAULT CHARACTER SET utf8 COLLATE u
 USE `EARNBankingDB` ;
 
 -- -----------------------------------------------------
--- Table `EARNBankingDB`.`clients`
+-- Table `clients`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`clients` (
+CREATE TABLE IF NOT EXISTS `clients` (
   `client_id` INT NOT NULL AUTO_INCREMENT,
   `client_firstName` VARCHAR(45) NOT NULL,
   `client_lastName` VARCHAR(45) NOT NULL,
@@ -31,20 +31,20 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`clients` (
   `client_province` VARCHAR(45) NOT NULL,
   `client_zipCode` VARCHAR(6) NOT NULL,
   PRIMARY KEY (`client_id`))
-ENGINE = InnoDB 
+ENGINE = InnoDB
 COMMENT = 'stores clients all of which have credentials for login.';
 
 
 -- -----------------------------------------------------
--- Table `EARNBankingDB`.`account_type`
+-- Table `account_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`account_type` (
-    `account_type_id` INT NOT NULL AUTO_INCREMENT,
-    `account_name` VARCHAR(45) NULL,
-    `account_interest` DOUBLE NULL,
-    PRIMARY KEY (`account_type_id`)
-)  ENGINE=INNODB 
-COMMENT='stores different types for accounts (chequeing, savings, etc).';
+CREATE TABLE IF NOT EXISTS `account_type` (
+  `account_type_id` INT NOT NULL AUTO_INCREMENT,
+  `account_name` VARCHAR(45) NULL,
+  `account_interest` DOUBLE NULL,
+  PRIMARY KEY (`account_type_id`))
+ENGINE = InnoDB
+COMMENT = 'stores different types for accounts (chequeing, savings, etc).';
 
 INSERT IGNORE INTO `EARNBankingDB`.`account_type` (
 	`account_type_id`,
@@ -55,9 +55,9 @@ INSERT IGNORE INTO `EARNBankingDB`.`account_type` (
     (2, 'Savings', 0.06);
 
 -- -----------------------------------------------------
--- Table `EARNBankingDB`.`accounts`
+-- Table `accounts`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`accounts` (
+CREATE TABLE IF NOT EXISTS `accounts` (
   `account_id` INT NOT NULL AUTO_INCREMENT,
   `client_id` INT NOT NULL,
   `account_type_id` INT NOT NULL,
@@ -68,27 +68,28 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`accounts` (
   UNIQUE INDEX `account_relation_id` (`client_id` ASC, `account_type_id` ASC) INVISIBLE,
   CONSTRAINT `fk_accounts_clients1`
     FOREIGN KEY (`client_id`)
-    REFERENCES `EARNBankingDB`.`clients` (`client_id`)
+    REFERENCES `clients` (`client_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_accounts_account_type1`
     FOREIGN KEY (`account_type_id`)
-    REFERENCES `EARNBankingDB`.`account_type` (`account_type_id`)
+    REFERENCES `account_type` (`account_type_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB 
+ENGINE = InnoDB
 COMMENT = 'stores accounts, all of which are tied to an associated client (user).';
 
 
 -- -----------------------------------------------------
--- Table `EARNBankingDB`.`invoice_type`
+-- Table `invoice_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`invoice_type` (
+CREATE TABLE IF NOT EXISTS `invoice_type` (
   `invoice_type_id` INT NOT NULL AUTO_INCREMENT,
   `invoice_name` VARCHAR(45) NULL,
   PRIMARY KEY (`invoice_type_id`))
-ENGINE = InnoDB 
+ENGINE = InnoDB
 COMMENT = 'stores different types for invoices / transactions (deposit, withdraw, transfer, etc).';
+
 
 INSERT IGNORE INTO `EARNBankingDB`.`invoice_type` (
 	`invoice_name`) 
@@ -97,10 +98,11 @@ INSERT IGNORE INTO `EARNBankingDB`.`invoice_type` (
     ('Cheque'),
     ('Withdraw'),
     ('Account-Transfer');
+    
 -- -----------------------------------------------------
--- Table `EARNBankingDB`.`invoices`
+-- Table `invoices`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`invoices` (
+CREATE TABLE IF NOT EXISTS `invoices` (
   `invoice_id` INT NOT NULL AUTO_INCREMENT,
   `account_id` INT NOT NULL,
   `invoice_type_id` INT NOT NULL,
@@ -112,22 +114,22 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`invoices` (
   INDEX `fk_invoices_invoice_type1_idx` (`invoice_type_id` ASC) VISIBLE,
   CONSTRAINT `fk_invoices_accounts1`
     FOREIGN KEY (`account_id`)
-    REFERENCES `EARNBankingDB`.`accounts` (`account_id`)
+    REFERENCES `accounts` (`account_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_invoices_invoice_type1`
     FOREIGN KEY (`invoice_type_id`)
-    REFERENCES `EARNBankingDB`.`invoice_type` (`invoice_type_id`)
+    REFERENCES `invoice_type` (`invoice_type_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB 
+ENGINE = InnoDB
 COMMENT = 'stores invoices / transactions all of which are tied to an associated account';
 
 
 -- -----------------------------------------------------
--- Table `EARNBankingDB`.`credentials`
+-- Table `credentials`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`credentials` (
+CREATE TABLE IF NOT EXISTS `credentials` (
   `credential_id` INT NOT NULL AUTO_INCREMENT,
   `client_id` INT NOT NULL,
   `client_password_hash` VARCHAR(45) NOT NULL,
@@ -137,10 +139,10 @@ CREATE TABLE IF NOT EXISTS `EARNBankingDB`.`credentials` (
   INDEX `fk_credentials_clients_idx` (`client_id` ASC) VISIBLE,
   CONSTRAINT `fk_credentials_clients`
     FOREIGN KEY (`client_id`)
-    REFERENCES `EARNBankingDB`.`clients` (`client_id`)
+    REFERENCES `clients` (`client_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB 
+ENGINE = InnoDB
 COMMENT = 'stores login info and is used to get associated client for validation.';
 
 USE `EARNBankingDB` ;
@@ -148,6 +150,7 @@ USE `EARNBankingDB` ;
 -- -----------------------------------------------------
 -- procedure getClientInfo
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `getClientInfo`;
 
 DELIMITER $$
@@ -163,6 +166,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getAccountInfo
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `getAccountInfo`;
 
 DELIMITER $$
@@ -178,6 +182,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getTransactionInfo
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `getTransactionInfo`;
 
 DELIMITER $$
@@ -193,6 +198,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getAllClientsInfo
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `getAllClientsInfo`;
 
 DELIMITER $$
@@ -207,6 +213,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getAccountsForClient
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `getAccountsForClient`;
 
 DELIMITER $$
@@ -222,6 +229,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure getTransactionsForAccount
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `getTransactionsForAccount`;
 
 DELIMITER $$
@@ -237,6 +245,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkLoginNamePass
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `checkLoginNamePass`;
 
 DELIMITER $$
@@ -253,6 +262,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkLoginNumberPass
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `checkLoginNumberPass`;
 
 DELIMITER $$
@@ -269,6 +279,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addClient
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `addClient`;
 
 DELIMITER $$
@@ -280,12 +291,13 @@ CREATE PROCEDURE `addClient` (
     IN input_phone_number VARCHAR(45),
     IN input_street VARCHAR(45),
     IN input_city VARCHAR(45),
+    IN input_province VARCHAR(45),
     IN input_zipCode VARCHAR(6),
     OUT new_client_id INT)
 BEGIN
 	#first create user
-	INSERT INTO clients (client_firstName, client_lastName, client_email, phone_number, client_street, client_city, client_zipCode)
-		VALUE (input_firstName, input_lastName, input_email, input_phone_number, input_street, input_city, input_zipCode);
+	INSERT INTO clients (client_firstName, client_lastName, client_email, phone_number, client_street, client_city, client_province, client_zipCode)
+		VALUE (input_firstName, input_lastName, input_email, input_phone_number, input_street, input_city, input_province, input_zipCode);
 	
     SET new_client_id := last_insert_id();	# returns client's new ID
 END$$
@@ -295,6 +307,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addAccount
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `addAccount`;
 
 DELIMITER $$
@@ -323,6 +336,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addTransaction
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `addTransaction`;
 
 DELIMITER $$
@@ -351,6 +365,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteTransaction
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `deleteTransaction`;
 
 DELIMITER $$
@@ -366,6 +381,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteAccount
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `deleteAccount`;
 
 DELIMITER $$
@@ -383,6 +399,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteClient
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `deleteClient`;
 
 DELIMITER $$
@@ -405,6 +422,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateTransaction
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `updateTransaction`;
 
 DELIMITER $$
@@ -430,6 +448,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateClient
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `updateClient`;
 
 DELIMITER $$
@@ -442,6 +461,7 @@ CREATE PROCEDURE `updateClient` (
     IN input_number VARCHAR(45),
     IN input_street VARCHAR(45),
     IN input_city VARCHAR(45),
+    IN input_province VARCHAR(45),
     IN input_zipCode VARCHAR(6))
 BEGIN
 	UPDATE clients c SET
@@ -451,6 +471,7 @@ BEGIN
 		c.phone_number = input_number,
 		c.client_street = input_street,
 		c.client_city = input_city,
+        c.client_province = input_province,
 		c.client_zipCode = input_zipCode
 		WHERE c.client_id = input_client_id;
 END$$
@@ -460,6 +481,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateAccount
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `updateAccount`;
 
 DELIMITER $$
@@ -482,6 +504,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure addCredential
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `addCredential`;
 
 DELIMITER $$
@@ -509,6 +532,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure updateCredential
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `updateCredential`;
 
 DELIMITER $$
@@ -531,6 +555,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkClientExists
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `checkClientExists`;
 
 DELIMITER $$
@@ -551,6 +576,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkAccountExists
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `checkAccountExists`;
 
 DELIMITER $$
@@ -571,6 +597,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkCredentialExists
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `checkCredentialExists`;
 
 DELIMITER $$
@@ -591,6 +618,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure checkTransactionExists
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `checkTransactionExists`;
 
 DELIMITER $$
@@ -611,6 +639,7 @@ DELIMITER ;
 -- -----------------------------------------------------
 -- procedure deleteCredential
 -- -----------------------------------------------------
+
 DROP PROCEDURE IF EXISTS `deleteCredential`;
 
 DELIMITER $$
@@ -624,20 +653,20 @@ DELIMITER ;
 
 DROP USER IF EXISTS 'EARNDBReader';
 CREATE USER 'EARNDBReader' IDENTIFIED BY 'Gcugy6/fA{KR9H(r\:1Gp^qyd';
+GRANT SELECT ON TABLE * TO 'EARNDBReader';
+GRANT EXECUTE ON * TO 'EARNDBReader';
 
-GRANT SELECT ON TABLE `EARNBankingDB`.* TO 'EARNDBReader';
 DROP USER IF EXISTS 'EARNDBWriter';
 CREATE USER 'EARNDBWriter' IDENTIFIED BY '|RI?BEe8drU0JoD~_j*|=fS@=';
+GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE * TO 'EARNDBWriter';
 
-GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE `EARNBankingDB`.* TO 'EARNDBWriter';
 DROP USER IF EXISTS 'EARNDBValidation';
 CREATE USER 'EARNDBValidation' IDENTIFIED BY '@:+fA,UFr[xn_[3>QwBuB#9qi';
-
 GRANT SELECT, UPDATE, INSERT, DELETE, TRIGGER ON TABLE `EARNBankingDB`.`credentials` TO 'EARNDBValidation';
+
 DROP USER IF EXISTS 'EARNDBAdmin';
 CREATE USER 'EARNDBAdmin' IDENTIFIED BY '=&gvxgIDY/^zZRKItYLLsXv3o';
-
-GRANT ALL ON `EARNBankingDB`.* TO 'EARNDBAdmin';
+GRANT ALL ON * TO 'EARNDBAdmin';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
