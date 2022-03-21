@@ -250,3 +250,24 @@ using namespace EarnStructs;
 	 int getSecondaryAccount();
 	 void setSecondaryAccount(int accNum);
  };
+
+ class AccountInformation : public DataTypes {
+
+	 AccountInfo accInfo;
+
+ public:
+	 
+	 AccountInformation(int id, AccountType type, double balance);
+	 AccountInformation(char* src);
+
+	 void display();
+
+	 int getClientID();
+	 void setClientID(int id);
+
+	 int getAccountType();
+	 void setAccountType(AccountType type);
+
+	 double getAccountBalance();
+	 void setAccountBalance(double balance);
+ };

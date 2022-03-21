@@ -4,6 +4,9 @@
 //change sizeof time
 //
 
+//send back 2 account info objects on login, declare at beginning of main empty and popylate after successful login 
+//
+
 
 
 //Loop for checking the datatypes in serverMain
@@ -186,19 +189,41 @@ int main(void)
 
 
 	//MARCH 20///////////////////////////////////////////////////////////////////////////////////////
-	
+
 
 	//March 21///////////////////////////////////////////////////////////////////////////////////////
 
-	int accID = 234;
-	TransactionType type = ETRANSFER;
-	double pBalance = 5.00;
-	double nBalance = 12.00;
-	int secAcc = 98776;
+	//int accID = 234;
+	//TransactionType type = ETRANSFER;
+	//double pBalance = 5.00;
+	//double nBalance = 12.00;
+	//int secAcc = 98776;
 
-	Transaction testTransaction(accID, type, pBalance, nBalance, secAcc);
-	int size3 = sizeof(testTransaction);
-	Packet testPacket(&testTransaction, size3, 1);
+	//Transaction testTransaction(accID, type, pBalance, nBalance, secAcc);
+	//int size3 = sizeof(testTransaction);
+	//Packet testPacket(&testTransaction, size3, 1);
+
+
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[1000] = {};
+
+	//memcpy(rxBuffer, txBuffer, sendSize);
+
+	//Transaction testTransactionRecv(rxBuffer);
+
+	//testTransactionRecv.display();
+
+
+
+
+	int clientID = 234;
+	AccountType type = CHEQUINGS;
+	double accountBalance = 10.00;
+	
+	AccountInformation testAccountInformation(clientID, type, accountBalance);
+	int size3 = sizeof(testAccountInformation);
+	Packet testPacket(&testAccountInformation, size3, 1);
 
 
 	int sendSize = 0;
@@ -207,11 +232,8 @@ int main(void)
 
 	memcpy(rxBuffer, txBuffer, sendSize);
 
-	Transaction testTransactionRecv(rxBuffer);
-
-	testTransactionRecv.display();
-
-
+	AccountInformation testAccountInformationRecv(rxBuffer);
+	testAccountInformationRecv.display();
 
 	//March 21///////////////////////////////////////////////////////////////////////////////////////
 

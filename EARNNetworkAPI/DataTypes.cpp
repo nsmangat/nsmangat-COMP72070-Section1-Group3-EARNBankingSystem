@@ -622,3 +622,63 @@ void Transaction::display() {
 	cout << "New Balance: " << TInfo.newBalance << endl;
 	cout << "Secondary Account: " << TInfo.secondaryAccount << endl;
 }
+
+
+// AccountInfo
+
+AccountInformation::AccountInformation(int id, AccountType type, double balance) {
+
+	this->accountID = id;
+	accInfo.clientID = id;
+	accInfo.accountType = type;
+	accInfo.accountBalance = balance;
+}
+
+AccountInformation::AccountInformation(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&accInfo, src + HeadSize + startBase, sizeof(accInfo));
+
+}
+
+int AccountInformation::getClientID()
+{
+	return accInfo.clientID;
+}
+
+void AccountInformation::setClientID(int id)
+{
+	accInfo.clientID = id;
+}
+
+int AccountInformation::getAccountType()
+{
+	return accInfo.accountType;
+}
+
+void AccountInformation::setAccountType(AccountType type)
+{
+	accInfo.accountType = type;
+}
+
+double AccountInformation::getAccountBalance() {
+
+	return accInfo.accountBalance;
+
+}
+
+void AccountInformation::setAccountBalance(double balance)
+{
+	accInfo.accountBalance = balance;
+}
+
+void AccountInformation::display() {
+
+	cout << "Client ID: " << accInfo.clientID << endl;
+	cout << "AccountType: " << accInfo.accountType << endl;
+	cout << "Balance: $" << accInfo.accountBalance << endl;
+	
+}
