@@ -10,7 +10,9 @@ namespace EarnStructs  {
 	const int ZIPLEN = 6;
 
 	//Enummeration for different types of Objects
-	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };
+	//CREATEACCOUNT is to know we sending 2 structs
+	//STARTUPACCOUNTINFO = server response after login so client has their savings and chequings account
+	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION, CREATEACCOUNT, STARTUPACCOUNTINFO };
 
 	//Structure for Client object's info, to ease serialization
 	struct ClientInfo {
@@ -43,7 +45,7 @@ namespace EarnStructs  {
 	};
 
 	//Enummeration for transaction types
-	enum TransactionType { TRANSACTIONNULL, ETRANSFER, CHEQUE, WITHDRAW, ACCOUNTTRANSFER };
+	enum TransactionType { TRANSACTIONNULL, ETRANSFER, CHEQUE, ACCOUNTTRANSFER };
 
 	//Structure for Transaction object's info, to ease serialization
 	struct TransactionInfo {

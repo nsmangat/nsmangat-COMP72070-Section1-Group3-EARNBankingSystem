@@ -249,6 +249,8 @@ using namespace EarnStructs;
 
 	 int getSecondaryAccount();
 	 void setSecondaryAccount(int accNum);
+
+	 //add function to calculate new balance
  };
 
  class AccountInformation : public DataTypes {

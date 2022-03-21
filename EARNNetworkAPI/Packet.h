@@ -13,11 +13,14 @@ class Packet {
 
 		char toIP[IP_SIZE];
 		char fromIP[IP_SIZE];
-		int operationType;
+		//int operationType;
+		int objectType;
 		int dataSize;
-		char TimeOfSend[100];
-		int branchID;
+		char TimeOfSend[VARCHARLEN];
+		//int branchID;
 		int accountType;				//chequing or savings
+		int status;						//0 for default, 1 for success, 2 for failure
+
 
 	}HEAD;
 
@@ -27,7 +30,7 @@ class Packet {
 
 public:
 
-	Packet(DataTypes* data, int size, int OpType);
+	Packet(DataTypes* data, int size, int OpType, int accType);
 	Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType);
 
 	Packet(char* src);									//to populate header
@@ -42,7 +45,7 @@ public:
 
 	void display();
 
-	int getOperationType();							//get operations for header 
+	int getObjectType();							//get operations for header 
 
 	int getAccountType();
 

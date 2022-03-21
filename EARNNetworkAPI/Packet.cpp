@@ -6,7 +6,7 @@
 
 
 
-Packet::Packet(DataTypes* data, int size, int OpType) {
+Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 
 	if (Data) {
 
@@ -19,13 +19,15 @@ Packet::Packet(DataTypes* data, int size, int OpType) {
 	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
 	strcpy(HEAD.fromIP, IP_ADDR);
 
-	HEAD.accountType = 0;
-	HEAD.operationType = OpType;
+	HEAD.accountType = accType;
+	HEAD.objectType = OpType;
 	HEAD.dataSize = size;
-	HEAD.branchID = 1;
+	HEAD.status = 0;
+	//HEAD.branchID = 1;
 	Tail = 12345;
 }
 
+//for parsing 2 structs 
 Packet::Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType) {
 
 	if (Data) {
@@ -41,9 +43,9 @@ Packet::Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpT
 	strcpy(HEAD.fromIP, IP_ADDR);
 
 	HEAD.accountType = 0;
-	HEAD.operationType = OpType;
+	HEAD.objectType = OpType;
 	HEAD.dataSize = size1 + size2;
-	HEAD.branchID = 1;
+	//HEAD.branchID = 1;
 	Tail = 12345;
 }
 
@@ -123,7 +125,7 @@ void Packet::display() {
 
 	cout << "to IP: " << HEAD.toIP << endl;
 	cout << "From IP:" << HEAD.fromIP << endl;
-	cout << "Op Type:" << HEAD.operationType << endl;
+	cout << "Object Type:" << HEAD.objectType << endl;
 	cout << "Data Size:" << HEAD.dataSize << endl;
 	cout << "Time of Send:" << HEAD.TimeOfSend << endl;
 	cout << "Branch ID:" << HEAD.branchID << endl;
@@ -132,9 +134,9 @@ void Packet::display() {
 	cout << "Data:" << &Data << endl;
 }
 
-int Packet::getOperationType() {									//get operations for header 
+int Packet::getObjectType() {									//get operations for header 
 
-	return HEAD.operationType;
+	return HEAD.objectType;
 }
 
 char* Packet::getTime() {
