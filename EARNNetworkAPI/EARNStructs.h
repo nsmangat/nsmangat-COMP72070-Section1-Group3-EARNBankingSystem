@@ -49,7 +49,7 @@ namespace EarnStructs  {
 	struct TransactionInfo {
 		int accountID;
 		TransactionType transactionType;
-		char* transactionTime;
+		char transactionTime[VARCHARLEN];
 		double previousBalance;
 		double newBalance;
 		int secondaryAccount;
