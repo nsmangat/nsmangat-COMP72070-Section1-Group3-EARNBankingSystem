@@ -595,6 +595,7 @@ namespace EarnDB {
 								(int)resultRow[1],
 								getType,
 								(double)resultRow[3]);
+
 							clientAccountsVec.push_back(newAccount);
 
 							std::cout << std::endl;
@@ -664,25 +665,9 @@ namespace EarnDB {
 						std::cout << "List of Transactions for Account " << accountID << " in DB: " << std::endl;
 						int transactionCount = 0;
 						do {
-							accountCount++;
+							transactionCount++;
 							std::cout << "Transaction #" << transactionCount << ": " << std::endl << std::endl;
 
-							//print results
-							std::cout << "account returned:" << std::endl;
-							std::cout << "Account ID: " << resultRow[0] << std::endl;
-							std::cout << "Client ID: " << resultRow[1] << std::endl;
-
-							EarnStructs::AccountType getType = ((EarnStructs::AccountType)(int)resultRow[2]);
-							std::cout << "Account Type: " << typeid(getType).name() << std::endl;
-							std::cout << "Account Balance: $" << resultRow[3] << std::endl;
-
-							//now set the info into referenced account
-							EarnDB::DBAccount newAccount(
-								(int)resultRow[0],
-								(int)resultRow[1],
-								getType,
-								(double)resultRow[3]);
-							clientAccountsVec.push_back(newAccount);
 							//print results
 							std::cout << "transaction returned:" << std::endl;
 							std::cout << "Transaction ID: " << resultRow[0] << std::endl;
@@ -705,6 +690,7 @@ namespace EarnDB {
 								(double)resultRow[5],
 								(int)resultRow[6]);
 
+							accountTransactionsVec.push_back(newTransaction);
 
 							std::cout << std::endl;
 						} while ((resultRow = returnResult.fetchOne()));
