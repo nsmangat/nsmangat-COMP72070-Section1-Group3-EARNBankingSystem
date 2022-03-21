@@ -22,9 +22,10 @@
 
 #include "DataTypes.h"
 #include "Packet.h"
-
+//#include "EARNStructs.h"
 
 using namespace std;
+using namespace EarnStructs;
 
 int main(void)
 {
@@ -101,37 +102,62 @@ int main(void)
 
 	//char* Data[128];
 
+	//MARCH 20///////////////////////////////////////////////////////////////////////////////////////
 
 
-
-	char firstName[30] = "firstname";
-	char lastName[30] = "lastname";
-	char username[30] = "username";
-	char password[30] = "password";
-	char email[30] = "email";
-	char phoneNumber[30] = "phone number";
-	char streetName[30] = "street name";
-	char city[30] = "city";
-	char province[30] = "province";
+	char firstName[EarnStructs::VARCHARLEN] = "firstname";
+	char lastName[EarnStructs::VARCHARLEN] = "lastname";
+	char username[EarnStructs::VARCHARLEN] = "username";
+	char password[EarnStructs::VARCHARLEN] = "password";
+	char email[EarnStructs::VARCHARLEN] = "email";
+	char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
+	char streetName[EarnStructs::VARCHARLEN] = "street name";
+	char city[EarnStructs::VARCHARLEN] = "city";
+	char province[EarnStructs::VARCHARLEN] = "province";
+	char zipcode[EarnStructs::ZIPLEN] = "12345";
 	int accID = 234;
 
-	CreateAccount testAccount(firstName, lastName, username, password, email, phoneNumber, streetName, city, province, accID);
+	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+	Login testLogin(username, password);
 
-	int size = sizeof(testAccount);
-	Packet testPacket(&testAccount, size, 5);
-	
+	int size1 = sizeof(testAccount);
+	int size2 = sizeof(testLogin);
+	Packet testPacket(&testAccount, size1, &testLogin, size2, 5);
+	//Packet testPacket(&testLogin, size2, 5);
 
 	int sendSize = 0;
 	char* txBuffer = testPacket.serialize(sendSize);
-	char rxBuffer[500] = {};
-
+	char rxBuffer[1000] = {};
 	
+	char rxBuffer1[1000] = {};
+	char rxBuffer2[1000] = {};
+	//int crc;
 
-	
+	//memcpy(&crc, rxBuffer + , sizeof(int));
 	//memcpy header to find operationtype
 
 	memcpy(rxBuffer, txBuffer, sendSize);
-	CreateAccount testAccountReceive(rxBuffer);
+
+	memcpy(rxBuffer1, rxBuffer, size1 + HeadSize);
+
+	memcpy(rxBuffer2, rxBuffer, HeadSize);
+	memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
+	CreateAccount testAccountReceive(rxBuffer1);
+	Login testLoginRecv(rxBuffer2);
+
+	//cout << crc << endl;
+
+	
+
+	/*for (int i = 0; i < 30; i++)
+	{
+		int buf = 0;
+		memcpy(&buf, rxBuffer + HeadSize + (i * 4), 4);
+		cout << buf << endl;
+	}*/
+
+	testAccountReceive.display();
+	testLoginRecv.display();
 
 	//testAccountReceive.display();
 
@@ -141,21 +167,28 @@ int main(void)
 
 	//cout << tail << endl;
 
-	Packet test2(rxBuffer);
-	int size2 = 0;
+	//Packet test2(rxBuffer);
+	//int size2 = 0;
+	//
+	//char* Buffer = test2.serialize(size2);
+
+	//int num = 0;
+	//memcpy(&num, Buffer + 132, sizeof(int));
+	//cout << num << endl;
+	//Packet checkcrc(Buffer);
+	//int crc = checkcrc.getTail();
+	////cout << crc << endl;
+
+	//int opType = test2.getOperationType();
+
+	//char *testTime = test2.getTime();
+
+
+
+	//MARCH 20///////////////////////////////////////////////////////////////////////////////////////
 	
-	char* Buffer = test2.serialize(size2);
 
-	int num = 0;
-	memcpy(&num, Buffer + 132, sizeof(int));
-	cout << num << endl;
-	Packet checkcrc(Buffer);
-	int crc = checkcrc.getTail();
-	//cout << crc << endl;
 
-	int opType = test2.getOperationType();
-
-	char *testTime = test2.getTime();
 	//cout << opType << endl;
 	//cout << testTime << endl;
 

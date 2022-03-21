@@ -1,22 +1,23 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "DataTypes.h"
+#include "EARNStructs.h"
 #define START_BASE
 
 
 using namespace std;
+using namespace EarnStructs;
 
-CreateAccount::CreateAccount(char* firstName, char* lastName, char* userName, char* password, char* email, char* phoneNumber, char* streetName, char* city, char* province, int accountID)
+CreateAccount::CreateAccount(char* firstName, char* lastName, char* email, char* phoneNumber, char* streetName, char* city, char* province, char* zipcode, int accountID)
 {
-	strcpy(this->firstName, firstName);
-	strcpy(this->lastName, lastName);
-	strcpy(this->userName, userName);
-	strcpy(this->password, password);
-	strcpy(this->email, email);
-	strcpy(this->phoneNumber, phoneNumber);
-	strcpy(this->streetName, streetName);
-	strcpy(this->city, city);
-	strcpy(this->province, province);
+	strcpy(user.firstName, firstName);
+	strcpy(user.lastName, lastName);
+	strcpy(user.email, email);
+	strcpy(user.phoneNumber, phoneNumber);
+	strcpy(user.street, streetName);
+	strcpy(user.city, city);
+	strcpy(user.province, province);
+	strcpy(user.zipcode, zipcode);
 	this->accountID = accountID;
 }
 
@@ -24,117 +25,129 @@ CreateAccount::CreateAccount(char* src) {
 
 	int count = 0;
 	int startBase = 16;
+	//clientinfo struct is 321
 
 
 	memcpy(&accountID, src + HeadSize +  8, sizeof(int));
-	memcpy(this->firstName, src + HeadSize + startBase, sizeof(firstName));
+	memcpy(user.firstName, src + HeadSize + startBase, sizeof(user.firstName));
 	count++;
-	memcpy(this->lastName, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.lastName, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
 	count++;
-	memcpy(this->userName, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.email, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
 	count++;
-	memcpy(this->password, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.phoneNumber, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
 	count++;
-	memcpy(this->email, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.street, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
 	count++;
-	memcpy(this->phoneNumber, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.city, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
 	count++;
-	memcpy(this->streetName, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.province, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
 	count++;
-	memcpy(this->city, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
-	count++;
-	memcpy(this->province, src + HeadSize + startBase + (count * sizeof(firstName)), sizeof(firstName));
+	memcpy(user.zipcode, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.zipcode));
 
+	//memcpy(&user, src + HeadSize + 16, sizeof(user));
+	/*cout << sizeof(user) << endl;
+	cout << sizeof(CreateAccount) << endl;*/
 }
 
 void CreateAccount::setFirstName(char* fName) {
 
-	strcpy(this->firstName, fName);
+	strcpy(user.firstName, fName);
 }
 
 char* CreateAccount::getFirstName() {
 
-	return this->firstName;
+	return user.firstName;
 }
 
 void CreateAccount::setLastName(char* lName) {
 
-	strcpy(this->lastName, lName);
+	strcpy(user.lastName, lName);
 }
 
 char* CreateAccount::getLastName() {
 
-	return this->lastName;
+	return user.lastName;
 }
 
-void CreateAccount::setUserName(char* uName) {
+//void CreateAccount::setUserName(char* uName) {
+//
+//	strcpy(user.userName, uName);
+//}
 
-	strcpy(this->userName, uName);
-}
+//char* CreateAccount::getUserName() {
 
-char* CreateAccount::getUserName() {
+//	return this->userName;
+//}
 
-	return this->userName;
-}
+//void CreateAccount::setpassword(char* pass) {
 
-void CreateAccount::setpassword(char* pass) {
+//	strcpy(this->password, pass);
+//}
 
-	strcpy(this->password, pass);
-}
+//char* CreateAccount::getPassword() {
 
-char* CreateAccount::getPassword() {
-
-	return this->password;
-}
+//	return this->password;
+//}
 
 void CreateAccount::setEmail(char* email) {
 
-	strcpy(this->email, email);
+	strcpy(user.email, email);
 }
 
 char* CreateAccount::getEmail() {
 
-	return this->email;
+	return user.email;
 }
 
 void CreateAccount::setPhoneNumber(char* pNumber) {
 
-	strcpy(this->phoneNumber, pNumber);
+	strcpy(user.phoneNumber, pNumber);
 }
 
 char* CreateAccount::getPhoneNumber() {
 
-	return this->phoneNumber;
+	return user.phoneNumber;
 }
 
 void CreateAccount::setStreetName(char* StName) {
 
-	strcpy(this->streetName, StName);
+	strcpy(user.street, StName);
 }
 
 char* CreateAccount::getStreetName() {
 
-	return this->streetName;
+	return user.street;
 }
 
 void CreateAccount::setCity(char* cName) {
 
-	strcpy(this->city, cName);
+	strcpy(user.city, cName);
 }
 
 char* CreateAccount::getCity() {
 
-	return this->city;
+	return user.city;
 }
 
 void CreateAccount::setProvince(char* province) {
 
-	strcpy(this->province, province);
+	strcpy(user.province, province);
 }
 
 char* CreateAccount::getProvince() {
 
-	return this->province;
+	return user.province;
+}
+
+void CreateAccount::setZipcode(char* zipcode) {
+
+	strcpy(user.zipcode, zipcode);
+}
+
+char* CreateAccount::getZipcode() {
+
+	return user.zipcode;
 }
 
 void CreateAccount::setAccountID(int accountID) {
@@ -144,15 +157,16 @@ void CreateAccount::setAccountID(int accountID) {
 
 void CreateAccount::display() {
 
-	cout << "firstName: " << firstName << endl;
-	cout << "lastName: " << lastName << endl;
-	cout << "username: " << userName << endl;
-	cout << "password: " << password << endl;
-	cout << "email: " << email << endl;
-	cout << "phone Number: " << phoneNumber << endl;
-	cout << "streetname: " << streetName << endl;
-	cout << "city: " << city << endl;
-	cout << "province: " << province << endl;
+	cout << "firstName: " << user.firstName << endl;
+	cout << "lastName: " << user.lastName << endl;
+	/*cout << "username: " << user.userName << endl;
+	cout << "password: " << user.password << endl;*/
+	cout << "email: " << user.email << endl;
+	cout << "phone Number: " << user.phoneNumber << endl;
+	cout << "streetname: " << user.street << endl;
+	cout << "city: " << user.city << endl;
+	cout << "province: " << user.province << endl;
+	cout << "zipcode: " << user.zipcode << endl;
 	cout << "accountID: " << accountID << endl;
 }
 
@@ -170,8 +184,10 @@ void CreateAccount::display() {
 
 Login::Login(char* Username, char* password) {
 
-	strcpy(this->userName, Username);
-	strcpy(this->password, password);
+	strcpy(login.username, Username);
+	strcpy(login.userPasswordHash, password);
+	login.clientID = 22;
+	login.usernumber = 33;
 	//this->bankNumber = 3;
 	//this->userName = userName;
 	//this->password = password;
@@ -186,34 +202,74 @@ Login::Login(char* Username, char* password) {
 
 Login::Login(char* src) {
 
-	int count = 0;
+	//int count = 0;
 	int startBase = 16;
 
 	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
-	memcpy(this->userName, src + HeadSize + startBase + (count * STRING_LENGTH), STRING_LENGTH);
-	count++;
-	memcpy(this->password, src + HeadSize + startBase + (count * STRING_LENGTH), STRING_LENGTH);
 
+	//memcpy(&login.clientID, src + HeadSize + startBase, sizeof(int));
+	//memcpy(&login.usernumber, src + HeadSize + startBase + sizeof(int), sizeof(int));
+	//memcpy(login.username, src + HeadSize + startBase + sizeof(int), sizeof(login.username));
+	//memcpy(login.userPasswordHash, src + HeadSize + startBase + sizeof(int) + sizeof(int) + VARCHARLEN, sizeof(login.userPasswordHash));
+	//cout << sizeof(login.userPasswordHash) << endl;
+	//memcpy(login.username, src + HeadSize + startBase + sizeof(int), sizeof(login.username));
+	//count++;
+
+	//int num1;
+	//int num2;
+	//memcpy(&num1, src + HeadSize + startBase + sizeof(int) + VARCHARLEN, sizeof(int));
+	//memcpy(&num2, src + HeadSize + startBase + sizeof(int) + 4 + VARCHARLEN, sizeof(int));
+	//cout << num1 << endl;
+	//cout << num2 << endl;
+
+	//memcpy(&login.usernumber, src + HeadSize + startBase + sizeof(int) + VARCHARLEN, sizeof(int));
+	//memcpy(login.userPasswordHash, src + HeadSize + startBase + sizeof(int) + sizeof(int) + VARCHARLEN, VARCHARLEN);
+
+
+	memcpy(&login, src + HeadSize + startBase, sizeof(login));
+
+}
+
+int Login::getClientID() {
+	
+	return login.clientID;
+}
+
+void Login::setClientID(int clientID) {
+
+	login.clientID = clientID;
 }
 
 char* Login::getUserName() {
 
-	return this->userName;
+	return login.username;
 }
 
 void Login::setUserName(char* userName) {
 
-	strcpy(this->userName, userName);
+	strcpy(login.username, userName);
 }
+
+
+int Login::getUserNumber() {
+
+	return login.usernumber;
+}
+
+void Login::setUserNumber(int userNumber) {
+
+	login.usernumber = userNumber;
+}
+
 
 char* Login::getPassword() {
 
-	return this->password;
+	return login.userPasswordHash;
 }
 
 void Login::setPassword(char* password) {
 
-	strcpy(this->password, password);
+	strcpy(login.userPasswordHash, password);
 }
 
 
@@ -223,8 +279,10 @@ void Login::setAccountID(int accountID) {
 
 void Login::display() {
 
-	cout << "userName: " << userName << endl;
-	cout << "password: " << password << endl;
+	cout << "cientID: " << login.clientID << endl;
+	cout << "userName: " << login.username << endl;
+	cout << "usernumber: " << login.usernumber<< endl;
+	cout << "password: " << login.userPasswordHash << endl;
 }
 
 

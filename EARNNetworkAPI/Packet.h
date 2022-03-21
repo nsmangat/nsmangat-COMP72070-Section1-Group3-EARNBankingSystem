@@ -28,6 +28,7 @@ class Packet {
 public:
 
 	Packet(DataTypes* data, int size, int OpType);
+	Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType);
 
 	Packet(char* src);									//to populate header
 

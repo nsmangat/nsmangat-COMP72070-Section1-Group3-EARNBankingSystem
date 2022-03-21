@@ -24,7 +24,7 @@
     <ClInclude Include="Packet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Downloads\nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-master\nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-master\EARNNetworkAPI\EARNStructs.h">
+    <ClInclude Include="EARNStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

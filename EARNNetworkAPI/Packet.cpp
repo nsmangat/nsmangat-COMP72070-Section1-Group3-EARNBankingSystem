@@ -26,6 +26,27 @@ Packet::Packet(DataTypes* data, int size, int OpType) {
 	Tail = 12345;
 }
 
+Packet::Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType) {
+
+	if (Data) {
+
+		delete Data;
+	}
+	Data = new char[size1 + size2];
+
+	memcpy(Data, data1, size1);
+	memcpy(Data + size1, data2, size2);
+
+	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
+	strcpy(HEAD.fromIP, IP_ADDR);
+
+	HEAD.accountType = 0;
+	HEAD.operationType = OpType;
+	HEAD.dataSize = size1 + size2;
+	HEAD.branchID = 1;
+	Tail = 12345;
+}
+
 Packet::Packet(char* src)									//to populate header on server 
 {
 	memcpy(&HEAD, src, sizeof(HEAD));

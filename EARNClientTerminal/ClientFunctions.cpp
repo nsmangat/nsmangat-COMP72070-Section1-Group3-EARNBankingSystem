@@ -59,10 +59,14 @@ CreateAccount inputAccountInfo()
 	char province[STRING_LENGTH];
 	cin.getline(province, STRING_LENGTH);
 
+	cout << "Please input your zipcode" << endl;
+	char zipcode[STRING_LENGTH];
+	cin.getline(zipcode, STRING_LENGTH);
+
 	int accID = 0;
 
 	//CreateAccount* testAccount = new CreateAccount(firstName, lastName, userName, password, email, phoneNumber, streetName, city, province, accID);
-	CreateAccount testAccount(firstName, lastName, userName, password, email, phoneNumber, streetName, city, province, accID);
+	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
 	return testAccount;	
 
 	//CreateAccount = function()

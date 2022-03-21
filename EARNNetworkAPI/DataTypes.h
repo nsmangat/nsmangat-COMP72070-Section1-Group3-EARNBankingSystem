@@ -5,12 +5,14 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include "EARNStructs.h"
 
 #define STRING_LENGTH 30
 const int HeadSize = 136;
 enum dataTypeChoice { CreateUserType, LoginType, DepositType, WithdrawType, TransferType, LogoffType};
 
 using namespace std;
+using namespace EarnStructs;
 
 //bytes 8-12 are the accountID
 //bytes 1-16 are together in the beginnning 
@@ -31,7 +33,8 @@ using namespace std;
 
  class CreateAccount: public DataTypes {		//size 290
 
-	 char firstName[STRING_LENGTH];
+	 EarnStructs::ClientInfo user;
+	 /*char firstName[STRING_LENGTH];
 	 char lastName[STRING_LENGTH];
 	 char userName[STRING_LENGTH];
 	 char password[STRING_LENGTH];
@@ -39,11 +42,11 @@ using namespace std;
 	 char phoneNumber[STRING_LENGTH];
 	 char streetName[STRING_LENGTH];
 	 char city[STRING_LENGTH];
-	 char province[STRING_LENGTH];
+	 char province[STRING_LENGTH];*/
 
  public:
 
-	 CreateAccount(char* firstName, char* lastName, char* userName, char* password, char* email, char* phoneNumber, char* streetName, char* city, char* province, int accountID);	
+	 CreateAccount(char* firstName, char* lastName, char* email, char* phoneNumber, char* streetName, char* city, char* province, char* zipcode, int accountID);
 	 CreateAccount(char* src);
 
 	 void setFirstName(char* fName);
@@ -52,11 +55,11 @@ using namespace std;
 	 void setLastName(char* lName); 
 	 char* getLastName();
 
-	 void setUserName(char* uName);
-	 char* getUserName(); 
+	 //void setUserName(char* uName);
+	 //char* getUserName(); 
 
-	 void setpassword(char* pass); 
-	 char* getPassword(); 
+	 //void setpassword(char* pass); 
+	 //char* getPassword(); 
 
 	 void setEmail(char* email); 
 	 char* getEmail(); 
@@ -73,6 +76,9 @@ using namespace std;
 	 void setProvince(char* province); 
 	 char* getProvince(); 
 
+	 void setZipcode(char* zipcode); 
+	 char* getZipcode(); 
+
 	 void setAccountID(int accountID);
 
 	 void display();
@@ -83,8 +89,10 @@ using namespace std;
 	 //string userName;
 	 //string password;
 
-	 char userName[STRING_LENGTH];
-	 char password[STRING_LENGTH];
+	 CredentialInfo login;
+
+	 //char userName[STRING_LENGTH];
+	 //char password[STRING_LENGTH];
 	//int bankNumber;
 	 
  public:
@@ -102,8 +110,14 @@ using namespace std;
 	 //string getPassword(); 
 	 //void setPassword(string userName); 
 
+	 int getClientID(); 
+	 void setClientID(int clientID); 
+
 	 char* getUserName(); 
 	 void setUserName(char* userName); 
+
+	 int getUserNumber(); 
+	 void setUserNumber(int clientID); 
 
 	 char* getPassword(); 
 	 void setPassword(char* userName); 
