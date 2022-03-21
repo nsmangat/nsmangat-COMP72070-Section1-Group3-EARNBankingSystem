@@ -105,59 +105,59 @@ int main(void)
 	//MARCH 20///////////////////////////////////////////////////////////////////////////////////////
 
 
-	char firstName[EarnStructs::VARCHARLEN] = "firstname";
-	char lastName[EarnStructs::VARCHARLEN] = "lastname";
-	char username[EarnStructs::VARCHARLEN] = "username";
-	char password[EarnStructs::VARCHARLEN] = "password";
-	char email[EarnStructs::VARCHARLEN] = "email";
-	char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
-	char streetName[EarnStructs::VARCHARLEN] = "street name";
-	char city[EarnStructs::VARCHARLEN] = "city";
-	char province[EarnStructs::VARCHARLEN] = "province";
-	char zipcode[EarnStructs::ZIPLEN] = "12345";
-	int accID = 234;
+	//char firstName[EarnStructs::VARCHARLEN] = "firstname";
+	//char lastName[EarnStructs::VARCHARLEN] = "lastname";
+	//char username[EarnStructs::VARCHARLEN] = "username";
+	//char password[EarnStructs::VARCHARLEN] = "password";
+	//char email[EarnStructs::VARCHARLEN] = "email";
+	//char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
+	//char streetName[EarnStructs::VARCHARLEN] = "street name";
+	//char city[EarnStructs::VARCHARLEN] = "city";
+	//char province[EarnStructs::VARCHARLEN] = "province";
+	//char zipcode[EarnStructs::ZIPLEN] = "12345";
+	//int accID = 234;
 
-	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
-	Login testLogin(username, password);
+	//CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+	//Login testLogin(username, password);
 
-	int size1 = sizeof(testAccount);
-	int size2 = sizeof(testLogin);
-	Packet testPacket(&testAccount, size1, &testLogin, size2, 5);
-	//Packet testPacket(&testLogin, size2, 5);
+	//int size1 = sizeof(testAccount);
+	//int size2 = sizeof(testLogin);
+	//Packet testPacket(&testAccount, size1, &testLogin, size2, 5);
+	////Packet testPacket(&testLogin, size2, 5);
 
-	int sendSize = 0;
-	char* txBuffer = testPacket.serialize(sendSize);
-	char rxBuffer[1000] = {};
-	
-	char rxBuffer1[1000] = {};
-	char rxBuffer2[1000] = {};
-	//int crc;
+	//int sendSize = 0;
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[1000] = {};
+	//
+	//char rxBuffer1[1000] = {};
+	//char rxBuffer2[1000] = {};
+	////int crc;
 
-	//memcpy(&crc, rxBuffer + , sizeof(int));
-	//memcpy header to find operationtype
+	////memcpy(&crc, rxBuffer + , sizeof(int));
+	////memcpy header to find operationtype
 
-	memcpy(rxBuffer, txBuffer, sendSize);
+	//memcpy(rxBuffer, txBuffer, sendSize);
 
-	memcpy(rxBuffer1, rxBuffer, size1 + HeadSize);
+	//memcpy(rxBuffer1, rxBuffer, size1 + HeadSize);
 
-	memcpy(rxBuffer2, rxBuffer, HeadSize);
-	memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
-	CreateAccount testAccountReceive(rxBuffer1);
-	Login testLoginRecv(rxBuffer2);
+	//memcpy(rxBuffer2, rxBuffer, HeadSize);
+	//memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
+	//CreateAccount testAccountReceive(rxBuffer1);
+	//Login testLoginRecv(rxBuffer2);
 
-	//cout << crc << endl;
+	////cout << crc << endl;
 
-	
+	//
 
-	/*for (int i = 0; i < 30; i++)
-	{
-		int buf = 0;
-		memcpy(&buf, rxBuffer + HeadSize + (i * 4), 4);
-		cout << buf << endl;
-	}*/
+	///*for (int i = 0; i < 30; i++)
+	//{
+	//	int buf = 0;
+	//	memcpy(&buf, rxBuffer + HeadSize + (i * 4), 4);
+	//	cout << buf << endl;
+	//}*/
 
-	testAccountReceive.display();
-	testLoginRecv.display();
+	//testAccountReceive.display();
+	//testLoginRecv.display();
 
 	//testAccountReceive.display();
 
@@ -187,6 +187,33 @@ int main(void)
 
 	//MARCH 20///////////////////////////////////////////////////////////////////////////////////////
 	
+
+	//March 21///////////////////////////////////////////////////////////////////////////////////////
+
+	int accID = 234;
+	TransactionType type = ETRANSFER;
+	double pBalance = 5.00;
+	double nBalance = 12.00;
+	int secAcc = 98776;
+
+	Transaction testTransaction(accID, type, pBalance, nBalance, secAcc);
+	int size3 = sizeof(testTransaction);
+	Packet testPacket(&testTransaction, size3, 1);
+
+
+	int sendSize = 0;
+	char* txBuffer = testPacket.serialize(sendSize);
+	char rxBuffer[1000] = {};
+
+	memcpy(rxBuffer, txBuffer, sendSize);
+
+	Transaction testTransactionRecv(rxBuffer);
+
+	testTransactionRecv.display();
+
+
+
+	//March 21///////////////////////////////////////////////////////////////////////////////////////
 
 
 	//cout << opType << endl;

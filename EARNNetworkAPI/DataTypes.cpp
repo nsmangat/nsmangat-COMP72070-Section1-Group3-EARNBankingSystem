@@ -2,6 +2,7 @@
 
 #include "DataTypes.h"
 #include "EARNStructs.h"
+#include <ctime>
 #define START_BASE
 
 
@@ -519,3 +520,105 @@ void TransactionConfirmation::setTransactionID(int num) {
 	this->transactionID = num;
 }
 
+
+//Transaction
+
+
+Transaction::Transaction(int accID, TransactionType type, double pBalance, double nBalance, int secAcc) {
+
+	this->accountID = accID;
+	TInfo.accountID = accID;
+
+	TInfo.transactionType = type;
+
+	this->setTransactionTime();
+
+	TInfo.previousBalance = pBalance;
+	TInfo.newBalance = nBalance;
+
+	TInfo.secondaryAccount = secAcc;
+
+}
+
+Transaction::Transaction(char* src) {
+
+	int count = 0;
+	int startBase = 16;
+
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&TInfo, src + HeadSize + startBase, sizeof(TInfo));
+
+}
+
+int Transaction::getAccID() {
+
+	return TInfo.accountID;
+}
+
+void Transaction::setAccID(int accID) {
+
+	TInfo.accountID = accID;
+}
+
+int Transaction::getTransactionType() {
+
+	return TInfo.transactionType;
+}
+
+void Transaction::setTransactionType(TransactionType type) {
+
+	TInfo.transactionType = type;
+}
+
+char* Transaction::getTransactionTime() {
+
+	return TInfo.transactionTime;
+}
+
+void Transaction::setTransactionTime() {
+
+	time_t now = time(0);
+	char* time = ctime(&now);
+	strcpy(TInfo.transactionTime, time);
+}
+
+double Transaction::getPreviousBalance() {
+
+	return TInfo.previousBalance;
+}
+
+void Transaction::setPreviousBalance(double pBalance) {
+
+	TInfo.previousBalance = pBalance;
+}
+
+double Transaction::getNewBalance() {
+
+	return TInfo.newBalance;
+}
+
+void Transaction::setNewBalance(double nBalance) {
+
+	TInfo.newBalance = nBalance;
+}
+
+int Transaction::getSecondaryAccount() {
+
+	return TInfo.secondaryAccount;
+}
+
+void Transaction::setSecondaryAccount(int accNum) {
+
+	TInfo.secondaryAccount = accNum;
+}
+
+
+void Transaction::display() {
+
+	cout << "accountID: " << TInfo.accountID << endl;
+	cout << "TransactionType: " << TInfo.transactionType << endl;
+	cout << "Time: " << TInfo.transactionTime << endl;
+	cout << "Previous Balance: " << TInfo.previousBalance << endl;
+	cout << "New Balance: " << TInfo.newBalance << endl;
+	cout << "Secondary Account: " << TInfo.secondaryAccount << endl;
+}

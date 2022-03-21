@@ -220,3 +220,33 @@ using namespace EarnStructs;
 	 void setTransactionID(int transactionID);
 
  };
+
+
+ class Transaction : public DataTypes {
+
+	 TransactionInfo TInfo;
+
+ public:
+
+	 Transaction(int accID, TransactionType type, double pBalance, double nBalance, int secAcc);
+	 Transaction(char* src);
+	 void display();
+
+	 int getAccID();
+	 void setAccID(int accID);
+
+	 int getTransactionType();
+	 void setTransactionType(TransactionType type);
+
+	 char* getTransactionTime();
+	 void setTransactionTime();
+
+	 double getPreviousBalance();
+	 void setPreviousBalance(double pBalance);
+
+	 double getNewBalance();
+	 void setNewBalance(double nBalance);
+
+	 int getSecondaryAccount();
+	 void setSecondaryAccount(int accNum);
+ };
