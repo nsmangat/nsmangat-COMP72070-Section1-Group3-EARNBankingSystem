@@ -32,7 +32,22 @@ namespace EarnDB {
 
 		//Will always use parametrized because of the const values needed...
 		DBDriverInterface(std::string inputServer, std::string inputSchema, std::string inputUsername, std::string inputPassword);// , DBLogger(DBLoggerPath);
+		
+		//Get functions (protected due to password call & no other obvious solution...
+	protected:
+		//get server string for children db connections
+		const std::string getServer();
 
+		//get schema string for children db connections
+		const std::string getSchema();
+
+		//get username string for children db connections
+		const std::string getUsername();
+
+		//get password string for children db connections
+		const std::string getPassword();
+
+	public:
 		//Check & Initalize functions
 		
 		//Initalize DB if it doesn't exist, used in checkIFDBExists function and can be used as a static function when server boots up
@@ -80,13 +95,13 @@ namespace EarnDB {
 		//Get all objects from a higher level ID
 
 		//Get all Clients from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectsInfo(int& numOfClients, std::vector<DBClient>& clientsVec);
+		int getObjectsInfo(int& numOfClients, std::vector<EarnDB::DBClient>& clientsVec);
 
 		//Get all Accounts of a client from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectsInfo(int clientID, int& numOfAccounts, std::vector<DBAccount>& clientAccountsVec);
+		int getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDB::DBAccount>& clientAccountsVec);
 
 		//Get all Transactions of an account from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<DBTransaction>& accountTransactionsVec);
+		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDB::DBTransaction>& accountTransactionsVec);
 
 		//Check ID function(s) for given ID num, and specified ID type
 		bool checkIDExists(int checkID, EarnStructs::ObjectType idType);
@@ -98,8 +113,15 @@ namespace EarnDB {
 		int validateClient(std::string usernameOrNum, std::string passwordHash);
 
 	public:
-		//Client login function, returns NULL for incorrect login
-		DBClient clientLogin(std::string usernameORNum, std::string passwordHash);
+
+		//Client login function through username & pass, returns NULL for incorrect login
+		DBClient clientLogin(std::string username, std::string passwordHash);
+
+		//Client login function through usernumber & pass, returns NULL for incorrect login
+		DBClient clientLogin(int usernumber, std::string passwordHash);
+
+		//Client login function using CredentialInfo struct, returns NULL for incorrect login
+		DBClient clientLogin(EarnStructs::CredentialInfo inputCredentials);
 	};
 
 	//DB Writer class (used in adding, modifying, and deleting info)

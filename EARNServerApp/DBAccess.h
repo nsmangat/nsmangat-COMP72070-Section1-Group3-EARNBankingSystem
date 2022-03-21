@@ -28,7 +28,10 @@ namespace EarnDB {
 
 		//Virtualized functions for lower level implementations
 
-		//Add info from object into database
+		//Get Object info query from DB, @checkResult for OUT var
+		virtual std::string getInfoFromDB() = 0;
+
+		//Add info from object into database, @newID for OUT var
 		virtual std::string addInfoToDB() = 0;
 
 		//Modify info of object in database related to object
@@ -37,7 +40,7 @@ namespace EarnDB {
 		//Delete info of object in database related to object
 		virtual std::string deleteInfoInDB() = 0;
 
-		//Check if object type exists
+		//Check if object type exists, @checkResult for OUT var
 		virtual std::string checkObjectExists() = 0;
 	};
 }

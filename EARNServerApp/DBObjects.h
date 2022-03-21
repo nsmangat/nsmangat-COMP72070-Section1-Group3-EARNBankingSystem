@@ -50,7 +50,7 @@ namespace EarnDB  {
 		DBClient(const DBClient& copyClient);
 
 		//Parametrized constructor
-		DBClient(int inputObjectID, char inputFirst[EarnStructs::VARCHARLEN], char inputLast[EarnStructs::VARCHARLEN], char inputEmail[EarnStructs::VARCHARLEN], char inputPhone[EarnStructs::VARCHARLEN], char inputStreet[EarnStructs::VARCHARLEN], char inputCity[EarnStructs::VARCHARLEN], char inputProvince[EarnStructs::VARCHARLEN], char inputZip[EarnStructs::ZIPLEN]);
+		DBClient(int inputObjectID, const char* inputFirst, const char* inputLast, const char* inputEmail, const char* inputPhone, const char* inputStreet, const char* inputCity, const char* inputProvince, const char* inputZip);
 
 		//Get functions
 
@@ -100,42 +100,42 @@ namespace EarnDB  {
 		//Set functions
 
 		//Set first name from C string
-		void setFirstName(char newFirst[EarnStructs::VARCHARLEN]);
+		void setFirstName(const char* newFirst);
 		//Set first name from Cpp string
 		void setFirstName(std::string newFirst);
 
 		//Set last name from C string
-		void setLastName(char newLast[EarnStructs::VARCHARLEN]);
+		void setLastName(const char* newLast);
 		//Set last name from Cpp string
 		void setLastName(std::string newLast);
 
 		//Set email from C string
-		void setEmail(char newEmail[EarnStructs::VARCHARLEN]);
+		void setEmail(const char* newEmail);
 		//Set email from Cpp string
 		void setEmail(std::string newEmail);
 
 		//Set phone number from C string
-		void setPhoneNum(char newPhone[EarnStructs::VARCHARLEN]);
+		void setPhoneNum(const char* newPhone);
 		//Set phone number from Cpp string
 		void setPhoneNum(std::string newPhone);
 
 		//Set street from C string
-		void setStreet(char newStreet[EarnStructs::VARCHARLEN]);
+		void setStreet(const char* newStreet);
 		//Set street from Cpp string
 		void setStreet(std::string newStreet);
 
 		//Set city from C string
-		void setCity(char newCity[EarnStructs::VARCHARLEN]);
+		void setCity(const char* newCity);
 		//Set city from Cpp string
 		void setCity(std::string newCity);
 
 		//Set province from C string
-		void setProvince(char newProvince[EarnStructs::VARCHARLEN]);
+		void setProvince(const char* newProvince);
 		//Set province from Cpp string
 		void setProvince(std::string newProvince);
 
 		//Set zip code from C string
-		void setZip(char newZip[EarnStructs::ZIPLEN]);
+		void setZip(const char* newZip);
 		//Set zip code from Cpp string
 		void setZip(std::string newZip);
 
@@ -147,7 +147,10 @@ namespace EarnDB  {
 		//Get log data format for client to be used in DBLogger
 		//std::string getLogData();
 
-		//Add Client info query for database
+		//Get Client info query from database, @checkResult for OUT var
+		std::string getInfoFromDB();
+
+		//Add Client info query for database, @newID for OUT var
 		std::string addInfoToDB();
 
 		//Modify Client info query for client of the same client ID
@@ -156,28 +159,28 @@ namespace EarnDB  {
 		//Delete Client info query for client of the same client ID
 		std::string deleteInfoInDB();
 
-		//Check if client id is in database
+		//Check if client id is in database, @checkResult for OUT var
 		std::string checkObjectExists();
 	};
 
 	//DBCredential / validation object class
-	class DBCredentials :public DBObject {
+	class DBCredential :public DBObject {
 		EarnStructs::CredentialInfo credentialInfo;
 
 	public:
 		//Constructors
 
 		//Default constructor
-		DBCredentials();
+		DBCredential();
 
 		//Struct constructor, for use after deserializing
-		DBCredentials(const EarnStructs::CredentialInfo copyInfo);
+		DBCredential(const EarnStructs::CredentialInfo copyInfo);
 
 		//Copy constructor
-		DBCredentials(const DBCredentials& copyCredentials);
+		DBCredential(const DBCredential& copyCredentials);
 
 		//Parametrized constructor
-		DBCredentials(int inputObjectID, int inputClientID, char inputUserName[EarnStructs::VARCHARLEN], int inputUserNumber, char inputPasswordHash[EarnStructs::VARCHARLEN]);
+		DBCredential(int inputObjectID, int inputClientID, char inputUserName[EarnStructs::VARCHARLEN], int inputUserNumber, char inputPasswordHash[EarnStructs::VARCHARLEN]);
 
 		//Get functions
 
@@ -226,7 +229,10 @@ namespace EarnDB  {
 		//Get log data format for credentials to be used in DBLogger
 		//std::string getLogData();
 
-		//Add Credential info query for database
+		//Get Credential info query from database, @checkResult for OUT var
+		std::string getInfoFromDB();
+
+		//Add Credential info query for database, @newID for OUT var
 		std::string addInfoToDB();
 
 		//Modify Credential info query for credential of the same credential ID
@@ -235,7 +241,7 @@ namespace EarnDB  {
 		//Delete Credential info query for credential of the same credential ID
 		std::string deleteInfoInDB();
 
-		//Check if Credential id is in database
+		//Check if Credential id is in database, @checkResult for OUT var
 		std::string checkObjectExists();
 	};
 
@@ -294,7 +300,10 @@ namespace EarnDB  {
 		//Get log data format for account to be used in DBLogger
 		//std::string getLogData();
 
-		//Add Account info query for database
+		//Get Account info query from database, @checkResult for OUT var
+		std::string getInfoFromDB();
+
+		//Add Account info query for database, @newID for OUT var
 		std::string addInfoToDB();
 
 		//Modify Account info query for account of the same account ID
@@ -303,7 +312,7 @@ namespace EarnDB  {
 		//Delete Account info query for account of the same account ID
 		std::string deleteInfoInDB();
 
-		//Check if Account id is in database
+		//Check if Account id is in database. @checkResult for OUT var
 		std::string checkObjectExists();
 	};
 
@@ -324,7 +333,7 @@ namespace EarnDB  {
 		DBTransaction(DBTransaction& copyTransaction);
 
 		//Parametrized constructor
-		DBTransaction(int inputObjectID, int inputAccountID, EarnStructs::TransactionType inputTransactionType, char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount);
+		DBTransaction(int inputObjectID, int inputAccountID, EarnStructs::TransactionType inputTransactionType, const char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount);
 
 		//Get functions
 
@@ -360,7 +369,7 @@ namespace EarnDB  {
 		void setTransactionType(EarnStructs::TransactionType newTransactionType);
 
 		//Set time of transaction
-		void setTransactionTime(char* newTransactionTime);
+		void setTransactionTime(const char* newTransactionTime);
 
 		//Set balance before transaction
 		void setTransactionPreviousBal(double newTransactionPB);
@@ -379,7 +388,10 @@ namespace EarnDB  {
 		//Get log data format for transaction to be used in DBLogger
 		//std::string getLogData();
 
-		//Add Transaction info query for database
+		//Get Transaction info query from database, @checkResult for OUT var
+		std::string getInfoFromDB();
+
+		//Add Transaction info query for database, @newID for OUT var
 		std::string addInfoToDB();
 
 		//Modify Transaction info query for transaction of the same transaction ID
@@ -388,7 +400,7 @@ namespace EarnDB  {
 		//Delete Transaction info query for transaction of the same transaction ID
 		std::string deleteInfoInDB();
 
-		//Check if Transaction id is in database
+		//Check if Transaction id is in database, @checkResult for OUT var
 		std::string checkObjectExists();
 	};
 }

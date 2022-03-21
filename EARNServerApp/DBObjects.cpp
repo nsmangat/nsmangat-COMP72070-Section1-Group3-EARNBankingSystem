@@ -73,7 +73,7 @@ namespace EarnDB {
 		this->setZip(copyClient.clientInfo.zipcode);
 	}
 
-	DBClient::DBClient(int inputObjectID, char inputFirst[EarnStructs::VARCHARLEN], char inputLast[EarnStructs::VARCHARLEN], char inputEmail[EarnStructs::VARCHARLEN], char inputPhone[EarnStructs::VARCHARLEN], char inputStreet[EarnStructs::VARCHARLEN], char inputCity[EarnStructs::VARCHARLEN], char inputProvince[EarnStructs::VARCHARLEN], char inputZip[EarnStructs::ZIPLEN]) :DBObject(EarnStructs::CLIENT, inputObjectID) {
+	DBClient::DBClient(int inputObjectID, const char* inputFirst, const char* inputLast, const char* inputEmail, const char* inputPhone, const char* inputStreet, const char* inputCity, const char* inputProvince, const char* inputZip) :DBObject(EarnStructs::CLIENT, inputObjectID) {
 		this->setFirstName(inputFirst);
 		this->setLastName(inputLast);
 		this->setEmail(inputEmail);
@@ -164,56 +164,56 @@ namespace EarnDB {
 
 	//Set functions
 
-	void DBClient::setFirstName(char newFirst[EarnStructs::VARCHARLEN]) {
+	void DBClient::setFirstName(const char* newFirst) {
 		memcpy(this->clientInfo.firstName, newFirst, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setFirstName(std::string newFirst) {
 		memcpy(this->clientInfo.firstName, newFirst.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setLastName(char newLast[EarnStructs::VARCHARLEN]) {
+	void DBClient::setLastName(const char* newLast) {
 		memcpy(this->clientInfo.lastName, newLast, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setLastName(std::string newLast) {
 		memcpy(this->clientInfo.lastName, newLast.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setEmail(char newEmail[EarnStructs::VARCHARLEN]) {
+	void DBClient::setEmail(const char* newEmail) {
 		memcpy(this->clientInfo.email, newEmail, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setEmail(std::string newEmail) {
 		memcpy(this->clientInfo.email, newEmail.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setPhoneNum(char newPhone[EarnStructs::VARCHARLEN]) {
+	void DBClient::setPhoneNum(const char* newPhone) {
 		memcpy(this->clientInfo.phoneNumber, newPhone, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setPhoneNum(std::string newPhone) {
 		memcpy(this->clientInfo.phoneNumber, newPhone.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setStreet(char newStreet[EarnStructs::VARCHARLEN]) {
+	void DBClient::setStreet(const char* newStreet) {
 		memcpy(this->clientInfo.street, newStreet, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setStreet(std::string newStreet) {
 		memcpy(this->clientInfo.street, newStreet.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setCity(char newCity[EarnStructs::VARCHARLEN]) {
+	void DBClient::setCity(const char* newCity) {
 		memcpy(this->clientInfo.city, newCity, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setCity(std::string newCity) {
 		memcpy(this->clientInfo.city, newCity.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setProvince(char newProvince[EarnStructs::VARCHARLEN]) {
+	void DBClient::setProvince(const char* newProvince) {
 		memcpy(this->clientInfo.province, newProvince, EarnStructs::VARCHARLEN);
 	}
 	void DBClient::setProvince(std::string newProvince) {
 		memcpy(this->clientInfo.province, newProvince.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBClient::setZip(char newZip[EarnStructs::ZIPLEN]) {
+	void DBClient::setZip(const char* newZip) {
 		memcpy(this->clientInfo.zipcode, newZip, EarnStructs::ZIPLEN);
 	}
 	void DBClient::setZip(std::string newZip) {
@@ -244,6 +244,18 @@ namespace EarnDB {
 
 	//}
 
+	std::string DBClient::getInfoFromDB() {
+		/*
+			IN check_client_id INT,
+			OUT check_result BOOL
+		*/
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkClientExists(" << this->getObjectID() << ", @checkResult)";
+
+		return outputQuery.str();
+	}
+
 	std::string DBClient::addInfoToDB() {
 		/*
 			IN input_firstName VARCHAR(45),
@@ -266,7 +278,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getStreet();
 		outputQuery << ", " << this->getCity();
 		outputQuery << ", " << this->getZip();
-		outputQuery << ", newID);";
+		outputQuery << ", @newID)";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -295,7 +307,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getStreet();
 		outputQuery << ", " << this->getCity();
 		outputQuery << ", " << this->getZip();
-		outputQuery << ");";
+		outputQuery << ")";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -308,7 +320,7 @@ namespace EarnDB {
 
 		//setup output call based on deleteClient procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL deleteClient(" << this->getObjectID() << ");";
+		outputQuery << "CALL deleteClient(" << this->getObjectID() << ")";
 		return outputQuery.str();
 	}
 
@@ -319,7 +331,7 @@ namespace EarnDB {
 		*/
 		//setup output call based on checkClientExists procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkClientExists(" << this->getObjectID() << ", checkResult);";
+		outputQuery << "CALL checkClientExists(" << this->getObjectID() << ", @checkResult)";
 		return outputQuery.str();
 	}
 }
@@ -328,28 +340,28 @@ namespace EarnDB {
 namespace EarnDB {
 	//Constructors
 
-	DBCredentials::DBCredentials() :DBObject(EarnStructs::CREDENTIALS, 0) {
+	DBCredential::DBCredential() :DBObject(EarnStructs::CREDENTIALS, 0) {
 		this->setClientID(NULL);
 		this->setUsername(NULL);
 		this->setUsernumber(NULL);
 		this->setPasswordHash(NULL);
 	}
 
-	DBCredentials::DBCredentials(const EarnStructs::CredentialInfo copyInfo) : DBObject(EarnStructs::CREDENTIALS, 0) {
+	DBCredential::DBCredential(const EarnStructs::CredentialInfo copyInfo) : DBObject(EarnStructs::CREDENTIALS, 0) {
 		this->setClientID(copyInfo.clientID);
 		this->setUsername(copyInfo.username);
 		this->setUsernumber(copyInfo.usernumber);
 		this->setPasswordHash(copyInfo.userPasswordHash);
 	}
 
-	DBCredentials::DBCredentials(const DBCredentials& copyCredentials) : DBObject(copyCredentials) {
+	DBCredential::DBCredential(const DBCredential& copyCredentials) : DBObject(copyCredentials) {
 		this->setClientID(copyCredentials.credentialInfo.clientID);
 		this->setUsername(copyCredentials.credentialInfo.username);
 		this->setUsernumber(copyCredentials.credentialInfo.usernumber);
 		this->setPasswordHash(copyCredentials.credentialInfo.userPasswordHash);
 	}
 
-	DBCredentials::DBCredentials(int inputObjectID, int inputClientID, char inputUserName [EarnStructs::VARCHARLEN], int inputUsernumber, char inputPasswordHash[EarnStructs::VARCHARLEN]) : DBObject(EarnStructs::CREDENTIALS, inputObjectID) {
+	DBCredential::DBCredential(int inputObjectID, int inputClientID, char inputUserName [EarnStructs::VARCHARLEN], int inputUsernumber, char inputPasswordHash[EarnStructs::VARCHARLEN]) : DBObject(EarnStructs::CREDENTIALS, inputObjectID) {
 		this->setClientID(inputClientID);
 		this->setUsername(inputUserName);
 		this->setUsernumber(inputUsernumber);
@@ -358,59 +370,59 @@ namespace EarnDB {
 
 	//Get functions
 
-	int DBCredentials::getClientID() {
+	int DBCredential::getClientID() {
 		return this->credentialInfo.clientID;
 	}
 
-	const char* DBCredentials::getUsername(int& lenOfArray) {
+	const char* DBCredential::getUsername(int& lenOfArray) {
 		lenOfArray = EarnStructs::VARCHARLEN;
 		return (const char*)(this->credentialInfo.username);
 	}
-	std::string DBCredentials::getUsername() {
+	std::string DBCredential::getUsername() {
 		std::string outputUsernameOrNum(this->credentialInfo.username);
 		return outputUsernameOrNum;
 	}
 
-	const char* DBCredentials::getPasswordHash(int& lenOfArray) {
+	const char* DBCredential::getPasswordHash(int& lenOfArray) {
 		lenOfArray = EarnStructs::VARCHARLEN;
 		return (const char*)(this->credentialInfo.userPasswordHash);
 	}
-	std::string DBCredentials::getPasswordHash() {
+	std::string DBCredential::getPasswordHash() {
 		std::string outputPasswordHash(this->credentialInfo.userPasswordHash);
 		return outputPasswordHash;
 	}
 
-	EarnStructs::CredentialInfo DBCredentials::getCredentialInfo() {
+	EarnStructs::CredentialInfo DBCredential::getCredentialInfo() {
 		return this->credentialInfo;
 	}
 
 	//Set functions
 
-	void DBCredentials::setClientID(int newClientID) {
+	void DBCredential::setClientID(int newClientID) {
 		this->credentialInfo.clientID = newClientID;
 	}
 
-	void DBCredentials::setUsername(char newUsername [EarnStructs::VARCHARLEN]) {
+	void DBCredential::setUsername(char newUsername [EarnStructs::VARCHARLEN]) {
 		memcpy(this->credentialInfo.username, newUsername, EarnStructs::VARCHARLEN);
 	}
-	void DBCredentials::setUsername(std::string newUsername) {
+	void DBCredential::setUsername(std::string newUsername) {
 		memcpy(this->credentialInfo.username, newUsername.c_str(), EarnStructs::VARCHARLEN);
 	}
 
-	void DBCredentials::setUsernumber(int newUsernumber) {
+	void DBCredential::setUsernumber(int newUsernumber) {
 		this->credentialInfo.usernumber = newUsernumber;
 	}
 
-	void DBCredentials::setPasswordHash(char newPasswordHash[EarnStructs::VARCHARLEN]) {
+	void DBCredential::setPasswordHash(char newPasswordHash[EarnStructs::VARCHARLEN]) {
 		memcpy(this->credentialInfo.userPasswordHash, newPasswordHash, EarnStructs::VARCHARLEN);
 	}
-	void DBCredentials::setPasswordHash(std::string newPasswordHash) {
+	void DBCredential::setPasswordHash(std::string newPasswordHash) {
 		memcpy(this->credentialInfo.userPasswordHash, newPasswordHash.c_str(), EarnStructs::VARCHARLEN);
 	}
 
 	//Inherited functions
 
-	std::string DBCredentials::displayInfo() {
+	std::string DBCredential::displayInfo() {
 		std::stringstream outputStream;
 		outputStream << "Credential ID: " << this->getObjectID() << '\n';
 		outputStream << "Client ID: " << this->getClientID() << '\n';
@@ -421,11 +433,23 @@ namespace EarnDB {
 		return outputStream.str();
 	}
 
-	//std::string DBCredentials::getLogData() {
+	//std::string DBCredential::getLogData() {
 
 	//}
 
-	std::string DBCredentials::addInfoToDB() {
+	std::string DBCredential::getInfoFromDB() {
+		/*
+			IN check_credential_id INT,
+			OUT check_result BOOL
+		*/
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkCredentialExists(" << this->getObjectID() << ", @checkResult)";
+
+		return outputQuery.str();
+	}
+
+	std::string DBCredential::addInfoToDB() {
 		/*
 			IN input_client_id INT,
 			IN input_username VARCHAR(45),
@@ -441,13 +465,13 @@ namespace EarnDB {
 		outputQuery << ", " << this->getUsername();
 		outputQuery << ", " << this->getUsernumber();
 		outputQuery << ", " << this->getPasswordHash();
-		outputQuery << ", newID);";
+		outputQuery << ", @newID);";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
 	}
 
-	std::string DBCredentials::modifyInfoInDB() {
+	std::string DBCredential::modifyInfoInDB() {
 		/*
 			IN input_client_id INT,
 			IN input_username VARCHAR(45),
@@ -468,7 +492,7 @@ namespace EarnDB {
 		return outputQuery.str();
 	}
 
-	std::string DBCredentials::deleteInfoInDB() {
+	std::string DBCredential::deleteInfoInDB() {
 		/*
 			IN input_credential_id INT
 		*/
@@ -482,7 +506,7 @@ namespace EarnDB {
 		return outputQuery.str();
 	}
 
-	std::string DBCredentials::checkObjectExists() {
+	std::string DBCredential::checkObjectExists() {
 		/*
 			IN check_credential_id INT,
 		    OUT check_result BOOL
@@ -491,7 +515,7 @@ namespace EarnDB {
 		//setup output call based on checkCredentialExists procedure in mySql DB (inputs above)
 
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkCredentialExists(" << this->getClientID() << ", checkResult);";
+		outputQuery << "CALL checkCredentialExists(" << this->getClientID() << ", @checkResult);";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -581,6 +605,18 @@ namespace EarnDB {
 
 	//}
 
+	std::string DBAccount::getInfoFromDB() {
+		/*
+			IN check_account_id INT,
+			OUT check_result BOOL
+		*/
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkAccountExists(" << this->getObjectID() << ", @checkResult)";
+
+		return outputQuery.str();
+	}
+
 	std::string DBAccount::addInfoToDB() {
 		/*
 			IN input_client_id INT,
@@ -593,7 +629,7 @@ namespace EarnDB {
 		std::stringstream outputQuery;
 		outputQuery << "CALL addAccount(" << this->getAccountClientID();
 		outputQuery << ", " << this->getAccountType();
-		outputQuery << ", newID);";
+		outputQuery << ", @newID);";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -638,7 +674,7 @@ namespace EarnDB {
 		*/
 		//setup output call based on checkAccountExists procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkAccountExists(" << this->getObjectID() << ", checkResult);";
+		outputQuery << "CALL checkAccountExists(" << this->getObjectID() << ", @checkResult);";
 		return outputQuery.str();
 	}
 }
@@ -674,7 +710,7 @@ namespace EarnDB {
 		this->setTransactionSecondaryAcc(copyTransaction.transactionInfo.secondaryAccount);
 	}
 
-	DBTransaction::DBTransaction(int inputObjectID, int inputAccountID, EarnStructs::TransactionType inputTransactionType, char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount) :DBObject(EarnStructs::TRANSACTION, inputObjectID) {
+	DBTransaction::DBTransaction(int inputObjectID, int inputAccountID, EarnStructs::TransactionType inputTransactionType, const char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount) :DBObject(EarnStructs::TRANSACTION, inputObjectID) {
 		this->setTransactionAccountID(inputAccountID);
 		this->setTransactionType(inputTransactionType);
 		this->setTransactionTime(transactionTime);
@@ -728,8 +764,8 @@ namespace EarnDB {
 		this->transactionInfo.transactionType = newTransactionType;
 	}
 
-	void DBTransaction::setTransactionTime(char* newTransactionTime) {
-		this->transactionInfo.transactionTime = newTransactionTime;
+	void DBTransaction::setTransactionTime(const char* newTransactionTime) {
+		memcpy(this->transactionInfo.transactionTime, newTransactionTime, EarnStructs::VARCHARLEN);
 	}
 
 	void DBTransaction::setTransactionPreviousBal(double newTransactionPB) {
@@ -766,6 +802,19 @@ namespace EarnDB {
 
 	//}
 
+
+	std::string DBTransaction::getInfoFromDB() {
+		/*
+			IN check_transaction_id INT,
+			OUT check_result BOOL
+		*/
+
+		std::stringstream outputQuery;
+		outputQuery << "CALL checkTransactionExists(" << this->getObjectID() << ", @checkResult)";
+
+		return outputQuery.str();
+	}
+
 	std::string DBTransaction::addInfoToDB() {
 		/*
 			IN input_account_id INT,
@@ -784,7 +833,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getTransactionPreviousBal();
 		outputQuery << ", " << this->getTransactionNewBal();
 		outputQuery << ", " << this->getTransactionSecondaryAcc();
-		outputQuery << ", newID);";
+		outputQuery << ", @newID);";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -833,7 +882,7 @@ namespace EarnDB {
 		*/
 		//setup output call based on checkTransactionExists procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkTransactionExists(" << this->getObjectID() << ", checkResult);";
+		outputQuery << "CALL checkTransactionExists(" << this->getObjectID() << ", @checkResult);";
 		return outputQuery.str();
 	}
 }
