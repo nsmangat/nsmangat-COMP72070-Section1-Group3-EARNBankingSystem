@@ -8,7 +8,7 @@
 #include "EARNStructs.h"
 
 #define STRING_LENGTH 30
-const int HeadSize = 136;
+const int HeadSize = 84;
 enum dataTypeChoice { CreateUserType, LoginType, DepositType, WithdrawType, TransferType, LogoffType};
 
 using namespace std;

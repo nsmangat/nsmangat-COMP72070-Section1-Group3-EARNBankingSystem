@@ -4,5 +4,7 @@
 #include <iostream>
 
 
-void menu();
+void menuOne();
+void menuTwo();
 CreateAccount inputAccountInfo();
+Login inputLoginInfo();

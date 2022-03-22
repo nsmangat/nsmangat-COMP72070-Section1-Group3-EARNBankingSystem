@@ -69,9 +69,9 @@ Packet::Packet(int OpType, int AccType) {								//for client side for a request
 	strcpy(HEAD.fromIP, IP_ADDR);
 
 	HEAD.accountType = AccType;
-	HEAD.operationType = OpType;
+	HEAD.objectType = OpType;
 	HEAD.dataSize = 0;
-	HEAD.branchID = 1;
+	//HEAD.branchID = 1;
 
 	Data = nullptr;
 	TxBuffer = nullptr;
@@ -102,7 +102,7 @@ char* Packet::serialize(int& size) {
 
 	setTime();
 
-	//cout << "HEad size: " << sizeof(Header);
+	//cout << "Head size: " << sizeof(Header) << endl;
 
 
 	memcpy(TxBuffer, &HEAD, sizeof(Header));
@@ -128,7 +128,7 @@ void Packet::display() {
 	cout << "Object Type:" << HEAD.objectType << endl;
 	cout << "Data Size:" << HEAD.dataSize << endl;
 	cout << "Time of Send:" << HEAD.TimeOfSend << endl;
-	cout << "Branch ID:" << HEAD.branchID << endl;
+	//cout << "Branch ID:" << HEAD.branchID << endl;
 
 	cout << "Tail:" << Tail << endl;
 	cout << "Data:" << &Data << endl;
@@ -157,4 +157,13 @@ int Packet::getAccountType() {
 void Packet::setAccountType(int accountType) {
 
 	HEAD.accountType = accountType;
+}
+
+void Packet::setStatus(int num) {
+
+	HEAD.status = num;
+}
+
+int Packet::getStatus() {
+	return HEAD.status;
 }

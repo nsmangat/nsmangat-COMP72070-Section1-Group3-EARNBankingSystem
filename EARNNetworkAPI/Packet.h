@@ -55,4 +55,8 @@ public:
 
 	int getTail();
 
+	void setStatus(int num);
+	int getStatus();
+
+
 };

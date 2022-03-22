@@ -8,16 +8,27 @@
 
 using namespace std;
 
-void menu() {
+void menuOne() {
 
 	cout << "Welcome to EARN Banking System." << endl;
+	cout << "1. Login" << endl;
+	cout << "2. Create account" << endl;
+
+	/*cout << "1. Create user" << endl;
+	cout << "2. Deposit" << endl;
+	cout << "3. Withdraw" << endl;
+	cout << "4. Transfer" << endl;*/
+	
+}
+
+void menuTwo() {
+
+
 	cout << "1. Create user" << endl;
 	cout << "2. Deposit" << endl;
 	cout << "3. Withdraw" << endl;
 	cout << "4. Transfer" << endl;
 
-
-	
 }
 
 CreateAccount inputAccountInfo()
@@ -29,14 +40,6 @@ CreateAccount inputAccountInfo()
 	cout << "Please input your last name" << endl;
 	char lastName[STRING_LENGTH];
 	cin.getline(lastName, STRING_LENGTH);
-
-	cout << "Please input your username" << endl;
-	char userName[STRING_LENGTH];
-	cin.getline(userName, STRING_LENGTH);
-
-	cout << "Please input your password" << endl;
-	char password[STRING_LENGTH];
-	cin.getline(password, STRING_LENGTH);
 
 	
 	cout << "Please input your email" << endl;
@@ -70,5 +73,24 @@ CreateAccount inputAccountInfo()
 	return testAccount;	
 
 	//CreateAccount = function()
+
+}
+
+
+
+Login inputLoginInfo()
+{
+
+	cout << "Please input your username" << endl;
+	char userName[STRING_LENGTH];
+	cin.getline(userName, STRING_LENGTH);
+
+	cout << "Please input your password" << endl;
+	char password[STRING_LENGTH];
+	cin.getline(password, STRING_LENGTH);
+
+	Login testLogin(userName, password);
+
+	return testLogin;
 
 }
