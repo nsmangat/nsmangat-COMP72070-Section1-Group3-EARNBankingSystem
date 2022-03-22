@@ -12,12 +12,13 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -46,7 +47,6 @@ public:
     QLineEdit *email_lineEdit;
     QPushButton *SendResetLink_pushButton;
     QPushButton *BackToLogin_pushButton;
-    QLabel *SendLinkMessage_label;
     QWidget *page3_Signup;
     QLabel *SignupMsg_label;
     QLabel *Signup_label;
@@ -67,30 +67,35 @@ public:
     QPushButton *ImageDisplayPushButton;
     QWidget *page6_Transfer;
     QLabel *Transfer_label;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *ToMyAcc_pushButton;
+    QPushButton *ToOtherPeople_pushButton;
+    QLineEdit *From_lineEdit;
+    QLineEdit *To_lineEdit;
+    QLineEdit *Amount_lineEdit;
     QLabel *From_label;
     QLabel *To_label;
     QLabel *Amount_label;
     QPushButton *Send_pushButton;
     QPushButton *BackToMenu_pushButton_2;
     QPushButton *Logout_pushButton_3;
-    QComboBox *From_comboBox;
-    QLineEdit *Amount_lineEdit;
-    QLineEdit *To_lineEdit;
     QWidget *page7_Deposit;
     QLabel *Deposit_label;
     QLabel *Frontpage_label;
-    QPushButton *DepositComplete_pushButton;
-    QLabel *Backpage_label_2;
+    QPushButton *pushButton_3;
+    QLabel *DepositComplete_label;
+    QLabel *Frontpage_label_2;
     QPushButton *Logout_pushButton_4;
     QPushButton *BackToMenu_pushButton_3;
-    QLineEdit *Amount_lineEdit_2;
-    QLabel *Amount_label_3;
-    QLabel *AccType_label;
-    QComboBox *AccType_comboBox;
-    QLabel *FrontpageImage_label;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
     QPushButton *AddFrontpage_pushButton;
-    QLabel *BackpageImage_label;
-    QPushButton *AddBackpage_pushButton;
+    QPushButton *AddBackPage_pushButton;
+    QLineEdit *lineEdit;
+    QLabel *Frontpage_label_3;
+    QLabel *Frontpage_label_4;
+    QLineEdit *lineEdit_2;
     QWidget *page8_AddAcc;
     QLabel *AddAcc_label;
     QCheckBox *SavingAcc_checkBox;
@@ -199,9 +204,6 @@ public:
         BackToLogin_pushButton = new QPushButton(Reset_page);
         BackToLogin_pushButton->setObjectName(QString::fromUtf8("BackToLogin_pushButton"));
         BackToLogin_pushButton->setGeometry(QRect(30, 20, 111, 29));
-        SendLinkMessage_label = new QLabel(Reset_page);
-        SendLinkMessage_label->setObjectName(QString::fromUtf8("SendLinkMessage_label"));
-        SendLinkMessage_label->setGeometry(QRect(250, 390, 291, 31));
         stackedWidget->addWidget(Reset_page);
         page3_Signup = new QWidget();
         page3_Signup->setObjectName(QString::fromUtf8("page3_Signup"));
@@ -210,7 +212,7 @@ public:
 ""));
         SignupMsg_label = new QLabel(page3_Signup);
         SignupMsg_label->setObjectName(QString::fromUtf8("SignupMsg_label"));
-        SignupMsg_label->setGeometry(QRect(60, 230, 671, 121));
+        SignupMsg_label->setGeometry(QRect(70, 230, 681, 121));
         SignupMsg_label->setFont(font2);
         SignupMsg_label->setContextMenuPolicy(Qt::ActionsContextMenu);
         Signup_label = new QLabel(page3_Signup);
@@ -288,18 +290,43 @@ public:
         Transfer_label->setObjectName(QString::fromUtf8("Transfer_label"));
         Transfer_label->setGeometry(QRect(320, 50, 141, 41));
         Transfer_label->setFont(font);
+        horizontalLayoutWidget = new QWidget(page6_Transfer);
+        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(80, 120, 621, 41));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        ToMyAcc_pushButton = new QPushButton(horizontalLayoutWidget);
+        ToMyAcc_pushButton->setObjectName(QString::fromUtf8("ToMyAcc_pushButton"));
+
+        horizontalLayout->addWidget(ToMyAcc_pushButton);
+
+        ToOtherPeople_pushButton = new QPushButton(horizontalLayoutWidget);
+        ToOtherPeople_pushButton->setObjectName(QString::fromUtf8("ToOtherPeople_pushButton"));
+
+        horizontalLayout->addWidget(ToOtherPeople_pushButton);
+
+        From_lineEdit = new QLineEdit(page6_Transfer);
+        From_lineEdit->setObjectName(QString::fromUtf8("From_lineEdit"));
+        From_lineEdit->setGeometry(QRect(160, 230, 451, 51));
+        To_lineEdit = new QLineEdit(page6_Transfer);
+        To_lineEdit->setObjectName(QString::fromUtf8("To_lineEdit"));
+        To_lineEdit->setGeometry(QRect(160, 320, 451, 51));
+        Amount_lineEdit = new QLineEdit(page6_Transfer);
+        Amount_lineEdit->setObjectName(QString::fromUtf8("Amount_lineEdit"));
+        Amount_lineEdit->setGeometry(QRect(160, 410, 451, 51));
         From_label = new QLabel(page6_Transfer);
         From_label->setObjectName(QString::fromUtf8("From_label"));
-        From_label->setGeometry(QRect(160, 140, 63, 20));
+        From_label->setGeometry(QRect(160, 210, 63, 20));
         To_label = new QLabel(page6_Transfer);
         To_label->setObjectName(QString::fromUtf8("To_label"));
-        To_label->setGeometry(QRect(160, 250, 63, 20));
+        To_label->setGeometry(QRect(160, 300, 63, 20));
         Amount_label = new QLabel(page6_Transfer);
         Amount_label->setObjectName(QString::fromUtf8("Amount_label"));
-        Amount_label->setGeometry(QRect(160, 360, 71, 20));
+        Amount_label->setGeometry(QRect(160, 390, 71, 20));
         Send_pushButton = new QPushButton(page6_Transfer);
         Send_pushButton->setObjectName(QString::fromUtf8("Send_pushButton"));
-        Send_pushButton->setGeometry(QRect(600, 490, 101, 31));
+        Send_pushButton->setGeometry(QRect(600, 510, 101, 31));
         Send_pushButton->setFont(font2);
         BackToMenu_pushButton_2 = new QPushButton(page6_Transfer);
         BackToMenu_pushButton_2->setObjectName(QString::fromUtf8("BackToMenu_pushButton_2"));
@@ -307,17 +334,6 @@ public:
         Logout_pushButton_3 = new QPushButton(page6_Transfer);
         Logout_pushButton_3->setObjectName(QString::fromUtf8("Logout_pushButton_3"));
         Logout_pushButton_3->setGeometry(QRect(670, 30, 83, 29));
-        From_comboBox = new QComboBox(page6_Transfer);
-        From_comboBox->addItem(QString());
-        From_comboBox->addItem(QString());
-        From_comboBox->setObjectName(QString::fromUtf8("From_comboBox"));
-        From_comboBox->setGeometry(QRect(160, 170, 451, 51));
-        Amount_lineEdit = new QLineEdit(page6_Transfer);
-        Amount_lineEdit->setObjectName(QString::fromUtf8("Amount_lineEdit"));
-        Amount_lineEdit->setGeometry(QRect(160, 390, 451, 51));
-        To_lineEdit = new QLineEdit(page6_Transfer);
-        To_lineEdit->setObjectName(QString::fromUtf8("To_lineEdit"));
-        To_lineEdit->setGeometry(QRect(160, 280, 451, 51));
         stackedWidget->addWidget(page6_Transfer);
         page7_Deposit = new QWidget();
         page7_Deposit->setObjectName(QString::fromUtf8("page7_Deposit"));
@@ -329,69 +345,70 @@ public:
         Deposit_label->setFont(font);
         Frontpage_label = new QLabel(page7_Deposit);
         Frontpage_label->setObjectName(QString::fromUtf8("Frontpage_label"));
-        Frontpage_label->setGeometry(QRect(60, 150, 231, 31));
+        Frontpage_label->setGeometry(QRect(60, 170, 231, 31));
         QFont font4;
         font4.setPointSize(10);
         Frontpage_label->setFont(font4);
-        DepositComplete_pushButton = new QPushButton(page7_Deposit);
-        DepositComplete_pushButton->setObjectName(QString::fromUtf8("DepositComplete_pushButton"));
-        DepositComplete_pushButton->setGeometry(QRect(650, 490, 91, 41));
+        pushButton_3 = new QPushButton(page7_Deposit);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        pushButton_3->setGeometry(QRect(660, 520, 91, 31));
         QFont font5;
         font5.setPointSize(11);
-        DepositComplete_pushButton->setFont(font5);
-        Backpage_label_2 = new QLabel(page7_Deposit);
-        Backpage_label_2->setObjectName(QString::fromUtf8("Backpage_label_2"));
-        Backpage_label_2->setGeometry(QRect(60, 260, 201, 31));
-        Backpage_label_2->setFont(font4);
+        pushButton_3->setFont(font5);
+        DepositComplete_label = new QLabel(page7_Deposit);
+        DepositComplete_label->setObjectName(QString::fromUtf8("DepositComplete_label"));
+        DepositComplete_label->setGeometry(QRect(310, 100, 161, 21));
+        DepositComplete_label->setFont(font4);
+        DepositComplete_label->setLayoutDirection(Qt::LeftToRight);
+        DepositComplete_label->setStyleSheet(QString::fromUtf8("color: rgb(255, 238, 106);"));
+        DepositComplete_label->setAlignment(Qt::AlignCenter);
+        DepositComplete_label->setIndent(0);
+        Frontpage_label_2 = new QLabel(page7_Deposit);
+        Frontpage_label_2->setObjectName(QString::fromUtf8("Frontpage_label_2"));
+        Frontpage_label_2->setGeometry(QRect(60, 250, 201, 31));
+        Frontpage_label_2->setFont(font4);
         Logout_pushButton_4 = new QPushButton(page7_Deposit);
         Logout_pushButton_4->setObjectName(QString::fromUtf8("Logout_pushButton_4"));
-        Logout_pushButton_4->setGeometry(QRect(660, 40, 83, 29));
+        Logout_pushButton_4->setGeometry(QRect(670, 30, 83, 29));
         BackToMenu_pushButton_3 = new QPushButton(page7_Deposit);
         BackToMenu_pushButton_3->setObjectName(QString::fromUtf8("BackToMenu_pushButton_3"));
         BackToMenu_pushButton_3->setGeometry(QRect(30, 30, 111, 29));
-        Amount_lineEdit_2 = new QLineEdit(page7_Deposit);
-        Amount_lineEdit_2->setObjectName(QString::fromUtf8("Amount_lineEdit_2"));
-        Amount_lineEdit_2->setGeometry(QRect(310, 450, 171, 31));
-        Amount_label_3 = new QLabel(page7_Deposit);
-        Amount_label_3->setObjectName(QString::fromUtf8("Amount_label_3"));
-        Amount_label_3->setGeometry(QRect(60, 450, 71, 31));
-        Amount_label_3->setFont(font4);
-        AccType_label = new QLabel(page7_Deposit);
-        AccType_label->setObjectName(QString::fromUtf8("AccType_label"));
-        AccType_label->setGeometry(QRect(60, 390, 71, 31));
-        AccType_label->setFont(font4);
-        AccType_comboBox = new QComboBox(page7_Deposit);
-        AccType_comboBox->addItem(QString());
-        AccType_comboBox->addItem(QString());
-        AccType_comboBox->setObjectName(QString::fromUtf8("AccType_comboBox"));
-        AccType_comboBox->setGeometry(QRect(310, 400, 171, 31));
-        FrontpageImage_label = new QLabel(page7_Deposit);
-        FrontpageImage_label->setObjectName(QString::fromUtf8("FrontpageImage_label"));
-        FrontpageImage_label->setGeometry(QRect(310, 150, 241, 91));
-        FrontpageImage_label->setStyleSheet(QString::fromUtf8("border:bold 3px ;\n"
-"border-color: rgb(255, 255, 255);\n"
-"background-color: rgb(157, 157, 157);"));
-        AddFrontpage_pushButton = new QPushButton(page7_Deposit);
+        verticalLayoutWidget = new QWidget(page7_Deposit);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(290, 140, 451, 181));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        AddFrontpage_pushButton = new QPushButton(verticalLayoutWidget);
         AddFrontpage_pushButton->setObjectName(QString::fromUtf8("AddFrontpage_pushButton"));
-        AddFrontpage_pushButton->setGeometry(QRect(600, 180, 151, 31));
-        QFont font6;
-        font6.setPointSize(10);
-        font6.setBold(false);
-        AddFrontpage_pushButton->setFont(font6);
+        AddFrontpage_pushButton->setFont(font);
         AddFrontpage_pushButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(200, 200, 200);"));
-        BackpageImage_label = new QLabel(page7_Deposit);
-        BackpageImage_label->setObjectName(QString::fromUtf8("BackpageImage_label"));
-        BackpageImage_label->setGeometry(QRect(310, 260, 241, 91));
-        BackpageImage_label->setStyleSheet(QString::fromUtf8("border:bold 3px ;\n"
-"border-color: rgb(255, 255, 255);\n"
-"background-color: rgb(157, 157, 157);"));
-        AddBackpage_pushButton = new QPushButton(page7_Deposit);
-        AddBackpage_pushButton->setObjectName(QString::fromUtf8("AddBackpage_pushButton"));
-        AddBackpage_pushButton->setGeometry(QRect(600, 290, 151, 31));
-        AddBackpage_pushButton->setFont(font6);
-        AddBackpage_pushButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+
+        verticalLayout->addWidget(AddFrontpage_pushButton);
+
+        AddBackPage_pushButton = new QPushButton(verticalLayoutWidget);
+        AddBackPage_pushButton->setObjectName(QString::fromUtf8("AddBackPage_pushButton"));
+        AddBackPage_pushButton->setFont(font);
+        AddBackPage_pushButton->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
 "background-color: rgb(200, 200, 200);"));
+
+        verticalLayout->addWidget(AddBackPage_pushButton);
+
+        lineEdit = new QLineEdit(page7_Deposit);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+        lineEdit->setGeometry(QRect(290, 420, 113, 28));
+        Frontpage_label_3 = new QLabel(page7_Deposit);
+        Frontpage_label_3->setObjectName(QString::fromUtf8("Frontpage_label_3"));
+        Frontpage_label_3->setGeometry(QRect(60, 420, 71, 31));
+        Frontpage_label_3->setFont(font4);
+        Frontpage_label_4 = new QLabel(page7_Deposit);
+        Frontpage_label_4->setObjectName(QString::fromUtf8("Frontpage_label_4"));
+        Frontpage_label_4->setGeometry(QRect(60, 360, 71, 31));
+        Frontpage_label_4->setFont(font4);
+        lineEdit_2 = new QLineEdit(page7_Deposit);
+        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
+        lineEdit_2->setGeometry(QRect(290, 360, 113, 28));
         stackedWidget->addWidget(page7_Deposit);
         page8_AddAcc = new QWidget();
         page8_AddAcc->setObjectName(QString::fromUtf8("page8_AddAcc"));
@@ -432,7 +449,7 @@ public:
         BackToMenu_pushButton_5->setGeometry(QRect(30, 40, 111, 29));
         stackedWidget->addWidget(page9_MyAcc);
 
-        gridLayout->addWidget(stackedWidget, 0, 0, 1, 1);
+        gridLayout->addWidget(stackedWidget, 0, 1, 1, 1);
 
 
         retranslateUi(ClientApp);
@@ -454,8 +471,7 @@ public:
         email_label->setText(QCoreApplication::translate("ClientApp", "Email:", nullptr));
         SendResetLink_pushButton->setText(QCoreApplication::translate("ClientApp", "Send reset link", nullptr));
         BackToLogin_pushButton->setText(QCoreApplication::translate("ClientApp", "Back to Login", nullptr));
-        SendLinkMessage_label->setText(QString());
-        SignupMsg_label->setText(QCoreApplication::translate("ClientApp", "Online signing up is currently unavailable due to credential verifications. \n"
+        SignupMsg_label->setText(QCoreApplication::translate("ClientApp", "Online signing up is currently unavailable. \n"
 "Please go to a nearest bank branch to open a new account with our assistants.", nullptr));
         Signup_label->setText(QCoreApplication::translate("ClientApp", "Sign up", nullptr));
         BackToLogin_pushButton_2->setText(QCoreApplication::translate("ClientApp", "Back to Login", nullptr));
@@ -472,30 +488,25 @@ public:
         labelImage->setText(QString());
         ImageDisplayPushButton->setText(QCoreApplication::translate("ClientApp", "Display Statments", nullptr));
         Transfer_label->setText(QCoreApplication::translate("ClientApp", "Transfer", nullptr));
+        ToMyAcc_pushButton->setText(QCoreApplication::translate("ClientApp", "To My Account", nullptr));
+        ToOtherPeople_pushButton->setText(QCoreApplication::translate("ClientApp", "To Other People", nullptr));
         From_label->setText(QCoreApplication::translate("ClientApp", "FROM:", nullptr));
         To_label->setText(QCoreApplication::translate("ClientApp", "TO:", nullptr));
         Amount_label->setText(QCoreApplication::translate("ClientApp", "AMOUNT:", nullptr));
         Send_pushButton->setText(QCoreApplication::translate("ClientApp", "Send", nullptr));
         BackToMenu_pushButton_2->setText(QCoreApplication::translate("ClientApp", "Back to Menu", nullptr));
         Logout_pushButton_3->setText(QCoreApplication::translate("ClientApp", "Logout", nullptr));
-        From_comboBox->setItemText(0, QCoreApplication::translate("ClientApp", "Chequing Account", nullptr));
-        From_comboBox->setItemText(1, QCoreApplication::translate("ClientApp", "Saving Account", nullptr));
-
         Deposit_label->setText(QCoreApplication::translate("ClientApp", "Deposit", nullptr));
         Frontpage_label->setText(QCoreApplication::translate("ClientApp", "Front page of the cheque:", nullptr));
-        DepositComplete_pushButton->setText(QCoreApplication::translate("ClientApp", "Done", nullptr));
-        Backpage_label_2->setText(QCoreApplication::translate("ClientApp", "Back page of the cheque:", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("ClientApp", "Done", nullptr));
+        DepositComplete_label->setText(QCoreApplication::translate("ClientApp", "Deposit Completed", nullptr));
+        Frontpage_label_2->setText(QCoreApplication::translate("ClientApp", "Back page of the cheque:", nullptr));
         Logout_pushButton_4->setText(QCoreApplication::translate("ClientApp", "Logout", nullptr));
         BackToMenu_pushButton_3->setText(QCoreApplication::translate("ClientApp", "Back to Menu", nullptr));
-        Amount_label_3->setText(QCoreApplication::translate("ClientApp", "Amount:", nullptr));
-        AccType_label->setText(QCoreApplication::translate("ClientApp", "Account:", nullptr));
-        AccType_comboBox->setItemText(0, QCoreApplication::translate("ClientApp", "Chequing Account", nullptr));
-        AccType_comboBox->setItemText(1, QCoreApplication::translate("ClientApp", "Saving Account", nullptr));
-
-        FrontpageImage_label->setText(QString());
-        AddFrontpage_pushButton->setText(QCoreApplication::translate("ClientApp", "Choose an image", nullptr));
-        BackpageImage_label->setText(QString());
-        AddBackpage_pushButton->setText(QCoreApplication::translate("ClientApp", "Choose an image", nullptr));
+        AddFrontpage_pushButton->setText(QCoreApplication::translate("ClientApp", "+", nullptr));
+        AddBackPage_pushButton->setText(QCoreApplication::translate("ClientApp", "+", nullptr));
+        Frontpage_label_3->setText(QCoreApplication::translate("ClientApp", "Amount:", nullptr));
+        Frontpage_label_4->setText(QCoreApplication::translate("ClientApp", "Account:", nullptr));
         AddAcc_label->setText(QCoreApplication::translate("ClientApp", "Add New Accounts", nullptr));
         SavingAcc_checkBox->setText(QCoreApplication::translate("ClientApp", "Saving Account", nullptr));
         InvestingAcc_checkBox->setText(QCoreApplication::translate("ClientApp", "Investing Account", nullptr));
