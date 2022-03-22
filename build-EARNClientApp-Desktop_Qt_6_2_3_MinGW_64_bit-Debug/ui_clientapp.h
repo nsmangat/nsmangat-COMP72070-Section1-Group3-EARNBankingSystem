@@ -46,7 +46,6 @@ public:
     QLineEdit *email_lineEdit;
     QPushButton *SendResetLink_pushButton;
     QPushButton *BackToLogin_pushButton;
-    QLabel *SendLinkMessage_label;
     QWidget *page3_Signup;
     QLabel *SignupMsg_label;
     QLabel *Signup_label;
@@ -100,6 +99,16 @@ public:
     QLabel *MyAcc_label;
     QPushButton *Logout_pushButton_6;
     QPushButton *BackToMenu_pushButton_5;
+    QWidget *gridLayoutWidget_2;
+    QGridLayout *gridLayout_3;
+    QLabel *Address_label;
+    QLabel *PhoneNum_label;
+    QLabel *Email_label;
+    QLabel *Name_label;
+    QLabel *label;
+    QLabel *label_2;
+    QLabel *label_3;
+    QLabel *label_4;
 
     void setupUi(QWidget *ClientApp)
     {
@@ -198,9 +207,6 @@ public:
         BackToLogin_pushButton = new QPushButton(Reset_page);
         BackToLogin_pushButton->setObjectName(QString::fromUtf8("BackToLogin_pushButton"));
         BackToLogin_pushButton->setGeometry(QRect(30, 20, 111, 29));
-        SendLinkMessage_label = new QLabel(Reset_page);
-        SendLinkMessage_label->setObjectName(QString::fromUtf8("SendLinkMessage_label"));
-        SendLinkMessage_label->setGeometry(QRect(250, 390, 291, 31));
         stackedWidget->addWidget(Reset_page);
         page3_Signup = new QWidget();
         page3_Signup->setObjectName(QString::fromUtf8("page3_Signup"));
@@ -417,17 +423,74 @@ public:
 "background-color:rgb(47, 47, 47)"));
         MyAcc_label = new QLabel(page9_MyAcc);
         MyAcc_label->setObjectName(QString::fromUtf8("MyAcc_label"));
-        MyAcc_label->setGeometry(QRect(280, 60, 211, 41));
+        MyAcc_label->setGeometry(QRect(280, 60, 221, 51));
         MyAcc_label->setFont(font);
         Logout_pushButton_6 = new QPushButton(page9_MyAcc);
         Logout_pushButton_6->setObjectName(QString::fromUtf8("Logout_pushButton_6"));
-        Logout_pushButton_6->setGeometry(QRect(660, 40, 83, 29));
+        Logout_pushButton_6->setGeometry(QRect(640, 40, 83, 29));
         BackToMenu_pushButton_5 = new QPushButton(page9_MyAcc);
         BackToMenu_pushButton_5->setObjectName(QString::fromUtf8("BackToMenu_pushButton_5"));
         BackToMenu_pushButton_5->setGeometry(QRect(30, 40, 111, 29));
+        gridLayoutWidget_2 = new QWidget(page9_MyAcc);
+        gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
+        gridLayoutWidget_2->setGeometry(QRect(150, 160, 521, 351));
+        gridLayout_3 = new QGridLayout(gridLayoutWidget_2);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        gridLayout_3->setContentsMargins(0, 0, 0, 0);
+        Address_label = new QLabel(gridLayoutWidget_2);
+        Address_label->setObjectName(QString::fromUtf8("Address_label"));
+        Address_label->setFont(font2);
+
+        gridLayout_3->addWidget(Address_label, 5, 1, 1, 1);
+
+        PhoneNum_label = new QLabel(gridLayoutWidget_2);
+        PhoneNum_label->setObjectName(QString::fromUtf8("PhoneNum_label"));
+        PhoneNum_label->setFont(font2);
+
+        gridLayout_3->addWidget(PhoneNum_label, 4, 1, 1, 1);
+
+        Email_label = new QLabel(gridLayoutWidget_2);
+        Email_label->setObjectName(QString::fromUtf8("Email_label"));
+        Email_label->setFont(font2);
+
+        gridLayout_3->addWidget(Email_label, 1, 1, 1, 1);
+
+        Name_label = new QLabel(gridLayoutWidget_2);
+        Name_label->setObjectName(QString::fromUtf8("Name_label"));
+        Name_label->setFont(font2);
+
+        gridLayout_3->addWidget(Name_label, 0, 1, 1, 1);
+
+        label = new QLabel(gridLayoutWidget_2);
+        label->setObjectName(QString::fromUtf8("label"));
+        QFont font7;
+        font7.setPointSize(12);
+        font7.setBold(true);
+        label->setFont(font7);
+
+        gridLayout_3->addWidget(label, 0, 0, 1, 1);
+
+        label_2 = new QLabel(gridLayoutWidget_2);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setFont(font7);
+
+        gridLayout_3->addWidget(label_2, 1, 0, 1, 1);
+
+        label_3 = new QLabel(gridLayoutWidget_2);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setFont(font7);
+
+        gridLayout_3->addWidget(label_3, 4, 0, 1, 1);
+
+        label_4 = new QLabel(gridLayoutWidget_2);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+        label_4->setFont(font7);
+
+        gridLayout_3->addWidget(label_4, 5, 0, 1, 1);
+
         stackedWidget->addWidget(page9_MyAcc);
 
-        gridLayout->addWidget(stackedWidget, 0, 0, 1, 1);
+        gridLayout->addWidget(stackedWidget, 0, 1, 1, 1);
 
 
         retranslateUi(ClientApp);
@@ -449,7 +512,6 @@ public:
         email_label->setText(QCoreApplication::translate("ClientApp", "Email:", nullptr));
         SendResetLink_pushButton->setText(QCoreApplication::translate("ClientApp", "Send reset link", nullptr));
         BackToLogin_pushButton->setText(QCoreApplication::translate("ClientApp", "Back to Login", nullptr));
-        SendLinkMessage_label->setText(QString());
         SignupMsg_label->setText(QCoreApplication::translate("ClientApp", "Online signing up is currently unavailable due to credential verifications. \n"
 "Please go to a nearest bank branch to open a new account with our assistants.", nullptr));
         Signup_label->setText(QCoreApplication::translate("ClientApp", "Sign up", nullptr));
@@ -498,6 +560,14 @@ public:
         MyAcc_label->setText(QCoreApplication::translate("ClientApp", "My Account", nullptr));
         Logout_pushButton_6->setText(QCoreApplication::translate("ClientApp", "Logout", nullptr));
         BackToMenu_pushButton_5->setText(QCoreApplication::translate("ClientApp", "Back to Menu", nullptr));
+        Address_label->setText(QString());
+        PhoneNum_label->setText(QString());
+        Email_label->setText(QString());
+        Name_label->setText(QString());
+        label->setText(QCoreApplication::translate("ClientApp", "Name:", nullptr));
+        label_2->setText(QCoreApplication::translate("ClientApp", "Email", nullptr));
+        label_3->setText(QCoreApplication::translate("ClientApp", "Phone Number:", nullptr));
+        label_4->setText(QCoreApplication::translate("ClientApp", "Address:", nullptr));
     } // retranslateUi
 
 };

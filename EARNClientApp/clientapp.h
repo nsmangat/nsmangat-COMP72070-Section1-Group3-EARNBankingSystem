@@ -82,6 +82,12 @@ private slots:
 
     void on_InvestingAcc_checkBox_stateChanged(int arg1);
 
+    void display_Account_Info();
+
+    void on_BackToMenu_pushButton_5_clicked();
+
+    void on_Logout_pushButton_6_clicked();
+
 private:
     Ui::ClientApp *ui;
 

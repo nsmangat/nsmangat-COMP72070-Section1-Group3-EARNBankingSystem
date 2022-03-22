@@ -8,14 +8,23 @@ ClientApp::ClientApp(QWidget *parent)
     , ui(new Ui::ClientApp)
 {
     ui->setupUi(this);
-    ui->SendLinkMessage_label->hide();
-}
+
+    display_Account_Info();
+   }
 
 ClientApp::~ClientApp()
 {
     delete ui;
 }
 
+void ClientApp::display_Account_Info()
+{
+    //Display user's data in
+    ui->Name_label->setText("Admin Test");
+    ui->Email_label->setText("admin@earn.ca");
+    ui->PhoneNum_label->setText("012345");
+    ui->Address_label->setText("1 Street Blv, Kitchener,ON, Canada");
+}
 
 void ClientApp::on_BackToMenu_pushButton_6_clicked()
 {
@@ -343,5 +352,16 @@ void ClientApp::on_InvestingAcc_checkBox_stateChanged(int arg)
         ui->AccType_comboBox->addItems({"Chequing","Saving"});
 
     }
+}
+
+void ClientApp::on_BackToMenu_pushButton_5_clicked()
+{
+      ui->stackedWidget->setCurrentIndex(3);
+}
+
+
+void ClientApp::on_Logout_pushButton_6_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
