@@ -2,7 +2,6 @@
 #include "DBObjects.h"
 #include <EARNStructs.h>
 
-#include <string>
 #include <vector>
 #include <sstream>
 
@@ -598,7 +597,7 @@ namespace EarnDB {
 		std::stringstream outputStream;
 		outputStream << "Account ID: " << this->getObjectID() << '\n';
 		outputStream << "Client ID: " << this->getAccountClientID() << '\n';
-		outputStream << "Account Type: " << typeid(this->getAccountType()).name() << '\n';
+		outputStream << "Account Type: " << EnumToString(this->getAccountType()) << '\n';
 		outputStream << "Balance: " << this->getAccountBalance() << '\n';
 
 		//lets me allocate it simpler (IMO)
@@ -792,7 +791,7 @@ namespace EarnDB {
 		std::stringstream outputStream;
 		outputStream << "Transaction ID: " << this->getObjectID() << '\n';
 		outputStream << "Account ID: " << this->getTransactionAccountID() << '\n';
-		outputStream << "Transactin Type: " << typeid(this->getTransactionType()).name() << '\n';
+		outputStream << "Transaction Type: " << EnumToString(this->getTransactionType()) << '\n';
 		outputStream << "Transaction Time: " << this->getTransactionTime() << '\n';
 		outputStream << "Previous Balance: " << this->getTransactionPreviousBal() << '\n';
 		outputStream << "New Balance: " << this->getTransactionNewBal() << '\n';

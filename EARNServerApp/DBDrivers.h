@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <string>
 #include <vector>
 #include <mysqlx/xdevapi.h>
 #include "DBAccess.h"
@@ -12,9 +11,47 @@ namespace EarnDB {
 	//DB flags for type of DB error (used in logging failed DB actions)
 	enum DBErrorType { NO_DB_FOUND, BAD_OBJECT_CREDENTIALS, BAD_DB_CREDENTIALS, INSUFFICIENT_BALANCE, ACCOUNT_NOT_FOUND, CLIENT_NOT_FOUND, TRANSACTION_NOT_FOUND, READ_ERROR, WRITE_ERROR, VALIDATION_ERROR };
 	
+	//Converts enum to string depending on type
+	inline const std::string EnumToString(DBErrorType inputType)
+	{
+		switch (inputType)
+		{
+		case NO_DB_FOUND:		return "NO_DB_FOUND";
+		case BAD_OBJECT_CREDENTIALS:	return "BAD_OBJECT_CREDENTIALS";
+		case BAD_DB_CREDENTIALS:	return "BAD_DB_CREDENTIALS";
+		case INSUFFICIENT_BALANCE:		return "INSUFFICIENT_BALANCE";
+		case ACCOUNT_NOT_FOUND:	return "ACCOUNT_NOT_FOUND";
+		case CLIENT_NOT_FOUND:	return "CLIENT_NOT_FOUND";
+		case TRANSACTION_NOT_FOUND:		return "TRANSACTION_NOT_FOUND";
+		case READ_ERROR:	return "READ_ERROR";
+		case WRITE_ERROR:	return "WRITE_ERROR";
+		case VALIDATION_ERROR:		return "VALIDATION_ERROR";
+		default:			return "[Unknown Type]";
+		}
+	}
+
 	//DB flags for type of DB interaction (used in logging standard DB actions)
 	enum DBSUCCESSTYPE { DB_FOUND, GOOD_OBJECT_CREDENTIALS, GOODD_DB_CREDENTIALS, SUFFICIENT_BALANCE, ACCOUNT_FOUND, CLIENT_FOUND, TRANSACTION_FOUND, READ_SUCCESS, WRITE_SUCCESS, VALIDATION_SUCCESS };
 	
+	//Converts enum to string depending on type
+	inline const std::string EnumToString(DBSUCCESSTYPE inputType)
+	{
+		switch (inputType)
+		{
+		case DB_FOUND:		return "DB_FOUND";
+		case GOOD_OBJECT_CREDENTIALS:	return "GOOD_OBJECT_CREDENTIALS";
+		case GOODD_DB_CREDENTIALS:	return "GOODD_DB_CREDENTIALS";
+		case SUFFICIENT_BALANCE:		return "SUFFICIENT_BALANCE";
+		case ACCOUNT_FOUND:	return "ACCOUNT_FOUND";
+		case CLIENT_FOUND:	return "CLIENT_FOUND";
+		case TRANSACTION_FOUND:		return "TRANSACTION_FOUND";
+		case READ_SUCCESS:	return "READ_SUCCESS";
+		case WRITE_SUCCESS:	return "WRITE_SUCCESS";
+		case VALIDATION_SUCCESS:		return "VALIDATION_SUCCESS";
+		default:			return "[Unknown Type]";
+		}
+	}
+
 	//DB Driver parent interface, used by reader, writer & validation (can also be used independantly)
 	class DBDriverInterface {
 		//needed to start connections

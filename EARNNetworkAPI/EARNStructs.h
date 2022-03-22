@@ -12,6 +12,20 @@ namespace EarnStructs  {
 	//Enummeration for different types of Objects
 	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };
 
+	//Converts enum to string depending on type to assist logging
+	inline const std::string EnumToString(ObjectType inputType)
+	{
+		switch (inputType)
+		{
+		case OBJECTNULL:	return "OBJECTNULL";
+		case CLIENT:		return "CLIENT";
+		case CREDENTIALS:	return "CREDENTIALS";
+		case ACCOUNT:		return "ACCOUNT";
+		case TRANSACTION:	return "TRANSACTION";
+		default:			return "[Unknown Type]";
+		}
+	}
+
 	//Structure for Client object's info, to ease serialization
 	struct ClientInfo {
 		char firstName[VARCHARLEN];
@@ -35,6 +49,18 @@ namespace EarnStructs  {
 	//Enummeration for Account types
 	enum AccountType { ACCOUNTNULL, CHEQUINGS, SAVINGS };
 
+	//Converts enum to string depending on type
+	inline const std::string EnumToString(AccountType inputType)
+	{
+		switch (inputType)
+		{
+		case ACCOUNTNULL:	return "ACCOUNTNULL";
+		case CHEQUINGS:		return "CHEQUINGS";
+		case SAVINGS:		return "SAVINGS";
+		default:			return "[Unknown Type]";
+		}
+	}
+
 	//Structure for Account object's info, to ease serialization
 	struct AccountInfo {
 		int clientID;
@@ -44,6 +70,20 @@ namespace EarnStructs  {
 
 	//Enummeration for transaction types
 	enum TransactionType { TRANSACTIONNULL, ETRANSFER, CHEQUE, WITHDRAW, ACCOUNTTRANSFER };
+
+	//Converts enum to string depending on type
+	inline const std::string EnumToString(TransactionType inputType)
+	{
+		switch (inputType)
+		{
+		case TRANSACTIONNULL:	return "TRANSACTIONNULL";
+		case ETRANSFER:			return "ETRANSFER";
+		case CHEQUE:			return "CHEQUE";
+		case WITHDRAW:			return "WITHDRAW";
+		case ACCOUNTTRANSFER:	return "ACCOUNTTRANSFER";
+		default:				return "[Unknown Type]";
+		}
+	}
 
 	//Structure for Transaction object's info, to ease serialization
 	struct TransactionInfo {

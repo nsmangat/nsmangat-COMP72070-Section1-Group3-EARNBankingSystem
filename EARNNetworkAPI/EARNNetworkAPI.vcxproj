@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EARNLogger.h" />
     <ClInclude Include="EARNNetworkAPI.h" />
     <ClInclude Include="EARNStructs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EARNLogger.cpp" />
     <ClCompile Include="EARNNetworkAPI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

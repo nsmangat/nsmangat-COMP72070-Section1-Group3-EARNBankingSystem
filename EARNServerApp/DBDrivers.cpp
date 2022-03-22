@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <mysqlx/xdevapi.h>
 #include <sstream>
