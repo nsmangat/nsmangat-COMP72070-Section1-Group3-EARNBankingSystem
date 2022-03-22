@@ -5,7 +5,8 @@
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QPixmap>
-
+#include <QFileDialog>
+#include <QThread>
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClientApp; }
 QT_END_NAMESPACE
@@ -61,6 +62,23 @@ private slots:
     void on_ToOtherPeople_pushButton_clicked();
 
     void on_ToMyAcc_pushButton_pressed();
+
+    void on_BackToMenu_pushButton_2_clicked();
+
+    void on_Logout_pushButton_3_clicked();
+
+    void on_Send_pushButton_clicked();
+
+    void on_BackToMenu_pushButton_3_clicked();
+
+    void on_Logout_pushButton_4_clicked();
+
+    void on_DepositComplete_pushButton_clicked();
+
+
+    void on_AddFrontpage_pushButton_clicked();
+
+    void on_AddBackpage_pushButton_clicked();
 
 private:
     Ui::ClientApp *ui;
