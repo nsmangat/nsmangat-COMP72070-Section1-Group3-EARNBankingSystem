@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <mysqlx/xdevapi.h>
 #include <sstream>
 #include <Windows.h>
 #include <direct.h>
@@ -14,13 +15,40 @@
 namespace EarnDB {
 	
 	//Constructor
-	DBDriverInterface::DBDriverInterface(std::string inputServer, std::string inputSchema, std::string inputUsername, std::string inputPassword) : server(inputServer), schema(inputSchema), username(inputUsername), password(password)	{
+	DBDriverInterface::DBDriverInterface(
+		std::string inputServer, 
+		std::string inputSchema, 
+		std::string inputUsername, 
+		std::string inputPassword) 
+		: 
+		server(inputServer), 
+		schema(inputSchema), 
+		username(inputUsername), 
+		password(password)	{
 		//Always run this when instantiating the class, just to make sure it will exist for the runtime of the object
 		if (!this->checkIfDBExists()) {
 			std::cout << "Error connecting to database...";
 			//if it doesn't exist then just run the init request command...
 			this->initalizeDefaultDB();
 		}
+	}
+
+	//Get functions
+
+	const std::string DBDriverInterface::getServer() {
+		return this->server;
+	}
+
+	const std::string DBDriverInterface::getSchema() {
+		return this->schema;
+	}
+
+	const std::string DBDriverInterface::getUsername() {
+		return this->username;
+	}
+
+	const std::string DBDriverInterface::getPassword() {
+		return this->password;
 	}
 
 	//Check & Initalize functions
@@ -103,6 +131,24 @@ namespace EarnDB {
 
 //DBReader source code
 namespace EarnDB {
+	//Constructor
+	DBReader::DBReader(
+		std::string inputServer,
+		std::string inputSchema,
+		std::string inputUsername,
+		std::string inputPassword)
+		:
+		DBDriverInterface(
+			inputServer,
+			inputSchema,
+			inputUsername,
+			inputPassword) {
+
+		//nothing to do here so just leave it...
+
+	}
+
+	//Check functions
 
 	bool DBReader::checkClientIDExists(int checkClientID) {
 		
@@ -121,7 +167,7 @@ namespace EarnDB {
 				std::cout << "checking if client is on DB..." << std::endl;
 				
 				//create a temporary client with only that id
-				EarnDB::DBClient copyClient = EarnDB::DBClient();
+				EarnDB::DBClient copyClient;
 				copyClient.setObjectID(checkClientID);
 
 				mySession.sql(copyClient.getInfoFromDB()).execute();
@@ -171,7 +217,7 @@ namespace EarnDB {
 				std::cout << "checking if account is on DB..." << std::endl;
 
 				//create a temporary account with only that id
-				EarnDB::DBAccount copyAccount = EarnDB::DBAccount();
+				EarnDB::DBAccount copyAccount;
 				copyAccount.setObjectID(checkAccountID);
 
 				mySession.sql(copyAccount.getInfoFromDB()).execute();
@@ -221,7 +267,7 @@ namespace EarnDB {
 				std::cout << "checking if transaction is on DB..." << std::endl;
 				
 				//create a temporary transaction with only that id
-				EarnDB::DBClient copyTransaction = EarnDB::DBClient();
+				EarnDB::DBTransaction copyTransaction;
 				copyTransaction.setObjectID(checkTransactionID);
 				
 				mySession.sql(copyTransaction.getInfoFromDB()).execute();
@@ -231,6 +277,56 @@ namespace EarnDB {
 				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
 
 				std::cout << "check transaction ID returned: " << (bool)resultRow[0] << std::endl;
+
+				checkResult = (bool)resultRow[0];
+
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				exit(1);
+			}
+
+			// Note: session is closed automatically when session object
+			// is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			exit(1);
+		}
+		return checkResult;
+	}
+	
+	bool DBReader::checkCredentialIDExists(int checkCredentialID) {
+
+		bool checkResult = false;	//bool we will be returning
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession(this->getServer(), 33060, this->getUsername(), this->getUsername(), this->getSchema());
+
+			try
+			{
+				std::stringstream schemaString;
+				schemaString << "USE " << this->getSchema();
+				mySession.sql(schemaString.str()).execute();
+
+				std::cout << "checking if transaction is on DB..." << std::endl;
+
+				//create a temporary transaction with only that id
+				EarnDB::DBCredential copyTransaction;
+				copyTransaction.setObjectID(checkCredentialID);
+
+				mySession.sql(copyTransaction.getInfoFromDB()).execute();
+
+				//now get OUT based on what the input var was (check function name)
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+
+				std::cout << "check credential ID returned: " << (bool)resultRow[0] << std::endl;
 
 				checkResult = (bool)resultRow[0];
 
@@ -266,12 +362,14 @@ namespace EarnDB {
 		else if (EarnStructs::TRANSACTION == idType) {
 			outputResponse = this->checkAccountIDExists(checkID);
 		}
+		else if (EarnStructs::CREDENTIALS == idType) {
+			outputResponse = this->checkCredentialIDExists(checkID);
+		}
 
 		return outputResponse;
 	}
 
 	//Get single functions
-
 	int DBReader::getObjectInfo(int objectID, DBClient& copyClient) {
 
 		int getResult;
@@ -306,6 +404,7 @@ namespace EarnDB {
 				std::cout << "Client ZIP Code: " << resultRow[8] << std::endl;
 
 				//now set the info into referenced client
+				copyClient.setObjectID(resultRow[0]);
 				copyClient.setFirstName((std::string)resultRow[1]);
 				copyClient.setLastName((std::string)resultRow[2]);
 				copyClient.setEmail((std::string)resultRow[3]);
@@ -366,6 +465,7 @@ namespace EarnDB {
 				std::cout << "Account Balance: $" << resultRow[3] << std::endl;
 
 				//now set the info into referenced account
+				copyAccount.setObjectID(resultRow[0]);
 				copyAccount.setAccountClientID((int)resultRow[1]);
 				copyAccount.setAccountType(getType);
 				copyAccount.setBalance((double)resultRow[3]);
@@ -425,6 +525,7 @@ namespace EarnDB {
 				std::cout << "Secondary Account: " << resultRow[5] << std::endl;
 
 				//now set the info into referenced client
+				copyTransaction.setObjectID(resultRow[0]);
 				copyTransaction.setTransactionAccountID((int)resultRow[1]);
 				copyTransaction.setTransactionType(getType);
 				copyTransaction.setTransactionPreviousBal((double)resultRow[3]);
@@ -734,12 +835,256 @@ namespace EarnDB {
 
 //DBValidation source code
 namespace EarnDB {
-	
+	//Constructor
+	DBValidation::DBValidation(
+		std::string inputServer,
+		std::string inputSchema,
+		std::string inputUsername,
+		std::string inputPassword)
+		:
+		DBDriverInterface(
+			inputServer,
+			inputSchema,
+			inputUsername,
+			inputPassword) {
+		//nothing to do here so just leave it...
+	}
 
+	//Validation functions
+
+	int DBValidation::validateClient(int usernumber, std::string username, std::string passwordHash) {
+		
+		int returnID = 0;
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession(this->getServer(), 33060, this->getUsername(), this->getPassword(), this->getSchema());
+
+			try
+			{
+				std::stringstream schemaString;
+				schemaString << "USE " << this->getSchema();
+				mySession.sql(schemaString.str()).execute();
+
+				std::cout << "checking login validation information against DB..." << std::endl;
+
+				//format query
+				std::stringstream queryString;
+
+				//usernumber == 0 if we are using string otherwise use number
+				if (0 == usernumber) {
+					queryString << "CALL checkLoginNamePass(" << username << ", " << passwordHash << ", @returnID)";
+				}
+				else {
+					queryString << "CALL checkLoginNumberPass(" << usernumber << ", " << passwordHash << ", @returnID)";
+				}
+
+				mySession.sql(queryString.str()).execute();
+
+				//now get OUT based on what the input var was (check function name)
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @returnID").execute();
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+
+				//print results
+				std::cout << "login attempt returned client id:" << resultRow[0] << std::endl;
+				returnID = (int)resultRow[0];
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				returnID = -1;
+			}
+
+			// Note: session is closed automatically when session object is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			returnID = -2;
+		}
+
+		return returnID;
+	}
+	
+	DBClient DBValidation::clientLogin(DBReader& copyReader, std::string username, std::string passwordHash) {
+		DBClient returnClient;
+		int returnID = this->validateClient(0, username, passwordHash);
+
+		if (returnID > 0) {
+			copyReader.getObjectInfo(returnID, returnClient);
+		}
+
+		//return the client anyways since it will  be empty if nothing was found
+		return returnClient;
+	}
+
+	DBClient DBValidation::clientLogin(DBReader& copyReader, int usernumber, std::string passwordHash) {
+		DBClient returnClient;
+		int returnID = this->validateClient(usernumber, "", passwordHash);
+
+		if (returnID > 0) {
+			copyReader.getObjectInfo(returnID, returnClient);
+		}
+
+		//return the client anyways since it will  be empty if nothing was found
+		return returnClient;
+	}
+
+	DBClient DBValidation::clientLogin(DBReader& copyReader, EarnStructs::CredentialInfo inputCredentials) {
+		DBClient returnClient;
+		int returnID = this->validateClient(inputCredentials.usernumber, inputCredentials.username, inputCredentials.userPasswordHash);
+
+		if (returnID > 0) {
+			copyReader.getObjectInfo(returnID, returnClient);
+		}
+
+		//return the client anyways since it will  be empty if nothing was found
+		return returnClient;
+	}
 }
 
 //DBWriter source code
 namespace EarnDB {
-	
+	//Constructor
+	DBWriter::DBWriter(
+		std::string inputServer,
+		std::string inputSchema,
+		std::string inputUsername,
+		std::string inputPassword)
+		:
+		DBReader(
+			inputServer,
+			inputSchema,
+			inputUsername,
+			inputPassword) {
 
+		//nothing to do here so just leave it...
+
+	}
+
+	int DBWriter::addObject(DBObject& inputObj) {
+
+		int returnID = 0;
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession(this->getServer(), 33060, this->getUsername(), this->getPassword(), this->getSchema());
+
+			try
+			{
+				std::stringstream schemaString;
+				schemaString << "USE " << this->getSchema();
+				mySession.sql(schemaString.str()).execute();
+
+				std::cout << "adding object to database" << std::endl;
+
+				mySession.sql(inputObj.addInfoToDB()).execute();
+
+				//now get OUT based on what the input var was (check function name)
+				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @newID").execute();
+				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+
+				//print results
+				std::cout << "allocated new object id:" << resultRow[0] << std::endl;
+				returnID = (int)resultRow[0];
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				returnID = -1;
+			}
+
+			// Note: session is closed automatically when session object is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			returnID = -2;
+		}
+
+		return returnID;
+	}
+
+	int DBWriter::modifyObjectInfo(DBObject& inputObj) {
+
+		int returnVal = 0;
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession(this->getServer(), 33060, this->getUsername(), this->getPassword(), this->getSchema());
+
+			try
+			{
+				std::stringstream schemaString;
+				schemaString << "USE " << this->getSchema();
+				mySession.sql(schemaString.str()).execute();
+
+				std::cout << "adding object to database" << std::endl;
+
+				mySession.sql(inputObj.modifyInfoInDB()).execute();
+				
+				//nothing to check, leave that for function that calls this...
+				returnVal = 0;
+
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				returnVal = -1;
+			}
+
+			// Note: session is closed automatically when session object is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			returnVal = -2;
+		}
+
+		return returnVal;
+	}
+
+	int DBWriter::deleteObject(DBObject& inputObj) {
+
+		int returnID = 0;
+		try
+		{
+			// Connect to server on localhost
+			mysqlx::abi2::r0::Session mySession(this->getServer(), 33060, this->getUsername(), this->getPassword(), this->getSchema());
+
+			try
+			{
+				std::stringstream schemaString;
+				schemaString << "USE " << this->getSchema();
+				mySession.sql(schemaString.str()).execute();
+
+				std::cout << "adding object to database" << std::endl;
+
+				mySession.sql(inputObj.deleteInfoInDB()).execute();
+
+			}
+			catch (const mysqlx::abi2::r0::Error& err)
+			{
+				std::cout << "The following error occurred: " << err << std::endl;
+				returnID = -1;
+			}
+
+			// Note: session is closed automatically when session object is destructed.
+		}
+		catch (const mysqlx::abi2::r0::Error& err)
+		{
+			std::cout << "The database session could not be opened: " << err << std::endl;
+
+			// Exit with error code
+			returnID = -2;
+		}
+
+		return returnID;
+	}
 }

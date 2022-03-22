@@ -383,6 +383,10 @@ namespace EarnDB {
 		return outputUsernameOrNum;
 	}
 
+	int DBCredential::getUsernumber() {
+		return this->credentialInfo.usernumber;
+	}
+
 	const char* DBCredential::getPasswordHash(int& lenOfArray) {
 		lenOfArray = EarnStructs::VARCHARLEN;
 		return (const char*)(this->credentialInfo.userPasswordHash);
@@ -701,7 +705,7 @@ namespace EarnDB {
 		this->setTransactionSecondaryAcc(copyInfo.secondaryAccount);
 	}
 
-	DBTransaction::DBTransaction(DBTransaction& copyTransaction) :DBObject(copyTransaction) {
+	DBTransaction::DBTransaction(const DBTransaction& copyTransaction) :DBObject(copyTransaction) {
 		this->setTransactionAccountID(copyTransaction.transactionInfo.accountID);
 		this->setTransactionType(copyTransaction.transactionInfo.transactionType);
 		this->setTransactionTime(copyTransaction.transactionInfo.transactionTime);

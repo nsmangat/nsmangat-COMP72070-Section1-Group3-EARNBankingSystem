@@ -4,14 +4,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNServerApp", "EARNServerApp\EARNServerApp.vcxproj", "{FC5151E9-56CF-4300-9212-9957799A63E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNServerApp.Tests", "EARNServerApp.Tests\EARNServerApp.Tests.vcxproj", "{F0861606-B687-4B48-B152-B74208B2EC31}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNNetworkAPI", "EARNNetworkAPI\EARNNetworkAPI.vcxproj", "{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNNetworkAPI.Tests", "EARNNetworkAPI.Tests\EARNNetworkAPI.Tests.vcxproj", "{D4DD9A2C-E7E5-4FDC-9BDC-DF0530A3E9AB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNClientApp.Tests", "EARNClientApp.Tests\EARNClientApp.Tests.vcxproj", "{4FC81E77-2C25-4955-B9CD-339EE80F52AC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientApp", "ClientApp", "{1CF27122-C5A1-4177-B343-CC58880EE316}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,6 +32,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientApp", "ClientApp", "{
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNClientTerminal", "EARNClientTerminal\EARNClientTerminal.vcxproj", "{FC74DD92-31FC-49E7-9557-D115C0E1996C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

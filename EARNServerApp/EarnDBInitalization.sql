@@ -252,9 +252,10 @@ DELIMITER $$
 USE `EARNBankingDB`$$
 CREATE PROCEDURE `checkLoginNamePass` (
 	IN input_Username VARCHAR(45),
-    IN input_Password VARCHAR(45))
+    IN input_Password VARCHAR(45),
+    OUT received_client_id INT)
 BEGIN
-	Select c.client_id FROM credentials c WHERE (input_username = c.client_username) AND (input_password = c.client_password_hash);
+	SET received_client_id := (Select c.client_id FROM credentials c WHERE (input_username = c.client_username) AND (input_password = c.client_password_hash));
 END$$
 
 DELIMITER ;
@@ -269,9 +270,10 @@ DELIMITER $$
 USE `EARNBankingDB`$$
 CREATE PROCEDURE `checkLoginNumberPass` (
 	IN input_usernumber INT,
-    IN input_Password VARCHAR(45))
+    IN input_Password VARCHAR(45),
+    OUT received_client_id INT)
 BEGIN
-	Select c.client_id FROM credentials c WHERE (input_usernumber = c.client_usernumber) AND (input_password = c.client_password_hash);
+	SET received_client_id := (Select c.client_id FROM credentials c WHERE (input_usernumber = c.client_usernumber) AND (input_password = c.client_password_hash));
 END$$
 
 DELIMITER ;
@@ -317,11 +319,12 @@ CREATE PROCEDURE `addAccount`(
 	IN input_account_type INT,
     OUT new_account_id INT)
 BEGIN
+	DECLARE checkValue BOOL DEFAULT false;
     SET new_account_id := NULL;	#in case it has already been set
     
     #check if client exists otherwise return nothing for generated_id
-    CALL checkClientExists(input_client_id, clientCheck);
-	IF ( clientCheck ) THEN
+    CALL checkClientExists(input_client_id, checkValue);
+	IF ( checkValue ) THEN
 		BEGIN
 			INSERT INTO accounts (client_id, account_type_id, balance)
 				Value (input_client_id, input_account_type, 0);
@@ -349,9 +352,11 @@ CREATE PROCEDURE `addTransaction`(
     IN input_secondary_id INT,
     OUT new_transaction_id INT)
 BEGIN
+	DECLARE checkValue BOOL DEFAULT false;
+    
 	#first check if account exists otherwise don't create invoice
-    CALL checkAccountExists(input_account_id, accountCheck);
-	IF ( accountCheck ) THEN
+    CALL checkAccountExists(input_account_id, checkValue);
+	IF ( checkValue ) THEN
 		BEGIN
 			INSERT INTO invoices (account_id, invoice_type_id, previous_balance, new_balance, secondary_account_id)
 				Value (input_account_id, input_type_id, input_previous_balance, input_new_balance, input_secondary_id);
@@ -516,9 +521,11 @@ CREATE PROCEDURE `addCredential` (
     IN input_password_hash VARCHAR(45),
     OUT new_credential_id INT)
 BEGIN
+	DECLARE checkValue BOOL DEFAULT false;
+    
 	#first check if client exists to create credentials otherwise don't create them
-    CALL checkClientExists(input_client_id, clientCheck);
-	IF ( clientCheck ) THEN
+    CALL checkClientExists(input_client_id, checkValue);
+	IF ( checkValue ) THEN
 		BEGIN
 			INSERT INTO credentials (client_id, client_password_hash, client_usernumber, client_username)
 				VALUE (input_client_id, input_password_hash, input_usernumber, input_username);

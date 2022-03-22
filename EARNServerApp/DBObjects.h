@@ -330,7 +330,7 @@ namespace EarnDB  {
 		DBTransaction(const EarnStructs::TransactionInfo copyInfo);
 
 		//Copy constructor
-		DBTransaction(DBTransaction& copyTransaction);
+		DBTransaction(const DBTransaction& copyTransaction);
 
 		//Parametrized constructor
 		DBTransaction(int inputObjectID, int inputAccountID, EarnStructs::TransactionType inputTransactionType, const char* transactionTime, double inputPreviousBalance, double inputNewBalance, int inputSecondaryAccount);

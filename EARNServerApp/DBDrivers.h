@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <mysqlx\xdevapi.h>
+#include <mysqlx/xdevapi.h>
 #include "DBAccess.h"
 #include "DBObjects.h"
 
@@ -31,10 +31,15 @@ namespace EarnDB {
 		//Constructor
 
 		//Will always use parametrized because of the const values needed...
-		DBDriverInterface(std::string inputServer, std::string inputSchema, std::string inputUsername, std::string inputPassword);// , DBLogger(DBLoggerPath);
+		DBDriverInterface(
+			std::string inputServer, 
+			std::string inputSchema, 
+			std::string inputUsername, 
+			std::string inputPassword);
+		//, DBLogger(DBLoggerPath);
 		
 		//Get functions (protected due to password call & no other obvious solution...
-	protected:
+		
 		//get server string for children db connections
 		const std::string getServer();
 
@@ -47,7 +52,6 @@ namespace EarnDB {
 		//get password string for children db connections
 		const std::string getPassword();
 
-	public:
 		//Check & Initalize functions
 		
 		//Initalize DB if it doesn't exist, used in checkIFDBExists function and can be used as a static function when server boots up
@@ -68,7 +72,7 @@ namespace EarnDB {
 	};
 
 	//DB Reader class (used in initalizing one or more objects from the database, any read only functionality)
-	class DBReader:DBDriverInterface {
+	class DBReader :public DBDriverInterface {
 		//Subfunctions for checkIDExists
 
 		//Check if Client ID is in database
@@ -80,7 +84,17 @@ namespace EarnDB {
 		//Check if Transaction / Invoice ID is in database
 		bool checkTransactionIDExists(int checkTransactionID);
 
+		//Check if Credential ID is in database (debugging)
+		bool checkCredentialIDExists(int checkCredentialID);
+
 	public:
+		//Constructor
+		DBReader(
+			std::string inputServer,
+			std::string inputSchema,
+			std::string inputUsername,
+			std::string inputPassword);
+
 		//Get single objects
 
 		//Get Client from database (-2 if ID doesn't exist / -1 for error)
@@ -92,6 +106,8 @@ namespace EarnDB {
 		//Get Transaction from database (-2 if ID doesn't exist / -1 for error)
 		int getObjectInfo(int objectID, DBTransaction& copyTransaction);
 
+		//Get Object from database, using DBOType and pass by reference
+		int getObjectInfo(int objectID, DBObject& copyObject);
 		//Get all objects from a higher level ID
 
 		//Get all Clients from database (-2 if ID doesn't exist / -1 for error)
@@ -108,32 +124,45 @@ namespace EarnDB {
 	};
 
 	//DB Validation class (used for login / finding client for associated username/Num & password
-	class DBValidation {
+	class DBValidation :public DBDriverInterface {
 		//Private validate client function used by login
-		int validateClient(std::string usernameOrNum, std::string passwordHash);
+		int validateClient(int usernumber, std::string username, std::string passwordHash);
 
 	public:
+		//Constructor
+		DBValidation(
+			std::string inputServer,
+			std::string inputSchema,
+			std::string inputUsername,
+			std::string inputPassword);
 
 		//Client login function through username & pass, returns NULL for incorrect login
-		DBClient clientLogin(std::string username, std::string passwordHash);
+		DBClient clientLogin(DBReader& copyReader, std::string username, std::string passwordHash);
 
 		//Client login function through usernumber & pass, returns NULL for incorrect login
-		DBClient clientLogin(int usernumber, std::string passwordHash);
+		DBClient clientLogin(DBReader& copyReader, int usernumber, std::string passwordHash);
 
 		//Client login function using CredentialInfo struct, returns NULL for incorrect login
-		DBClient clientLogin(EarnStructs::CredentialInfo inputCredentials);
+		DBClient clientLogin(DBReader& copyReader, EarnStructs::CredentialInfo inputCredentials);
 	};
 
-	//DB Writer class (used in adding, modifying, and deleting info)
-	class DBWriter {
+	////DB Writer class (used in adding, modifying, and deleting info)
+	class DBWriter :public DBReader {
 	public:
-		//Add object to database (object's allocated ID on success, -2 for DB insert error,  -1 for general / unknown error)
-		int addObject(DBObject inputObj);
+		//Constructor
+		DBWriter(
+			std::string inputServer,
+			std::string inputSchema,
+			std::string inputUsername,
+			std::string inputPassword);
 
-		//Modify object in database (-2 if ID doesn't exist / -1 for error)
-		int modifyObjectInfo(DBObject inputObj);
+		//Add object to database (object's allocated ID on success, -1 for error)
+		int addObject(DBObject& inputObj);
 
-		//Delete object in database (-2 if ID doesn't exist / -1 for error)
-		int deleteObject(DBObject inputObj);
+		//Modify object in database (0 for success, -1 for error, -2 for DB Connection error)
+		int modifyObjectInfo(DBObject& inputObj);
+
+		//Delete object in database (0 for success, -1 for error, -2 for DB Connection error)
+		int deleteObject(DBObject& inputObj);
 	};
 }
