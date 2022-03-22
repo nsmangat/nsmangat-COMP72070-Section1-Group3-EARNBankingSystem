@@ -93,7 +93,6 @@ public:
     QPushButton *AddBackpage_pushButton;
     QWidget *page8_AddAcc;
     QLabel *AddAcc_label;
-    QCheckBox *SavingAcc_checkBox;
     QCheckBox *InvestingAcc_checkBox;
     QPushButton *Logout_pushButton_5;
     QPushButton *BackToMenu_pushButton_4;
@@ -401,17 +400,13 @@ public:
         AddAcc_label->setObjectName(QString::fromUtf8("AddAcc_label"));
         AddAcc_label->setGeometry(QRect(220, 50, 331, 41));
         AddAcc_label->setFont(font);
-        SavingAcc_checkBox = new QCheckBox(page8_AddAcc);
-        SavingAcc_checkBox->setObjectName(QString::fromUtf8("SavingAcc_checkBox"));
-        SavingAcc_checkBox->setGeometry(QRect(230, 180, 171, 26));
-        SavingAcc_checkBox->setFont(font2);
         InvestingAcc_checkBox = new QCheckBox(page8_AddAcc);
         InvestingAcc_checkBox->setObjectName(QString::fromUtf8("InvestingAcc_checkBox"));
-        InvestingAcc_checkBox->setGeometry(QRect(230, 250, 191, 26));
+        InvestingAcc_checkBox->setGeometry(QRect(250, 170, 191, 26));
         InvestingAcc_checkBox->setFont(font2);
         Logout_pushButton_5 = new QPushButton(page8_AddAcc);
         Logout_pushButton_5->setObjectName(QString::fromUtf8("Logout_pushButton_5"));
-        Logout_pushButton_5->setGeometry(QRect(660, 30, 83, 29));
+        Logout_pushButton_5->setGeometry(QRect(660, 40, 83, 29));
         BackToMenu_pushButton_4 = new QPushButton(page8_AddAcc);
         BackToMenu_pushButton_4->setObjectName(QString::fromUtf8("BackToMenu_pushButton_4"));
         BackToMenu_pushButton_4->setGeometry(QRect(30, 30, 111, 29));
@@ -497,7 +492,6 @@ public:
         BackpageImage_label->setText(QString());
         AddBackpage_pushButton->setText(QCoreApplication::translate("ClientApp", "Choose an image", nullptr));
         AddAcc_label->setText(QCoreApplication::translate("ClientApp", "Add New Accounts", nullptr));
-        SavingAcc_checkBox->setText(QCoreApplication::translate("ClientApp", "Saving Account", nullptr));
         InvestingAcc_checkBox->setText(QCoreApplication::translate("ClientApp", "Investing Account", nullptr));
         Logout_pushButton_5->setText(QCoreApplication::translate("ClientApp", "Logout", nullptr));
         BackToMenu_pushButton_4->setText(QCoreApplication::translate("ClientApp", "Back to Menu", nullptr));

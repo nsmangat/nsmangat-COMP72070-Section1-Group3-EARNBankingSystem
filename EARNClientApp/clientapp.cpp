@@ -323,3 +323,25 @@ void ClientApp::on_AddBackpage_pushButton_clicked()
     }
 }
 
+
+void ClientApp::on_InvestingAcc_checkBox_stateChanged(int arg)
+{
+    //add investing account type if check box is checked
+    if(ui->InvestingAcc_checkBox->isChecked())
+    {
+      //over write the account options
+        ui->From_comboBox->clear();
+        ui->AccType_comboBox->clear();
+        ui->From_comboBox->addItems({"Chequing","Saving","Investing"});
+        ui->AccType_comboBox->addItems({"Chequing","Saving","Investing"});
+    }
+    else //remove the investing acc option when the check box is unchecked
+    {
+        ui->From_comboBox->clear();
+        ui->AccType_comboBox->clear();
+        ui->From_comboBox->addItems({"Chequing","Saving"});
+        ui->AccType_comboBox->addItems({"Chequing","Saving"});
+
+    }
+}
+

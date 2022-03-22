@@ -80,6 +80,8 @@ private slots:
 
     void on_AddBackpage_pushButton_clicked();
 
+    void on_InvestingAcc_checkBox_stateChanged(int arg1);
+
 private:
     Ui::ClientApp *ui;
 

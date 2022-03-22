@@ -958,29 +958,11 @@ background-color:rgb(47, 47, 47)</string>
         <string>Add New Accounts</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="SavingAcc_checkBox">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>180</y>
-         <width>171</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Saving Account</string>
-       </property>
-      </widget>
       <widget class="QCheckBox" name="InvestingAcc_checkBox">
        <property name="geometry">
         <rect>
-         <x>230</x>
-         <y>250</y>
+         <x>250</x>
+         <y>170</y>
          <width>191</width>
          <height>26</height>
         </rect>
@@ -998,7 +980,7 @@ background-color:rgb(47, 47, 47)</string>
        <property name="geometry">
         <rect>
          <x>660</x>
-         <y>30</y>
+         <y>40</y>
          <width>83</width>
          <height>29</height>
         </rect>
