@@ -223,16 +223,22 @@ int main(void) {
 
 	bool mainLoop = true;
 
+	bool killswitchOne = true;
+	bool killswitchTwo = true;
+	bool killswitchThree = true;
+
+	int choice;
+
+	AccountInformation chequingLoginMain;
+	AccountInformation savingsLoginMain;
 
 	//main while loop 
 	while (mainLoop)
 	{
-		bool killswitchOne = true;
-		bool killswitchTwo = true;
-		bool killswitchThree = true;
+		
 
-		AccountInformation chequingLoginMain;
-		AccountInformation savingsLoginMain;
+		/*AccountInformation chequingLoginMain;
+		AccountInformation savingsLoginMain;*/
 
 		while (killswitchOne) {
 
@@ -251,7 +257,7 @@ int main(void) {
 
 			switch (choice) {
 
-			case 1:
+			case 1:	//Login
 			{
 				Login loginObj = inputLoginInfo();
 				int loginSize = sizeof(loginObj);
@@ -296,7 +302,7 @@ int main(void) {
 
 				break;
 			}
-			case 2:
+			case 2:	//Create new Account
 			{
 				CreateAccount newUser = inputAccountInfo();
 				int newUserSize = sizeof(newUser);
@@ -343,13 +349,13 @@ int main(void) {
 				}
 				break;
 			}
-			case 3:
+			case 3:	//Forgot Password
 			{
 
 				Login loginObj = inputForgotPassword();
 				int loginSize = sizeof(loginObj);
 
-				Packet loginPacket(&loginObj, loginSize, 5, 0);
+				Packet loginPacket(&loginObj, loginSize, 7, 0);
 				int totalSize = 0;
 				txBuffer = loginPacket.serialize(totalSize);
 
@@ -384,7 +390,7 @@ int main(void) {
 		}
 
 		//bool killswitchTwo = true;
-		int choice;
+		//int choice;
 		while (killswitchTwo) {
 
 			char* txBuffer = nullptr;
@@ -432,6 +438,8 @@ int main(void) {
 				killswitchTwo = false;
 			}
 
+			killswitchThree = true;
+
 		}
 
 		//bool killswitchThree = true;
@@ -452,7 +460,7 @@ int main(void) {
 			}
 
 			switch (transactionChoice) {
-			case 1:
+			case 1:	//send E-Transfer
 			{
 				Transaction sendEtransferTransaction;
 				if (choice == 1)
@@ -501,7 +509,7 @@ int main(void) {
 
 				break;
 			}
-			case 2:
+			case 2:	//recv E-Transfer
 			{
 				Transaction recvEtransferTransaction;
 				if (choice == 1)
@@ -721,8 +729,9 @@ int main(void) {
 				}
 			case 8:
 			{
-
-
+				killswitchOne = false;
+				killswitchTwo = true;
+				killswitchThree = false;
 				break;
 			}
 			case 9:
@@ -767,16 +776,11 @@ int main(void) {
 			}
 
 		}
-
-
-
-		closesocket(ClientSocket);
-
-		//frees Winsock DLL resources
-		WSACleanup();
-
-
-
 	}
 
+
+	closesocket(ClientSocket);
+
+	//frees Winsock DLL resources
+	WSACleanup();
 }
