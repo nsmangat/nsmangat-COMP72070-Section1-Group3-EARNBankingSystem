@@ -4,10 +4,10 @@ namespace EarnStructs  {
 	//Macros for EarnDB objects (length of strings...
 	
 	//Length of varchars, so we don't overwrite in database
-	const int VARCHARLEN = 45;
+	const int VARCHARLEN = 46;
 	
 	//Length of zip codes, since they are always the same
-	const int ZIPLEN = 6;
+	const int ZIPLEN = 7;
 
 	//Enummeration for different types of Objects
 	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };

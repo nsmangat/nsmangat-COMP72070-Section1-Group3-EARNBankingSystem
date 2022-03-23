@@ -113,7 +113,7 @@ namespace DBClientTests
 		TEST_METHOD(F001_constructorWStruct_fullClient_isClientWVals)
 		{
 			//	Arrange
-			EarnStructs::ClientInfo testClientInfo = {};
+			EarnStructs::ClientInfo testClientInfo;
 			
 			//allocate some dummy data
 			memcpy(testClientInfo.firstName, "Bob", EarnStructs::VARCHARLEN);
@@ -123,7 +123,7 @@ namespace DBClientTests
 			memcpy(testClientInfo.street, "Alphabet Street", EarnStructs::VARCHARLEN);
 			memcpy(testClientInfo.city, "Toronto", EarnStructs::VARCHARLEN);
 			memcpy(testClientInfo.province, "Ontario", EarnStructs::VARCHARLEN);
-			memcpy(testClientInfo.zipcode, "B0B 1T3", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.zipcode, "B0B 1T3", EarnStructs::ZIPLEN);
 
 			//	Act
 			EarnDBObjects::DBClient testClient(testClientInfo);
@@ -132,14 +132,14 @@ namespace DBClientTests
 
 			bool checkValSame = true;
 
-			if (testClientInfo.firstName != receivedClientInfo.firstName) { checkValSame = false; }
-			if (testClientInfo.lastName != receivedClientInfo.lastName) { checkValSame = false; }
-			if (testClientInfo.email != receivedClientInfo.email) { checkValSame = false; }
-			if (testClientInfo.phoneNumber != receivedClientInfo.phoneNumber) { checkValSame = false; }
-			if (testClientInfo.street != receivedClientInfo.street) { checkValSame = false; }
-			if (testClientInfo.city != receivedClientInfo.city) { checkValSame = false; }
-			if (testClientInfo.province != receivedClientInfo.province) { checkValSame = false; }
-			if (testClientInfo.zipcode != receivedClientInfo.zipcode) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.firstName, receivedClientInfo.firstName)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.lastName, receivedClientInfo.lastName)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.email, receivedClientInfo.email)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.phoneNumber, receivedClientInfo.phoneNumber)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.street, receivedClientInfo.street)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.city, receivedClientInfo.city)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.province, receivedClientInfo.province)) { checkValSame = false; }
+			if (0 != strcmp(testClientInfo.zipcode, receivedClientInfo.zipcode)) { checkValSame = false; }
 
 			//	Assert
 			Assert::IsTrue(checkValSame);
