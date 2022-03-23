@@ -11,11 +11,15 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNServerApp.Tests", "EARNServerApp.Tests\EARNServerApp.Tests.vcxproj", "{F0861606-B687-4B48-B152-B74208B2EC31}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+		{FC5151E9-56CF-4300-9212-9957799A63E4} = {FC5151E9-56CF-4300-9212-9957799A63E4}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNNetworkAPI", "EARNNetworkAPI\EARNNetworkAPI.vcxproj", "{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNNetworkAPI.Tests", "EARNNetworkAPI.Tests\EARNNetworkAPI.Tests.vcxproj", "{D4DD9A2C-E7E5-4FDC-9BDC-DF0530A3E9AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNClientApp.Tests", "EARNClientApp.Tests\EARNClientApp.Tests.vcxproj", "{4FC81E77-2C25-4955-B9CD-339EE80F52AC}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -34,6 +38,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNClientTerminal", "EARNClientTerminal\EARNClientTerminal.vcxproj", "{FC74DD92-31FC-49E7-9557-D115C0E1996C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EARNServerDB.Tests", "EARNServerDB.Tests\EARNServerDB.Tests.vcxproj", "{A8D3BD27-AF79-4663-9EE3-785B74610F6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A6EE3AE-C2AA-4ACB-937B-E694C2F74286} = {5A6EE3AE-C2AA-4ACB-937B-E694C2F74286}
+		{FC5151E9-56CF-4300-9212-9957799A63E4} = {FC5151E9-56CF-4300-9212-9957799A63E4}
 	EndProjectSection
 EndProject
 Global
@@ -92,6 +102,14 @@ Global
 		{FC74DD92-31FC-49E7-9557-D115C0E1996C}.Release|x64.Build.0 = Release|x64
 		{FC74DD92-31FC-49E7-9557-D115C0E1996C}.Release|x86.ActiveCfg = Release|Win32
 		{FC74DD92-31FC-49E7-9557-D115C0E1996C}.Release|x86.Build.0 = Release|Win32
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Debug|x64.ActiveCfg = Debug|x64
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Debug|x64.Build.0 = Debug|x64
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Debug|x86.ActiveCfg = Debug|Win32
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Debug|x86.Build.0 = Debug|Win32
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Release|x64.ActiveCfg = Release|x64
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Release|x64.Build.0 = Release|x64
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Release|x86.ActiveCfg = Release|Win32
+		{A8D3BD27-AF79-4663-9EE3-785B74610F6C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

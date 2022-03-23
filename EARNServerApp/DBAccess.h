@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
+#include <iostream>
 
-namespace EarnDB {
+namespace EarnDBAccess {
 
 	//virtual access interface for DB
 	class DBAccessInterface {

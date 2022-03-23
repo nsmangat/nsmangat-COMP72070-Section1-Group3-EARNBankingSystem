@@ -7,18 +7,18 @@
 #include <EARNStructs.h>
 
 //DBObject class source code, splitting up namespace to make it easier to read & collapse code areas...
-namespace EarnDB {
+namespace EarnDBObjects {
 	//Constructors
 
 	DBObject::DBObject() {
 		this->setDBOType(EarnStructs::OBJECTNULL);	//type is null telling me it is unallocated...
 	}
 
-	DBObject::DBObject(const DBObject& copyObject) : DBAccessInterface(copyObject) {
+	DBObject::DBObject(const DBObject& copyObject) :EarnDBAccess::DBAccessInterface(copyObject) {
 		this->setDBOType(copyObject.objectType);
 	}
 
-	DBObject::DBObject(EarnStructs::ObjectType initalizeType, int objectID) : DBAccessInterface(objectID) {
+	DBObject::DBObject(EarnStructs::ObjectType initalizeType, int objectID) : EarnDBAccess::DBAccessInterface(objectID) {
 		this->setDBOType(initalizeType);
 	}
 
@@ -36,7 +36,7 @@ namespace EarnDB {
 }
 
 //DBClient class source code
-namespace EarnDB {
+namespace EarnDBObjects {
 	//Constructors
 
 	DBClient::DBClient() :DBObject(EarnStructs::CLIENT, 0) {
@@ -51,7 +51,7 @@ namespace EarnDB {
 		this->setZip(NULL);
 	}
 
-	DBClient::DBClient(const EarnStructs::ClientInfo copyInfo) :DBObject(EarnStructs::CLIENT, 0) {
+	DBClient::DBClient(const EarnStructs::ClientInfo& copyInfo) :DBObject(EarnStructs::CLIENT, 0) {
 		this->setFirstName(copyInfo.firstName);
 		this->setLastName(copyInfo.lastName);
 		this->setEmail(copyInfo.email);
@@ -60,17 +60,6 @@ namespace EarnDB {
 		this->setCity(copyInfo.city);
 		this->setProvince(copyInfo.province);
 		this->setZip(copyInfo.zipcode);
-	}
-
-	DBClient::DBClient(const DBClient& copyClient) : DBObject::DBObject(copyClient) {
-		this->setFirstName(copyClient.clientInfo.firstName);
-		this->setLastName(copyClient.clientInfo.lastName);
-		this->setEmail(copyClient.clientInfo.email);
-		this->setPhoneNum(copyClient.clientInfo.phoneNumber);
-		this->setStreet(copyClient.clientInfo.street);
-		this->setCity(copyClient.clientInfo.city);
-		this->setProvince(copyClient.clientInfo.province);
-		this->setZip(copyClient.clientInfo.zipcode);
 	}
 
 	DBClient::DBClient(int inputObjectID, const char* inputFirst, const char* inputLast, const char* inputEmail, const char* inputPhone, const char* inputStreet, const char* inputCity, const char* inputProvince, const char* inputZip) :DBObject(EarnStructs::CLIENT, inputObjectID) {
@@ -82,6 +71,17 @@ namespace EarnDB {
 		this->setCity(inputCity);
 		this->setProvince(inputProvince);
 		this->setZip(inputZip);
+	}
+
+	DBClient::DBClient(const DBClient& copyClient) :DBObject::DBObject(copyClient) {
+		this->setFirstName(copyClient.clientInfo.firstName);
+		this->setLastName(copyClient.clientInfo.lastName);
+		this->setEmail(copyClient.clientInfo.email);
+		this->setPhoneNum(copyClient.clientInfo.phoneNumber);
+		this->setStreet(copyClient.clientInfo.street);
+		this->setCity(copyClient.clientInfo.city);
+		this->setProvince(copyClient.clientInfo.province);
+		this->setZip(copyClient.clientInfo.zipcode);
 	}
 
 	//Get functions
@@ -220,6 +220,8 @@ namespace EarnDB {
 		memcpy(this->clientInfo.zipcode, newZip.c_str(), EarnStructs::ZIPLEN);
 	}
 
+	//No set with struct since you should be using a constructor for that!
+
 	//Inherited functions
 
 	std::string DBClient::displayInfo() {
@@ -269,7 +271,7 @@ namespace EarnDB {
 		*/
 
 		//setup output call based on addClient procedure in mySql DB (inputs above)
-		
+
 		std::stringstream outputQuery;
 		outputQuery << "CALL addClient(" << this->getFirstName();
 		outputQuery << ", " << this->getLastName();
@@ -337,7 +339,7 @@ namespace EarnDB {
 }
 
 //DBCredential class source code
-namespace EarnDB {
+namespace EarnDBObjects {
 	//Constructors
 
 	DBCredential::DBCredential() :DBObject(EarnStructs::CREDENTIALS, 0) {
@@ -347,21 +349,21 @@ namespace EarnDB {
 		this->setPasswordHash(NULL);
 	}
 
-	DBCredential::DBCredential(const EarnStructs::CredentialInfo copyInfo) : DBObject(EarnStructs::CREDENTIALS, 0) {
+	DBCredential::DBCredential(const EarnStructs::CredentialInfo copyInfo) :DBObject(EarnStructs::CREDENTIALS, 0) {
 		this->setClientID(copyInfo.clientID);
 		this->setUsername(copyInfo.username);
 		this->setUsernumber(copyInfo.usernumber);
 		this->setPasswordHash(copyInfo.userPasswordHash);
 	}
 
-	DBCredential::DBCredential(const DBCredential& copyCredentials) : DBObject(copyCredentials) {
+	DBCredential::DBCredential(const DBCredential& copyCredentials) :DBObject(copyCredentials) {
 		this->setClientID(copyCredentials.credentialInfo.clientID);
 		this->setUsername(copyCredentials.credentialInfo.username);
 		this->setUsernumber(copyCredentials.credentialInfo.usernumber);
 		this->setPasswordHash(copyCredentials.credentialInfo.userPasswordHash);
 	}
 
-	DBCredential::DBCredential(int inputObjectID, int inputClientID, char inputUserName [EarnStructs::VARCHARLEN], int inputUsernumber, char inputPasswordHash[EarnStructs::VARCHARLEN]) : DBObject(EarnStructs::CREDENTIALS, inputObjectID) {
+	DBCredential::DBCredential(int inputObjectID, int inputClientID, char inputUserName[EarnStructs::VARCHARLEN], int inputUsernumber, char inputPasswordHash[EarnStructs::VARCHARLEN]) :DBObject(EarnStructs::CREDENTIALS, inputObjectID) {
 		this->setClientID(inputClientID);
 		this->setUsername(inputUserName);
 		this->setUsernumber(inputUsernumber);
@@ -406,7 +408,7 @@ namespace EarnDB {
 		this->credentialInfo.clientID = newClientID;
 	}
 
-	void DBCredential::setUsername(char newUsername [EarnStructs::VARCHARLEN]) {
+	void DBCredential::setUsername(char newUsername[EarnStructs::VARCHARLEN]) {
 		memcpy(this->credentialInfo.username, newUsername, EarnStructs::VARCHARLEN);
 	}
 	void DBCredential::setUsername(std::string newUsername) {
@@ -469,7 +471,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getUsername();
 		outputQuery << ", " << this->getUsernumber();
 		outputQuery << ", " << this->getPasswordHash();
-		outputQuery << ", @newID);";
+		outputQuery << ", @newID)";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -490,7 +492,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getUsername();
 		outputQuery << ", " << this->getUsernumber();
 		outputQuery << ", " << this->getPasswordHash();
-		outputQuery << ");";
+		outputQuery << ")";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -504,7 +506,7 @@ namespace EarnDB {
 		//setup output call based on deleteCredential procedure in mySql DB (inputs above)
 
 		std::stringstream outputQuery;
-		outputQuery << "CALL deleteCredential(" << this->getClientID() << ");";
+		outputQuery << "CALL deleteCredential(" << this->getClientID() << ")";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -513,13 +515,13 @@ namespace EarnDB {
 	std::string DBCredential::checkObjectExists() {
 		/*
 			IN check_credential_id INT,
-		    OUT check_result BOOL
+			OUT check_result BOOL
 		*/
 
 		//setup output call based on checkCredentialExists procedure in mySql DB (inputs above)
 
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkCredentialExists(" << this->getClientID() << ", @checkResult);";
+		outputQuery << "CALL checkCredentialExists(" << this->getClientID() << ", @checkResult)";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -527,7 +529,7 @@ namespace EarnDB {
 }
 
 //DBAccount class source code
-namespace EarnDB {
+namespace EarnDBObjects {
 	//Constructors
 
 	DBAccount::DBAccount() :DBObject(EarnStructs::ACCOUNT, 0) {
@@ -542,13 +544,13 @@ namespace EarnDB {
 		this->setBalance(copyInfo.accountBalance);
 	}
 
-	DBAccount::DBAccount(const DBAccount& copyAccount) : DBObject(copyAccount) {
+	DBAccount::DBAccount(const DBAccount& copyAccount) :DBObject(copyAccount) {
 		this->setAccountClientID(copyAccount.accountInfo.clientID);
 		this->setAccountType(copyAccount.accountInfo.accountType);
 		this->setBalance(copyAccount.accountInfo.accountBalance);
 	}
 
-	DBAccount::DBAccount(int inputObjectID, int inputClientID, EarnStructs::AccountType inputAccountType, double inputBalance) : DBObject(EarnStructs::ACCOUNT, inputObjectID) {
+	DBAccount::DBAccount(int inputObjectID, int inputClientID, EarnStructs::AccountType inputAccountType, double inputBalance) :DBObject(EarnStructs::ACCOUNT, inputObjectID) {
 		this->setAccountClientID(inputClientID);
 		this->setAccountType(inputAccountType);
 		this->setBalance(inputBalance);
@@ -633,7 +635,7 @@ namespace EarnDB {
 		std::stringstream outputQuery;
 		outputQuery << "CALL addAccount(" << this->getAccountClientID();
 		outputQuery << ", " << this->getAccountType();
-		outputQuery << ", @newID);";
+		outputQuery << ", @newID)";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -654,7 +656,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getAccountClientID();
 		outputQuery << ", " << this->getAccountType();
 		outputQuery << ", " << this->getAccountBalance();
-		outputQuery << ");";
+		outputQuery << ")";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -667,7 +669,7 @@ namespace EarnDB {
 
 		//setup output call based on deleteAccount procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL deleteAccount(" << this->getObjectID() << ");";
+		outputQuery << "CALL deleteAccount(" << this->getObjectID() << ")";
 		return outputQuery.str();
 	}
 
@@ -678,13 +680,13 @@ namespace EarnDB {
 		*/
 		//setup output call based on checkAccountExists procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkAccountExists(" << this->getObjectID() << ", @checkResult);";
+		outputQuery << "CALL checkAccountExists(" << this->getObjectID() << ", @checkResult)";
 		return outputQuery.str();
 	}
 }
 
 //DBTransaction class source code
-namespace EarnDB {
+namespace EarnDBObjects {
 	//Constructors
 
 	DBTransaction::DBTransaction() :DBObject(EarnStructs::TRANSACTION, 0) {
@@ -837,7 +839,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getTransactionPreviousBal();
 		outputQuery << ", " << this->getTransactionNewBal();
 		outputQuery << ", " << this->getTransactionSecondaryAcc();
-		outputQuery << ", @newID);";
+		outputQuery << ", @newID)";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -862,7 +864,7 @@ namespace EarnDB {
 		outputQuery << ", " << this->getTransactionPreviousBal();
 		outputQuery << ", " << this->getTransactionNewBal();
 		outputQuery << ", " << this->getTransactionSecondaryAcc();
-		outputQuery << ");";
+		outputQuery << ")";
 
 		//lets me allocate it simpler (IMO)
 		return outputQuery.str();
@@ -875,7 +877,7 @@ namespace EarnDB {
 
 		//setup output call based on deleteAccount procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL deleteTransaction(" << this->getObjectID() << ");";
+		outputQuery << "CALL deleteTransaction(" << this->getObjectID() << ")";
 		return outputQuery.str();
 	}
 
@@ -886,7 +888,7 @@ namespace EarnDB {
 		*/
 		//setup output call based on checkTransactionExists procedure in mySql DB (inputs above)
 		std::stringstream outputQuery;
-		outputQuery << "CALL checkTransactionExists(" << this->getObjectID() << ", @checkResult);";
+		outputQuery << "CALL checkTransactionExists(" << this->getObjectID() << ", @checkResult)";
 		return outputQuery.str();
 	}
 }

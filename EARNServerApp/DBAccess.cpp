@@ -1,9 +1,9 @@
-#include <string>
+#include <iostream>
 
 #include"DBAccess.h"
 
 //DBAccessInterface source code
-namespace EarnDB {
+namespace EarnDBAccess {
 	//Constructors
 
 	DBAccessInterface::DBAccessInterface() {

@@ -1,14 +1,15 @@
 #pragma once
+#include <vector>
+#include <iostream>
+#include <sstream>
+
 #include "DBAccess.h"
 #include <EARNStructs.h>
 
-#include <string>
-#include <time.h>
+namespace EarnDBObjects {
 
-namespace EarnDB  {
-	
 	//DBObject Interface / abstract class, used by client, account, etc...
-	class DBObject :public DBAccessInterface {
+	class DBObject :public EarnDBAccess::DBAccessInterface {
 		EarnStructs::ObjectType objectType;
 
 	public:
@@ -44,13 +45,13 @@ namespace EarnDB  {
 		DBClient();
 
 		//Struct constructor, for use after deserializing
-		DBClient(const EarnStructs::ClientInfo copyInfo);
-
-		//Copy constructor
-		DBClient(const DBClient& copyClient);
+		DBClient(const EarnStructs::ClientInfo& copyInfo);
 
 		//Parametrized constructor
 		DBClient(int inputObjectID, const char* inputFirst, const char* inputLast, const char* inputEmail, const char* inputPhone, const char* inputStreet, const char* inputCity, const char* inputProvince, const char* inputZip);
+
+		//Copy constructor
+		DBClient(const DBClient& copyClient);
 
 		//Get functions
 

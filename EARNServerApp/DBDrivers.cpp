@@ -10,20 +10,56 @@
 #include "DBObjects.h"
 #include <EARNStructs.h>
 
-//DBReader source code
-namespace EarnDB {
-	
+//DBDriverInterface & enum to string source code
+namespace EarnDBDrivers {
+
+	const std::string EnumToString(DBErrorType inputType)
+	{
+		switch (inputType)
+		{
+		case NO_DB_FOUND:		return "NO_DB_FOUND";
+		case BAD_OBJECT_CREDENTIALS:	return "BAD_OBJECT_CREDENTIALS";
+		case BAD_DB_CREDENTIALS:	return "BAD_DB_CREDENTIALS";
+		case INSUFFICIENT_BALANCE:		return "INSUFFICIENT_BALANCE";
+		case ACCOUNT_NOT_FOUND:	return "ACCOUNT_NOT_FOUND";
+		case CLIENT_NOT_FOUND:	return "CLIENT_NOT_FOUND";
+		case TRANSACTION_NOT_FOUND:		return "TRANSACTION_NOT_FOUND";
+		case READ_ERROR:	return "READ_ERROR";
+		case WRITE_ERROR:	return "WRITE_ERROR";
+		case VALIDATION_ERROR:		return "VALIDATION_ERROR";
+		default:			return "[Unknown Type]";
+		}
+	}
+
+	const std::string EnumToString(DBSUCCESSTYPE inputType)
+	{
+		switch (inputType)
+		{
+		case DB_FOUND:		return "DB_FOUND";
+		case GOOD_OBJECT_CREDENTIALS:	return "GOOD_OBJECT_CREDENTIALS";
+		case GOODD_DB_CREDENTIALS:	return "GOODD_DB_CREDENTIALS";
+		case SUFFICIENT_BALANCE:		return "SUFFICIENT_BALANCE";
+		case ACCOUNT_FOUND:	return "ACCOUNT_FOUND";
+		case CLIENT_FOUND:	return "CLIENT_FOUND";
+		case TRANSACTION_FOUND:		return "TRANSACTION_FOUND";
+		case READ_SUCCESS:	return "READ_SUCCESS";
+		case WRITE_SUCCESS:	return "WRITE_SUCCESS";
+		case VALIDATION_SUCCESS:		return "VALIDATION_SUCCESS";
+		default:			return "[Unknown Type]";
+		}
+	}
+
 	//Constructor
 	DBDriverInterface::DBDriverInterface(
-		std::string inputServer, 
-		std::string inputSchema, 
-		std::string inputUsername, 
-		std::string inputPassword) 
-		: 
-		server(inputServer), 
-		schema(inputSchema), 
-		username(inputUsername), 
-		password(password)	{
+		std::string inputServer,
+		std::string inputSchema,
+		std::string inputUsername,
+		std::string inputPassword)
+		:
+		server(inputServer),
+		schema(inputSchema),
+		username(inputUsername),
+		password(password) {
 		//Always run this when instantiating the class, just to make sure it will exist for the runtime of the object
 		if (!this->checkIfDBExists()) {
 			std::cout << "Error connecting to database...";
@@ -88,7 +124,7 @@ namespace EarnDB {
 
 		std::stringstream sqlStream;
 		sqlStream << "mysql --batch -h" << inputServer << " -u" << rootUsername << " -p" << rootPassword << " < \"" << workingDir << initFile;
-		
+
 		std::string fullCommand = sqlStream.str();
 		std::cout << fullCommand.c_str() << std::endl << std::endl;
 
@@ -100,8 +136,8 @@ namespace EarnDB {
 		char newDir[128];
 		_getcwd(newDir, 128);
 
-		std::cout << "Ran Sql Script : \"" << fullCommand << "\" in: \""<< newDir << "\"" << std::endl;
-		
+		std::cout << "Ran Sql Script : \"" << fullCommand << "\" in: \"" << newDir << "\"" << std::endl;
+
 		//change dir back and tell server user
 		_chdir(workingDir);
 		std::cout << "Setting working directory back to: \"" << workingDir << "\"";
@@ -129,7 +165,7 @@ namespace EarnDB {
 }
 
 //DBReader source code
-namespace EarnDB {
+namespace EarnDBDrivers {
 	//Constructor
 	DBReader::DBReader(
 		std::string inputServer,
@@ -150,7 +186,7 @@ namespace EarnDB {
 	//Check functions
 
 	bool DBReader::checkClientIDExists(int checkClientID) {
-		
+
 		bool checkResult = false;	//bool we will be returning
 		try
 		{
@@ -164,9 +200,9 @@ namespace EarnDB {
 				mySession.sql(schemaString.str()).execute();
 
 				std::cout << "checking if client is on DB..." << std::endl;
-				
+
 				//create a temporary client with only that id
-				EarnDB::DBClient copyClient;
+				EarnDBObjects::DBClient copyClient;
 				copyClient.setObjectID(checkClientID);
 
 				mySession.sql(copyClient.getInfoFromDB()).execute();
@@ -174,8 +210,8 @@ namespace EarnDB {
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
 				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
-				
-				std::cout << "check client ID returned: " << (bool) resultRow[0] << std::endl;
+
+				std::cout << "check client ID returned: " << (bool)resultRow[0] << std::endl;
 
 				checkResult = (bool)resultRow[0];
 
@@ -216,7 +252,7 @@ namespace EarnDB {
 				std::cout << "checking if account is on DB..." << std::endl;
 
 				//create a temporary account with only that id
-				EarnDB::DBAccount copyAccount;
+				EarnDBObjects::DBAccount copyAccount;
 				copyAccount.setObjectID(checkAccountID);
 
 				mySession.sql(copyAccount.getInfoFromDB()).execute();
@@ -264,11 +300,11 @@ namespace EarnDB {
 				mySession.sql(schemaString.str()).execute();
 
 				std::cout << "checking if transaction is on DB..." << std::endl;
-				
+
 				//create a temporary transaction with only that id
-				EarnDB::DBTransaction copyTransaction;
+				EarnDBObjects::DBTransaction copyTransaction;
 				copyTransaction.setObjectID(checkTransactionID);
-				
+
 				mySession.sql(copyTransaction.getInfoFromDB()).execute();
 
 				//now get OUT based on what the input var was (check function name)
@@ -298,7 +334,7 @@ namespace EarnDB {
 		}
 		return checkResult;
 	}
-	
+
 	bool DBReader::checkCredentialIDExists(int checkCredentialID) {
 
 		bool checkResult = false;	//bool we will be returning
@@ -316,10 +352,10 @@ namespace EarnDB {
 				std::cout << "checking if transaction is on DB..." << std::endl;
 
 				//create a temporary transaction with only that id
-				EarnDB::DBCredential copyTransaction;
-				copyTransaction.setObjectID(checkCredentialID);
+				EarnDBObjects::DBCredential copyCredential;
+				copyCredential.setObjectID(checkCredentialID);
 
-				mySession.sql(copyTransaction.getInfoFromDB()).execute();
+				mySession.sql(copyCredential.getInfoFromDB()).execute();
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
@@ -369,7 +405,8 @@ namespace EarnDB {
 	}
 
 	//Get single functions
-	int DBReader::getObjectInfo(int objectID, DBClient& copyClient) {
+
+	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient) {
 
 		int getResult;
 		try
@@ -434,7 +471,7 @@ namespace EarnDB {
 		return getResult;
 	}
 
-	int DBReader::getObjectInfo(int objectID, DBAccount& copyAccount) {
+	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount) {
 		int getResult;
 		try
 		{
@@ -459,7 +496,7 @@ namespace EarnDB {
 				std::cout << "Account ID: " << resultRow[0] << std::endl;
 				std::cout << "Client ID: " << resultRow[1] << std::endl;
 
-				EarnStructs::AccountType getType = ((EarnStructs::AccountType) (int) resultRow[2]);
+				EarnStructs::AccountType getType = ((EarnStructs::AccountType)(int)resultRow[2]);
 				std::cout << "Account Type: " << typeid(getType).name() << std::endl;
 				std::cout << "Account Balance: $" << resultRow[3] << std::endl;
 
@@ -490,8 +527,8 @@ namespace EarnDB {
 		return getResult;
 	}
 
-	int DBReader::getObjectInfo(int objectID, DBTransaction& copyTransaction) {
-		
+	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction) {
+
 		int getResult;
 		try
 		{
@@ -554,7 +591,7 @@ namespace EarnDB {
 
 	//Get multiple functions
 
-	int DBReader::getObjectsInfo(int& numOfClients, std::vector<EarnDB::DBClient>& clientsVec) {
+	int DBReader::getObjectsInfo(int& numOfClients, std::vector<EarnDBObjects::DBClient>& clientsVec) {
 
 		int getResult;
 		try
@@ -583,7 +620,7 @@ namespace EarnDB {
 							clientCount++;
 
 							std::cout << "Client #" << clientCount << ": " << std::endl << std::endl;
-							
+
 							//print results
 							std::cout << "client returned:" << std::endl;
 							std::cout << "Client ID: " << resultRow[0] << std::endl;
@@ -597,10 +634,10 @@ namespace EarnDB {
 							std::cout << "Client ZIP Code: " << resultRow[8] << std::endl;
 
 							//now set the info into referenced client
-							EarnDB::DBClient newClient(
+							EarnDBObjects::DBClient newClient(
 								(int)resultRow[0],
 								((std::string)resultRow[1]).c_str(),
-								((std::string)resultRow[2]).c_str(), 
+								((std::string)resultRow[2]).c_str(),
 								((std::string)resultRow[3]).c_str(),
 								((std::string)resultRow[4]).c_str(),
 								((std::string)resultRow[5]).c_str(),
@@ -649,7 +686,7 @@ namespace EarnDB {
 		return getResult;
 	}
 
-	int DBReader::getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDB::DBAccount>& clientAccountsVec) {
+	int DBReader::getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDBObjects::DBAccount>& clientAccountsVec) {
 
 		int getResult;
 		try
@@ -690,7 +727,7 @@ namespace EarnDB {
 							std::cout << "Account Balance: $" << resultRow[3] << std::endl;
 
 							//now set the info into referenced account
-							EarnDB::DBAccount newAccount(
+							EarnDBObjects::DBAccount newAccount(
 								(int)resultRow[0],
 								(int)resultRow[1],
 								getType,
@@ -737,7 +774,7 @@ namespace EarnDB {
 		return getResult;
 	}
 
-	int DBReader::getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDB::DBTransaction>& accountTransactionsVec) {
+	int DBReader::getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDBObjects::DBTransaction>& accountTransactionsVec) {
 
 		int getResult;
 		try
@@ -781,7 +818,7 @@ namespace EarnDB {
 							std::cout << "Secondary Account: " << resultRow[6] << std::endl;
 
 							//now set the info into referenced client
-							EarnDB::DBTransaction newTransaction(
+							EarnDBObjects::DBTransaction newTransaction(
 								(int)resultRow[0],
 								(int)resultRow[1],
 								getType,
@@ -833,7 +870,7 @@ namespace EarnDB {
 }
 
 //DBValidation source code
-namespace EarnDB {
+namespace EarnDBDrivers {
 	//Constructor
 	DBValidation::DBValidation(
 		std::string inputServer,
@@ -841,7 +878,7 @@ namespace EarnDB {
 		std::string inputUsername,
 		std::string inputPassword)
 		:
-		DBDriverInterface(
+		DBReader(
 			inputServer,
 			inputSchema,
 			inputUsername,
@@ -852,7 +889,7 @@ namespace EarnDB {
 	//Validation functions
 
 	int DBValidation::validateClient(int usernumber, std::string username, std::string passwordHash) {
-		
+
 		int returnID = 0;
 		try
 		{
@@ -906,37 +943,37 @@ namespace EarnDB {
 
 		return returnID;
 	}
-	
-	DBClient DBValidation::clientLogin(DBReader& copyReader, std::string username, std::string passwordHash) {
-		DBClient returnClient;
+
+	EarnDBObjects::DBClient DBValidation::clientLogin(std::string username, std::string passwordHash) {
+		EarnDBObjects::DBClient returnClient;
 		int returnID = this->validateClient(0, username, passwordHash);
 
 		if (returnID > 0) {
-			copyReader.getObjectInfo(returnID, returnClient);
+			this->getObjectInfo(returnID, returnClient);
 		}
 
 		//return the client anyways since it will  be empty if nothing was found
 		return returnClient;
 	}
 
-	DBClient DBValidation::clientLogin(DBReader& copyReader, int usernumber, std::string passwordHash) {
-		DBClient returnClient;
+	EarnDBObjects::DBClient DBValidation::clientLogin(int usernumber, std::string passwordHash) {
+		EarnDBObjects::DBClient returnClient;
 		int returnID = this->validateClient(usernumber, "", passwordHash);
 
 		if (returnID > 0) {
-			copyReader.getObjectInfo(returnID, returnClient);
+			this->getObjectInfo(returnID, returnClient);
 		}
 
 		//return the client anyways since it will  be empty if nothing was found
 		return returnClient;
 	}
 
-	DBClient DBValidation::clientLogin(DBReader& copyReader, EarnStructs::CredentialInfo inputCredentials) {
-		DBClient returnClient;
+	EarnDBObjects::DBClient DBValidation::clientLogin(EarnStructs::CredentialInfo inputCredentials) {
+		EarnDBObjects::DBClient returnClient;
 		int returnID = this->validateClient(inputCredentials.usernumber, inputCredentials.username, inputCredentials.userPasswordHash);
 
 		if (returnID > 0) {
-			copyReader.getObjectInfo(returnID, returnClient);
+			this->getObjectInfo(returnID, returnClient);
 		}
 
 		//return the client anyways since it will  be empty if nothing was found
@@ -945,7 +982,7 @@ namespace EarnDB {
 }
 
 //DBWriter source code
-namespace EarnDB {
+namespace EarnDBDrivers {
 	//Constructor
 	DBWriter::DBWriter(
 		std::string inputServer,
@@ -963,7 +1000,7 @@ namespace EarnDB {
 
 	}
 
-	int DBWriter::addObject(DBObject& inputObj) {
+	int DBWriter::addObject(EarnDBObjects::DBObject& inputObj) {
 
 		int returnID = 0;
 		try
@@ -1008,7 +1045,7 @@ namespace EarnDB {
 		return returnID;
 	}
 
-	int DBWriter::modifyObjectInfo(DBObject& inputObj) {
+	int DBWriter::modifyObjectInfo(EarnDBObjects::DBObject& inputObj) {
 
 		int returnVal = 0;
 		try
@@ -1025,7 +1062,7 @@ namespace EarnDB {
 				std::cout << "adding object to database" << std::endl;
 
 				mySession.sql(inputObj.modifyInfoInDB()).execute();
-				
+
 				//nothing to check, leave that for function that calls this...
 				returnVal = 0;
 
@@ -1049,7 +1086,7 @@ namespace EarnDB {
 		return returnVal;
 	}
 
-	int DBWriter::deleteObject(DBObject& inputObj) {
+	int DBWriter::deleteObject(EarnDBObjects::DBObject& inputObj) {
 
 		int returnID = 0;
 		try

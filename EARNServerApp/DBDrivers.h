@@ -2,55 +2,28 @@
 #include <iostream>
 #include <vector>
 #include <mysqlx/xdevapi.h>
-#include "DBAccess.h"
-#include "DBObjects.h"
+#include <sstream>
+#include <Windows.h>
+#include <direct.h>
 
-namespace EarnDB {
+#include"DBAccess.h"
+#include "DBObjects.h"
+#include <EARNStructs.h>
+
+namespace EarnDBDrivers {
 	//DB enummerations for success & failure
 
 	//DB flags for type of DB error (used in logging failed DB actions)
 	enum DBErrorType { NO_DB_FOUND, BAD_OBJECT_CREDENTIALS, BAD_DB_CREDENTIALS, INSUFFICIENT_BALANCE, ACCOUNT_NOT_FOUND, CLIENT_NOT_FOUND, TRANSACTION_NOT_FOUND, READ_ERROR, WRITE_ERROR, VALIDATION_ERROR };
-	
+
 	//Converts enum to string depending on type
-	inline const std::string EnumToString(DBErrorType inputType)
-	{
-		switch (inputType)
-		{
-		case NO_DB_FOUND:		return "NO_DB_FOUND";
-		case BAD_OBJECT_CREDENTIALS:	return "BAD_OBJECT_CREDENTIALS";
-		case BAD_DB_CREDENTIALS:	return "BAD_DB_CREDENTIALS";
-		case INSUFFICIENT_BALANCE:		return "INSUFFICIENT_BALANCE";
-		case ACCOUNT_NOT_FOUND:	return "ACCOUNT_NOT_FOUND";
-		case CLIENT_NOT_FOUND:	return "CLIENT_NOT_FOUND";
-		case TRANSACTION_NOT_FOUND:		return "TRANSACTION_NOT_FOUND";
-		case READ_ERROR:	return "READ_ERROR";
-		case WRITE_ERROR:	return "WRITE_ERROR";
-		case VALIDATION_ERROR:		return "VALIDATION_ERROR";
-		default:			return "[Unknown Type]";
-		}
-	}
+	const std::string EnumToString(DBErrorType inputType);
 
 	//DB flags for type of DB interaction (used in logging standard DB actions)
 	enum DBSUCCESSTYPE { DB_FOUND, GOOD_OBJECT_CREDENTIALS, GOODD_DB_CREDENTIALS, SUFFICIENT_BALANCE, ACCOUNT_FOUND, CLIENT_FOUND, TRANSACTION_FOUND, READ_SUCCESS, WRITE_SUCCESS, VALIDATION_SUCCESS };
-	
+
 	//Converts enum to string depending on type
-	inline const std::string EnumToString(DBSUCCESSTYPE inputType)
-	{
-		switch (inputType)
-		{
-		case DB_FOUND:		return "DB_FOUND";
-		case GOOD_OBJECT_CREDENTIALS:	return "GOOD_OBJECT_CREDENTIALS";
-		case GOODD_DB_CREDENTIALS:	return "GOODD_DB_CREDENTIALS";
-		case SUFFICIENT_BALANCE:		return "SUFFICIENT_BALANCE";
-		case ACCOUNT_FOUND:	return "ACCOUNT_FOUND";
-		case CLIENT_FOUND:	return "CLIENT_FOUND";
-		case TRANSACTION_FOUND:		return "TRANSACTION_FOUND";
-		case READ_SUCCESS:	return "READ_SUCCESS";
-		case WRITE_SUCCESS:	return "WRITE_SUCCESS";
-		case VALIDATION_SUCCESS:		return "VALIDATION_SUCCESS";
-		default:			return "[Unknown Type]";
-		}
-	}
+	const std::string EnumToString(DBSUCCESSTYPE inputType);
 
 	//DB Driver parent interface, used by reader, writer & validation (can also be used independantly)
 	class DBDriverInterface {
@@ -61,7 +34,7 @@ namespace EarnDB {
 		const std::string username;
 		const std::string password;
 		//just keep logger inside DBDrivers since it will always be used in it's functionalities
-		
+
 		//DBLogger DBLogger;
 
 	public:
@@ -69,14 +42,14 @@ namespace EarnDB {
 
 		//Will always use parametrized because of the const values needed...
 		DBDriverInterface(
-			std::string inputServer, 
-			std::string inputSchema, 
-			std::string inputUsername, 
+			std::string inputServer,
+			std::string inputSchema,
+			std::string inputUsername,
 			std::string inputPassword);
 		//, DBLogger(DBLoggerPath);
-		
+
 		//Get functions (protected due to password call & no other obvious solution...
-		
+
 		//get server string for children db connections
 		const std::string getServer();
 
@@ -90,7 +63,7 @@ namespace EarnDB {
 		const std::string getPassword();
 
 		//Check & Initalize functions
-		
+
 		//Initalize DB if it doesn't exist, used in checkIFDBExists function and can be used as a static function when server boots up
 		static bool initalizeDefaultDB();
 
@@ -98,7 +71,7 @@ namespace EarnDB {
 		int checkIfDBExists();
 
 		//Call DBLogger given success / error to log DB information
-		
+
 		/*
 		//Call DBLogger for an error
 		bool callDBLoggerError(std::string DBObjectLogInfo, DBErrorType errorType);
@@ -135,33 +108,33 @@ namespace EarnDB {
 		//Get single objects
 
 		//Get Client from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectInfo(int objectID, DBClient& copyClient);
+		int getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient);
 
 		//Get Account from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectInfo(int objectID, DBAccount& copyAccount);
+		int getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount);
 
 		//Get Transaction from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectInfo(int objectID, DBTransaction& copyTransaction);
+		int getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction);
 
 		//Get Object from database, using DBOType and pass by reference
-		int getObjectInfo(int objectID, DBObject& copyObject);
+		int getObjectInfo(int objectID, EarnDBObjects::DBObject& copyObject);
 		//Get all objects from a higher level ID
 
 		//Get all Clients from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectsInfo(int& numOfClients, std::vector<EarnDB::DBClient>& clientsVec);
+		int getObjectsInfo(int& numOfClients, std::vector<EarnDBObjects::DBClient>& clientsVec);
 
 		//Get all Accounts of a client from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDB::DBAccount>& clientAccountsVec);
+		int getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDBObjects::DBAccount>& clientAccountsVec);
 
 		//Get all Transactions of an account from database (-2 if ID doesn't exist / -1 for error)
-		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDB::DBTransaction>& accountTransactionsVec);
+		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDBObjects::DBTransaction>& accountTransactionsVec);
 
 		//Check ID function(s) for given ID num, and specified ID type
 		bool checkIDExists(int checkID, EarnStructs::ObjectType idType);
 	};
 
 	//DB Validation class (used for login / finding client for associated username/Num & password
-	class DBValidation :public DBDriverInterface {
+	class DBValidation :public DBReader {
 		//Private validate client function used by login
 		int validateClient(int usernumber, std::string username, std::string passwordHash);
 
@@ -174,13 +147,13 @@ namespace EarnDB {
 			std::string inputPassword);
 
 		//Client login function through username & pass, returns NULL for incorrect login
-		DBClient clientLogin(DBReader& copyReader, std::string username, std::string passwordHash);
+		EarnDBObjects::DBClient clientLogin(std::string username, std::string passwordHash);
 
 		//Client login function through usernumber & pass, returns NULL for incorrect login
-		DBClient clientLogin(DBReader& copyReader, int usernumber, std::string passwordHash);
+		EarnDBObjects::DBClient clientLogin(int usernumber, std::string passwordHash);
 
 		//Client login function using CredentialInfo struct, returns NULL for incorrect login
-		DBClient clientLogin(DBReader& copyReader, EarnStructs::CredentialInfo inputCredentials);
+		EarnDBObjects::DBClient clientLogin(EarnStructs::CredentialInfo inputCredentials);
 	};
 
 	////DB Writer class (used in adding, modifying, and deleting info)
@@ -194,12 +167,12 @@ namespace EarnDB {
 			std::string inputPassword);
 
 		//Add object to database (object's allocated ID on success, -1 for error)
-		int addObject(DBObject& inputObj);
+		int addObject(EarnDBObjects::DBObject& inputObj);
 
 		//Modify object in database (0 for success, -1 for error, -2 for DB Connection error)
-		int modifyObjectInfo(DBObject& inputObj);
+		int modifyObjectInfo(EarnDBObjects::DBObject& inputObj);
 
 		//Delete object in database (0 for success, -1 for error, -2 for DB Connection error)
-		int deleteObject(DBObject& inputObj);
+		int deleteObject(EarnDBObjects::DBObject& inputObj);
 	};
 }
