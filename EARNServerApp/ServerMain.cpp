@@ -265,9 +265,9 @@ int main(void) {
 	recv(ConnectionSocket, rxBufferView, sizeof(rxBufferView), 0);
 
 	Packet checkObjectTypeView(rxBufferView);
-	if (checkObjectTypeView.getObjectType() == 3)
+	if (checkObjectTypeView.getObjectType() == 8)
 	{
-		char firstName[EarnStructs::VARCHARLEN] = "servername";
+		/*char firstName[EarnStructs::VARCHARLEN] = "servername";
 		char lastName[EarnStructs::VARCHARLEN] = "serverlastname";
 		char email[EarnStructs::VARCHARLEN] = "serveremail";
 		char phoneNumber[EarnStructs::VARCHARLEN] = "serverphone number";
@@ -281,11 +281,15 @@ int main(void) {
 		int viewAccountSize = sizeof(CreateAccount);
 		Packet viewAccount(&serverAccount, viewAccountSize, 1, 0);
 		viewAccount.setStatus(1);
-		int viewAccountTotalSize = 0;
+		int viewAccountTotalSize = 0;*/
 
-		char* txBufferView = viewAccount.serialize(viewAccountTotalSize);
+		Packet clientPacket2(0, 0);
+		clientPacket2.setStatus(1);
+		int clientTotalSize2 = 0;
+		char* clientTxBuffer2 = clientPacket2.serialize(clientTotalSize2);
 
-		send(ConnectionSocket, txBufferView, viewAccountTotalSize, 0);
+
+		send(ConnectionSocket, clientTxBuffer2, clientTotalSize2, 0);
 	}
 
 
