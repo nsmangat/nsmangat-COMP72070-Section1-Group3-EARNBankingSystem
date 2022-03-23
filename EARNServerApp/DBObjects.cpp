@@ -1,9 +1,10 @@
+#include <vector>
+#include <iostream>
+#include <sstream>
+
 #include "DBAccess.h"
 #include "DBObjects.h"
 #include <EARNStructs.h>
-
-#include <vector>
-#include <sstream>
 
 //DBObject class source code, splitting up namespace to make it easier to read & collapse code areas...
 namespace EarnDB {

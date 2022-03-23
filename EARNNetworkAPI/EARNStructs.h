@@ -24,7 +24,7 @@ namespace EarnStructs  {
 		case TRANSACTION:	return "TRANSACTION";
 		default:			return "[Unknown Type]";
 		}
-	}
+	};
 
 	//Structure for Client object's info, to ease serialization
 	struct ClientInfo {
@@ -59,7 +59,7 @@ namespace EarnStructs  {
 		case SAVINGS:		return "SAVINGS";
 		default:			return "[Unknown Type]";
 		}
-	}
+	};
 
 	//Structure for Account object's info, to ease serialization
 	struct AccountInfo {
@@ -83,7 +83,7 @@ namespace EarnStructs  {
 		case ACCOUNTTRANSFER:	return "ACCOUNTTRANSFER";
 		default:				return "[Unknown Type]";
 		}
-	}
+	};
 
 	//Structure for Transaction object's info, to ease serialization
 	struct TransactionInfo {
