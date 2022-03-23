@@ -61,48 +61,134 @@ int main(void) {
 		return 0;
 	}
 
-	char rxBuffer[1000] = {};
-	recv(ConnectionSocket, rxBuffer, sizeof(rxBuffer), 0);
+	//char rxBuffer[1000] = {};
+	//recv(ConnectionSocket, rxBuffer, sizeof(rxBuffer), 0);
 
-	Packet checkObjectType(rxBuffer);
-	if(checkObjectType.getObjectType() == 5)
-	{
+	//Packet checkObjectType(rxBuffer);
+	//if(checkObjectType.getObjectType() == 5)
+	//{
 
-		char rxBuffer1[1000] = {};
-		char rxBuffer2[1000] = {};
-		/*int size1 = sizeof(CreateAccount);
-		int size2 = sizeof(Login);*/
+	//	char rxBuffer1[1000] = {};
+	//	char rxBuffer2[1000] = {};
+	//	/*int size1 = sizeof(CreateAccount);
+	//	int size2 = sizeof(Login);*/
 
-		int size1 = sizeof(CreateAccount);
-		int size2 = sizeof(Login);
-		memcpy(rxBuffer1, rxBuffer, size1  + HeadSize);
+	//	int size1 = sizeof(CreateAccount);
+	//	int size2 = sizeof(Login);
+	//	memcpy(rxBuffer1, rxBuffer, size1  + HeadSize);
 
-		memcpy(rxBuffer2, rxBuffer, HeadSize);
-		memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
+	//	memcpy(rxBuffer2, rxBuffer, HeadSize);
+	//	memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
 
-		CreateAccount testAccountRecv(rxBuffer1);
-		Login testLoginRecv(rxBuffer2);
+	//	CreateAccount testAccountRecv(rxBuffer1);
+	//	Login testLoginRecv(rxBuffer2);
 
-		testAccountRecv.display();
-		testLoginRecv.display();
+	//	testAccountRecv.display();
+	//	testLoginRecv.display();
 
-		//database authenticates 
+	//	//database authenticates 
 
-		int clientID = 100;
+	//	int clientID = 100;
 
-		AccountInformation chequing(clientID, CHEQUINGS, 0);
-		AccountInformation savings(clientID, SAVINGS, 0);
+	//	AccountInformation chequing(clientID, CHEQUINGS, 0);
+	//	AccountInformation savings(clientID, SAVINGS, 0);
 
-		int size3 = sizeof(chequing);
+	//	int size3 = sizeof(chequing);
 
-		Packet startup(&chequing, size3, &savings, size3, 6);
-		int totalSize = 0;
-		char* txBuffer = startup.serialize(totalSize);
+	//	Packet startup(&chequing, size3, &savings, size3, 6);
+	//	int totalSize = 0;
+	//	char* txBuffer = startup.serialize(totalSize);
 
-		send(ConnectionSocket, txBuffer, totalSize, 0);
+	//	send(ConnectionSocket, txBuffer, totalSize, 0);
 
-	}
-	
+	//}
+	//
+
+
+	////credential
+	//char rxBufferLogin[1000] = {};
+	//recv(ConnectionSocket, rxBufferLogin, sizeof(rxBufferLogin), 0);
+
+	//Packet checkObjectTypeLogin(rxBufferLogin);
+	//if(checkObjectTypeLogin.getObjectType() == 2)
+	//{
+	//	Login testLogin(rxBufferLogin);
+
+	//	testLogin.display();
+
+	//	//database authenticates 
+	//	int clientIDlogin = 200;
+
+	//	AccountInformation chequingLogin(clientIDlogin, CHEQUINGS, 100);
+	//	AccountInformation savingsLogin(clientIDlogin, SAVINGS, 100);
+
+	//	int size3 = sizeof(chequingLogin);
+
+	//	Packet LoginSuccess(&chequingLogin, size3, &savingsLogin, size3, 6);
+	//	LoginSuccess.setStatus(1);
+	//	int totalSizeLogin = 0;
+	//	char* txBufferLogin = LoginSuccess.serialize(totalSizeLogin);
+
+	//	send(ConnectionSocket, txBufferLogin, totalSizeLogin, 0);
+
+	//}
+
+
+
+	////view account
+
+
+	//char rxBufferView[1000] = {};
+	//recv(ConnectionSocket, rxBufferView, sizeof(rxBufferView), 0);
+
+	//Packet checkObjectTypeView(rxBufferView);
+	//if (checkObjectTypeView.getObjectType() == 1)
+	//{
+	//	char firstName[EarnStructs::VARCHARLEN] = "servername";
+	//	char lastName[EarnStructs::VARCHARLEN] = "serverlastname";
+	//	char email[EarnStructs::VARCHARLEN] = "serveremail";
+	//	char phoneNumber[EarnStructs::VARCHARLEN] = "serverphone number";
+	//	char streetName[EarnStructs::VARCHARLEN] = "serverstreet name";
+	//	char city[EarnStructs::VARCHARLEN] = "servercity";
+	//	char province[EarnStructs::VARCHARLEN] = "serverprovince";
+	//	char zipcode[EarnStructs::ZIPLEN] = "pi123";
+	//	int accID = 999;
+
+	//	CreateAccount serverAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+	//	int viewAccountSize = sizeof(CreateAccount);
+	//	Packet viewAccount(&serverAccount, viewAccountSize, 1, 0);
+	//	int viewAccountTotalSize = 0;
+
+	//	char* txBufferView = viewAccount.serialize(viewAccountTotalSize);
+
+	//	send(ConnectionSocket, txBufferView, viewAccountTotalSize, 0);
+	//}
+
+
+
+	////transaction
+
+
+	//char rxBufferTransfer[1000] = {};
+	//recv(ConnectionSocket, rxBufferTransfer, sizeof(rxBufferTransfer), 0);
+
+	//Packet checkObjectTypeTransfer(rxBufferTransfer);
+	//if (checkObjectTypeTransfer.getObjectType() == 4)
+	//{
+	//	Transaction TransactionRecv(rxBufferTransfer);
+	//	
+	//	TransactionRecv.display();
+
+	//	Packet clientPacket(0, 0);
+	//	clientPacket.setStatus(1);
+
+	//	int clientTotalSize = 0;
+	//	char* clientTxBuffer = clientPacket.serialize(clientTotalSize);
+
+	//	send(ConnectionSocket, clientTxBuffer, clientTotalSize, 0);
+
+
+	//}
 
 
 	//credential
@@ -110,7 +196,7 @@ int main(void) {
 	recv(ConnectionSocket, rxBufferLogin, sizeof(rxBufferLogin), 0);
 
 	Packet checkObjectTypeLogin(rxBufferLogin);
-	if(checkObjectTypeLogin.getObjectType() == 2)
+	if (checkObjectTypeLogin.getObjectType() == 2)
 	{
 		Login testLogin(rxBufferLogin);
 
@@ -119,7 +205,7 @@ int main(void) {
 		//database authenticates 
 		int clientIDlogin = 200;
 
-		AccountInformation chequingLogin(clientIDlogin, CHEQUINGS, 100);
+		AccountInformation chequingLogin(clientIDlogin, CHEQUINGS, 500);
 		AccountInformation savingsLogin(clientIDlogin, SAVINGS, 100);
 
 		int size3 = sizeof(chequingLogin);
@@ -130,44 +216,7 @@ int main(void) {
 		char* txBufferLogin = LoginSuccess.serialize(totalSizeLogin);
 
 		send(ConnectionSocket, txBufferLogin, totalSizeLogin, 0);
-
 	}
-
-
-
-	//view account
-
-
-	char rxBufferView[1000] = {};
-	recv(ConnectionSocket, rxBufferView, sizeof(rxBufferView), 0);
-
-	Packet checkObjectTypeView(rxBufferView);
-	if (checkObjectTypeView.getObjectType() == 1)
-	{
-		char firstName[EarnStructs::VARCHARLEN] = "servername";
-		char lastName[EarnStructs::VARCHARLEN] = "serverlastname";
-		char email[EarnStructs::VARCHARLEN] = "serveremail";
-		char phoneNumber[EarnStructs::VARCHARLEN] = "serverphone number";
-		char streetName[EarnStructs::VARCHARLEN] = "serverstreet name";
-		char city[EarnStructs::VARCHARLEN] = "servercity";
-		char province[EarnStructs::VARCHARLEN] = "serverprovince";
-		char zipcode[EarnStructs::ZIPLEN] = "pi123";
-		int accID = 999;
-
-		CreateAccount serverAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
-		int viewAccountSize = sizeof(CreateAccount);
-		Packet viewAccount(&serverAccount, viewAccountSize, 1, 0);
-		int viewAccountTotalSize = 0;
-
-		char* txBufferView = viewAccount.serialize(viewAccountTotalSize);
-
-		send(ConnectionSocket, txBufferView, viewAccountTotalSize, 0);
-	}
-
-
-
-	//transaction
-
 
 	char rxBufferTransfer[1000] = {};
 	recv(ConnectionSocket, rxBufferTransfer, sizeof(rxBufferTransfer), 0);
@@ -187,94 +236,7 @@ int main(void) {
 
 		send(ConnectionSocket, clientTxBuffer, clientTotalSize, 0);
 
-
 	}
-
-	
-	
-	
-	
-
-
-	//bool killSwitch = true;
-
-	//while (killSwitch)
-	//{
-	//	char rxBuffer[500] = {};
-
-
-	//	recv(ConnectionSocket, rxBuffer, sizeof(rxBuffer), 0);
-
-	//	Packet checkOperation(rxBuffer);		//get just the headerswit
-
-	//	//check crc
-	//	int operation = checkOperation.getOperationType();
-
-	//	char TxBuffer[500] = {};
-	//	int sendSize = 0;
-	//	//switch cases
-
-	//	switch (operation) {
-
-	//	case CreateUserType:
-	//	{
-	//		CreateAccount newUser(rxBuffer);
-
-	//		newUser.display();
-	//		killSwitch = false;
-	//		break;
-	//	}
-	//	case LoginType:
-	//	{
-	//		Login newLogin(rxBuffer);
-
-	//		break;
-	//	}
-	//	case DepositType:
-	//	{
-	//		Deposit newDeposit(rxBuffer);
-
-	//		break;
-	//	}
-
-	//	case WithdrawType:
-	//	{
-	//		Withdraw newWithdraw(rxBuffer);
-	//		int thing = 0;
-
-
-	//		break;
-	//	}
-	//	case TransferType:
-	//	{
-	//		TransferBetweenAccount newTransfer(rxBuffer);
-	//		//database stuff
-
-
-
-	//		//buffertransfer
-
-	//		break;
-	//	}
-	//	case LogoffType:
-	//	{			
-	//		//database stuff
-
-	//		//buffertransfer
-	//		killSwitch = false;
-	//		break;
-	//	}
-	//	default:
-	//	{
-	//		killSwitch = false;
-
-	//		break;
-	//	}
-
-	//	}
-
-	//	//send(ConnectionSocket, txBuffer, sendSize, 0);
-	//}
 
 
 

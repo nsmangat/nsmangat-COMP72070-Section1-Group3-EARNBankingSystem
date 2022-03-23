@@ -167,3 +167,18 @@ void Packet::setStatus(int num) {
 int Packet::getStatus() {
 	return HEAD.status;
 }
+
+char* Packet::getIP() {
+
+	return HEAD.fromIP;
+}
+
+int Packet::getDataSize() {
+
+	return HEAD.dataSize;
+}
+
+void setupPacketToSend()
+{
+
+}

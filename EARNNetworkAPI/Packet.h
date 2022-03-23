@@ -58,5 +58,8 @@ public:
 	void setStatus(int num);
 	int getStatus();
 
+	char* getIP();
+	int getDataSize();
 
+	/*char* setupPacketToSend(DataTypes* obj, int size, );*/
 };

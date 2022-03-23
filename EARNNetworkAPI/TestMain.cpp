@@ -108,59 +108,60 @@ int main(void)
 	//MARCH 20///////////////////////////////////////////////////////////////////////////////////////
 
 
-	char firstName[EarnStructs::VARCHARLEN] = "firstname";
-	char lastName[EarnStructs::VARCHARLEN] = "lastname";
-	char username[EarnStructs::VARCHARLEN] = "username";
-	char password[EarnStructs::VARCHARLEN] = "password";
-	char email[EarnStructs::VARCHARLEN] = "email";
-	char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
-	char streetName[EarnStructs::VARCHARLEN] = "street name";
-	char city[EarnStructs::VARCHARLEN] = "city";
-	char province[EarnStructs::VARCHARLEN] = "province";
-	char zipcode[EarnStructs::ZIPLEN] = "12345";
-	int accID = 234;
+	//char firstName[EarnStructs::VARCHARLEN] = "firstname";
+	//char lastName[EarnStructs::VARCHARLEN] = "lastname";
+	//char username[EarnStructs::VARCHARLEN] = "username";
+	//char password[EarnStructs::VARCHARLEN] = "password";
+	//char email[EarnStructs::VARCHARLEN] = "email";
+	//char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
+	//char streetName[EarnStructs::VARCHARLEN] = "street name";
+	//char city[EarnStructs::VARCHARLEN] = "city";
+	//char province[EarnStructs::VARCHARLEN] = "province";
+	//char zipcode[EarnStructs::ZIPLEN] = "12345";
+	//int accID = 234;
 
-	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
-	Login testLogin(username, password);
+	//CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+	//Login testLogin(username, password);
 
-	int size1 = sizeof(testAccount);
-	int size2 = sizeof(testLogin);
-	Packet testPacket(&testAccount, size1, &testLogin, size2, 5);
-	//Packet testPacket(&testLogin, size2, 5);
+	//int size1 = sizeof(testAccount);
+	//int size2 = sizeof(testLogin);
+	//Packet testPacket(&testAccount, size1, &testLogin, size2, 5);
+	////Packet testPacket(&testLogin, size2, 5);
 
-	int sendSize = 0;
-	char* txBuffer = testPacket.serialize(sendSize);
-	char rxBuffer[1000] = {};
-	
-	char rxBuffer1[1000] = {};
-	char rxBuffer2[1000] = {};
-	//int crc;
+	//int sendSize = 0;
+	// 
+	//char* txBuffer = testPacket.serialize(sendSize);
+	//char rxBuffer[1000] = {};
 
-	//memcpy(&crc, rxBuffer + , sizeof(int));
-	//memcpy header to find operationtype
+	//char rxBuffer1[1000] = {};
+	//char rxBuffer2[1000] = {};
+	////int crc;
 
-	memcpy(rxBuffer, txBuffer, sendSize);
+	////memcpy(&crc, rxBuffer + , sizeof(int));
+	////memcpy header to find operationtype
 
-	memcpy(rxBuffer1, rxBuffer, size1 + HeadSize);
+	//memcpy(rxBuffer, txBuffer, sendSize);
 
-	memcpy(rxBuffer2, rxBuffer, HeadSize);
-	memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
-	CreateAccount testAccountReceive(rxBuffer1);
-	Login testLoginRecv(rxBuffer2);
+	//memcpy(rxBuffer1, rxBuffer, size1 + HeadSize);
 
-	//cout << crc << endl;
+	//memcpy(rxBuffer2, rxBuffer, HeadSize);
+	//memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
+	//CreateAccount testAccountReceive(rxBuffer1);
+	//Login testLoginRecv(rxBuffer2);
 
-	
+	////cout << crc << endl;
 
-	/*for (int i = 0; i < 30; i++)
-	{
-		int buf = 0;
-		memcpy(&buf, rxBuffer + HeadSize + (i * 4), 4);
-		cout << buf << endl;
-	}*/
 
-	testAccountReceive.display();
-	testLoginRecv.display();
+
+	///*for (int i = 0; i < 30; i++)
+	//{
+	//	int buf = 0;
+	//	memcpy(&buf, rxBuffer + HeadSize + (i * 4), 4);
+	//	cout << buf << endl;
+	//}*/
+
+	//testAccountReceive.display();
+	//testLoginRecv.display();
 
 	//testAccountReceive.display();
 
@@ -220,7 +221,7 @@ int main(void)
 	/*int clientID = 234;
 	AccountType type = CHEQUINGS;
 	double accountBalance = 10.00;
-	
+
 	AccountInformation testAccountInformation(clientID, type, accountBalance);
 	int size3 = sizeof(testAccountInformation);
 	Packet testPacket(&testAccountInformation, size3, 1, 0);
@@ -237,6 +238,9 @@ int main(void)
 	testAccountInformationRecv.display();*/
 
 	//March 21///////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 	//cout << opType << endl;
@@ -389,4 +393,47 @@ int main(void)
 	//char *testTime = test2.getTime();
 	//cout << opType << endl;
 	//cout << testTime << endl;
+
+	//March 22///////////////////////////////////////////////////////////////////////////////////////
+
+
+	char username[EarnStructs::VARCHARLEN] = "usernamestruct";
+	char password[EarnStructs::VARCHARLEN] = "passwordstruct";
+
+	Login structCheck(username, password);
+
+	CredentialInfo test = structCheck.getLoginStruct();
+
+	cout << test.username << endl;
+	cout << test.userPasswordHash << endl;
+
+	char firstName[EarnStructs::VARCHARLEN] = "firstname";
+	char lastName[EarnStructs::VARCHARLEN] = "lastname";
+	//char username[EarnStructs::VARCHARLEN] = "username";
+	//char password[EarnStructs::VARCHARLEN] = "password";
+	char email[EarnStructs::VARCHARLEN] = "email";
+	char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
+	char streetName[EarnStructs::VARCHARLEN] = "street name";
+	char city[EarnStructs::VARCHARLEN] = "city";
+	char province[EarnStructs::VARCHARLEN] = "province";
+	char zipcode[EarnStructs::ZIPLEN] = "12345";
+	int accID = 234;
+
+	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+
+	ClientInfo testClientInfo = testAccount.getClientInfoStruct();
+
+	cout << testClientInfo.email << endl;
+
+	AccountInformation oldAccount(1, SAVINGS, 20);
+	AccountInformation newAccount;
+
+	memcpy(&newAccount, &oldAccount, sizeof(oldAccount));
+
+	newAccount.display();
+
+	Transaction testTransaction(123, ETRANSFER, 2, 3, 4);
+	Transaction copiedTransaction;
+	memcpy(&copiedTransaction, &testTransaction, sizeof(Transaction));
+	copiedTransaction.display();
 }

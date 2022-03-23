@@ -82,6 +82,8 @@ using namespace EarnStructs;
 	 void setAccountID(int accountID);
 
 	 void display();
+
+	 ClientInfo getClientInfoStruct();
 };
 
  class Login : public DataTypes {		//size 80
@@ -128,98 +130,100 @@ using namespace EarnStructs;
 	 void setAccountID(int accountID); 
 
 	 void display();
+
+	 CredentialInfo getLoginStruct();
  };
 
- class Deposit : public DataTypes{		//Size 12
+ //class Deposit : public DataTypes{		//Size 12
 
-	 int amount;
-	 int depositType;
-	 int depositID;
+	// int amount;
+	// int depositType;
+	// int depositID;
 
- public:
+ //public:
 
-	 Deposit(int amount, int depositType, int DepositID);
-	 Deposit(char* src);
+	// Deposit(int amount, int depositType, int DepositID);
+	// Deposit(char* src);
 
-	 void setAmount(int amount);
-	 int getAmount();
+	// void setAmount(int amount);
+	// int getAmount();
 
-	 void setDepositType(int Type);
-	 int getDepositType();
+	// void setDepositType(int Type);
+	// int getDepositType();
 
-	 void setDepositID(int ID);
-	 int getDepositID();
+	// void setDepositID(int ID);
+	// int getDepositID();
 
-	 void setAccountID(int accountID);
-	 int getAccountID();
+	// void setAccountID(int accountID);
+	// int getAccountID();
 
-	 void display();
- };
+	// void display();
+ //};
 
- class Withdraw : public DataTypes {		//size 12
+ //class Withdraw : public DataTypes {		//size 12
 
-	 int amount;
-	 int withdrawType;
-	 int withdrawTypeID;
+	// int amount;
+	// int withdrawType;
+	// int withdrawTypeID;
 
- public:
+ //public:
 
-	 Withdraw(int amount, int withdrawType, int withdrawTypeID);
-	 Withdraw(char* src);
+	// Withdraw(int amount, int withdrawType, int withdrawTypeID);
+	// Withdraw(char* src);
 
-	 void setAmount(int amount);
-	 int getAmount();
+	// void setAmount(int amount);
+	// int getAmount();
 
-	 void setWithdrawType(int Type);
-	 int getWithdrawType();
+	// void setWithdrawType(int Type);
+	// int getWithdrawType();
 
-	 void setWithdrawTypeID(int ID);
-	 int getWithdrawTypeID();
+	// void setWithdrawTypeID(int ID);
+	// int getWithdrawTypeID();
 
-	 void setAccountID(int accountID);
-	 void display();
+	// void setAccountID(int accountID);
+	// void display();
 
- };
+ //};
 
- class TransferBetweenAccount : public DataTypes {		//size 12
+ //class TransferBetweenAccount : public DataTypes {		//size 12
 
-	 int amount;
-	 int receiverAccountID;
-	 int transferID;
+	// int amount;
+	// int receiverAccountID;
+	// int transferID;
 
- public:
+ //public:
 
-	 TransferBetweenAccount(int amount, int receiverAccountID, int transferID);
-	 TransferBetweenAccount(char* src);
+	// TransferBetweenAccount(int amount, int receiverAccountID, int transferID);
+	// TransferBetweenAccount(char* src);
 
-	 void setAmount(int amount);
-	 int getAmount();
+	// void setAmount(int amount);
+	// int getAmount();
 
-	 void setReceiverAccountID(int receiverAccountID);
-	 int getReceiverAccountID();
+	// void setReceiverAccountID(int receiverAccountID);
+	// int getReceiverAccountID();
 
-	 void setTransferID(int transferID);
-	 int getTransferID();
+	// void setTransferID(int transferID);
+	// int getTransferID();
 
-	 void setAccountID(int accountID);
-	 void display();
- };
+	// void setAccountID(int accountID);
+	// void display();
+ //};
 
- class TransactionConfirmation : public DataTypes {
+ //class TransactionConfirmation : public DataTypes {
 
-	 int currentBalance;
-	 int transactionID;
+	// int currentBalance;
+	// int transactionID;
 
- public:
-	 TransactionConfirmation(char* src);							//client receives confirmation
+ //public:
+	// TransactionConfirmation(char* src);							//client receives confirmation
 
-	 int getCurrentBalance();
-	 void setCurrentBalance(int currentBalance);
+	// int getCurrentBalance();
+	// void setCurrentBalance(int currentBalance);
 
-	 int getTransactionID();
-	 void setTransactionID(int transactionID);
+	// int getTransactionID();
+	// void setTransactionID(int transactionID);
 
- };
+ //};
 
 
  class Transaction : public DataTypes {
@@ -230,6 +234,7 @@ using namespace EarnStructs;
 
 	 Transaction(int accID, TransactionType type, double pBalance, double nBalance, int secAcc);
 	 Transaction(char* src);
+	 Transaction();
 	 void display();
 
 	 int getAccID();
@@ -250,6 +255,8 @@ using namespace EarnStructs;
 	 int getSecondaryAccount();
 	 void setSecondaryAccount(int accNum);
 
+	 TransactionInfo getTransactionInfoStruct();
+
 	 //add function to calculate new balance
  };
 
@@ -261,6 +268,7 @@ using namespace EarnStructs;
 	 
 	 AccountInformation(int id, AccountType type, double balance);
 	 AccountInformation(char* src);
+	 AccountInformation();
 
 	 void display();
 
@@ -272,4 +280,6 @@ using namespace EarnStructs;
 
 	 double getAccountBalance();
 	 void setAccountBalance(double balance);
+
+	 AccountInfo getAccountInfoStruct();
  };
