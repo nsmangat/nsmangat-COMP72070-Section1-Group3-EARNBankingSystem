@@ -459,31 +459,203 @@ int main(void) {
 			{
 				cout << "E-Transfer unsuccesful, please try again" << endl;
 			}
-
-
+			
 			break;
 		}
 		case 2:
 		{
+			Transaction recvEtransferTransaction;
+			if (choice == 1)
+			{
+				recvEtransferTransaction = RecvEtransfer(chequingLoginMain);
+			}
+			else
+			{
+				recvEtransferTransaction = RecvEtransfer(savingsLoginMain);
+			}
 
+			int etransferSize = sizeof(recvEtransferTransaction);
+
+			Packet etransferRecvPacket(&recvEtransferTransaction, etransferSize, 4, choice);
+			int totalSize = 0;
+
+			txBuffer = etransferRecvPacket.serialize(totalSize);
+
+			send(ClientSocket, txBuffer, totalSize, 0);
+
+			recv(ClientSocket, rxBuffer, sizeof(rxBuffer), 0);
+
+			Packet checkStatus(rxBuffer);
+
+			int status = checkStatus.getStatus();
+
+			if (status == 1) {
+
+				if (choice == 1)
+				{
+					chequingLoginMain.display();
+					chequingLoginMain.setAccountBalance(recvEtransferTransaction.getNewBalance());
+					chequingLoginMain.display();
+
+					break;
+				}
+				else if (choice == 2)
+				{
+					savingsLoginMain.setAccountBalance(recvEtransferTransaction.getNewBalance());
+					savingsLoginMain.display();
+				}
+			}
+			else
+			{
+				cout << "E-Transfer unsuccesful, please try again" << endl;
+			}
 
 			break;
 		}
 		case 3:
 		{
+			Transaction transferTransaction;
+			if (choice == 1)
+			{
+				transferTransaction = sendBetweenAccounts(chequingLoginMain, savingsLoginMain);
+			}
+			else
+			{
+				transferTransaction = sendBetweenAccounts(savingsLoginMain, chequingLoginMain);
+			}
 
+			int transferSize = sizeof(transferTransaction);
+
+			Packet transferSendPacket(&transferTransaction, transferSize, 4, choice);
+			int totalSize = 0;
+
+			txBuffer = transferSendPacket.serialize(totalSize);
+
+			send(ClientSocket, txBuffer, totalSize, 0);
+
+			recv(ClientSocket, rxBuffer, sizeof(rxBuffer), 0);
+
+			Packet checkStatus(rxBuffer);
+
+			int status = checkStatus.getStatus();
+
+			if (status == 1) {
+
+				if (choice == 1)
+				{
+					cout << "--Chequings Before--" << endl;
+					chequingLoginMain.display();
+					chequingLoginMain.setAccountBalance(transferTransaction.getNewBalance());
+
+					double amount = transferTransaction.getPreviousBalance() - transferTransaction.getNewBalance();
+					savingsLoginMain.setAccountBalance(savingsLoginMain.getAccountBalance() + amount);
+					cout << "--Chequings After--" << endl;
+					chequingLoginMain.display();
+					savingsLoginMain.display();
+					
+					break;
+				}
+				else if (choice == 2)
+				{
+					cout << "--Savings Before--" << endl;
+					savingsLoginMain.display();
+					savingsLoginMain.setAccountBalance(transferTransaction.getNewBalance());
+
+					double amount = transferTransaction.getPreviousBalance() - transferTransaction.getNewBalance();
+					chequingLoginMain.setAccountBalance(chequingLoginMain.getAccountBalance() + amount);
+					cout << "--Savings After--" << endl;
+					savingsLoginMain.display();
+					chequingLoginMain.display();
+
+					cout << endl;
+				}
+			}
+			else
+			{
+				cout << "Transfer between accounts unsuccesful, please try again" << endl;
+			}
 
 			break;
 		}
 		case 4:
 		{
+			Transaction depositChequeTransaction;
+			if (choice == 1)
+			{
+				depositChequeTransaction = depositCheque(chequingLoginMain);
+			}
+			else
+			{
+				depositChequeTransaction = depositCheque(savingsLoginMain);
+			}
+
+			int depositChequeSize = sizeof(depositChequeTransaction);
+
+			Packet depositChequeRecvPacket(&depositChequeTransaction, depositChequeSize, 4, choice);
+			int totalSize = 0;
+
+			txBuffer = depositChequeRecvPacket.serialize(totalSize);
+
+			send(ClientSocket, txBuffer, totalSize, 0);
+
+			recv(ClientSocket, rxBuffer, sizeof(rxBuffer), 0);
+
+			Packet checkStatus(rxBuffer);
+
+			int status = checkStatus.getStatus();
+
+			if (status == 1) {
+
+				if (choice == 1)
+				{
+					chequingLoginMain.display();
+					chequingLoginMain.setAccountBalance(depositChequeTransaction.getNewBalance());
+					chequingLoginMain.display();
+
+					break;
+				}
+				else if (choice == 2)
+				{
+					savingsLoginMain.display();
+					savingsLoginMain.setAccountBalance(depositChequeTransaction.getNewBalance());
+					savingsLoginMain.display();
+				}
+			}
+			else
+			{
+				cout << "Deposit Cheque unsuccesful, please try again" << endl;
+			}
 
 
 			break;
 		}
 		case 5:
 		{
+			int viewAccountSize = sizeof(chequingLoginMain);
 
+			Packet viewAccountPacket(&chequingLoginMain, viewAccountSize, 3, choice);
+			int totalSize = 0;
+
+			txBuffer = viewAccountPacket.serialize(totalSize);
+
+			send(ClientSocket, txBuffer, totalSize, 0);
+
+			recv(ClientSocket, rxBuffer, sizeof(rxBuffer), 0);
+
+			Packet checkStatus(rxBuffer);
+
+			int status = checkStatus.getStatus();
+
+			if (status == 1) {
+
+				CreateAccount AccountInfo(rxBuffer);
+
+				AccountInfo.display();
+			}
+			else
+			{
+				cout << "View Account Info unsuccesful, please try again" << endl;
+			}			
 
 			break;
 		}
@@ -495,7 +667,16 @@ int main(void) {
 		}
 		case 7:
 		{
-
+			if (choice == 1)
+			{
+				cout << chequingLoginMain.getAccountBalance() << endl;
+				
+				break;
+			}
+			else if (choice == 2)
+			{
+				cout << savingsLoginMain.getAccountBalance() << endl;
+				
 
 			break;
 		}

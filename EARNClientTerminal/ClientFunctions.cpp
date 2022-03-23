@@ -115,7 +115,8 @@ Login inputForgotPassword()
 {
 	cout << "Please input your email for the account you forgot your password for" << endl;
 	char userName[STRING_LENGTH];
-	cin.getline(userName, STRING_LENGTH);
+	//cin.getline(userName, STRING_LENGTH);
+	cin >> userName;
 
 	char password[STRING_LENGTH] = {};
 	Login forgotPassword(userName, password);
@@ -161,11 +162,11 @@ Transaction sendBetweenAccounts(AccountInformation current, AccountInformation o
 
 	if (currentType == 1) {
 
-		strcpy(accType, "Chequing");
+		strcpy(accType, "Savings");
 	}
 	else {
 
-		strcpy(accType, "Savings");
+		strcpy(accType, "Chequings");
 	}
 	
 	cout << "Please enter the amount you would like to transfer to " << accType << " account:" << endl;
@@ -190,5 +191,6 @@ Transaction depositCheque(AccountInformation acc) {
 
 	return send;
 }
+
 
 

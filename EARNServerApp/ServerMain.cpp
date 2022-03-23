@@ -218,26 +218,75 @@ int main(void) {
 		send(ConnectionSocket, txBufferLogin, totalSizeLogin, 0);
 	}
 
-	char rxBufferTransfer[1000] = {};
-	recv(ConnectionSocket, rxBufferTransfer, sizeof(rxBufferTransfer), 0);
+	//char rxBufferTransfer[1000] = {};
+	//recv(ConnectionSocket, rxBufferTransfer, sizeof(rxBufferTransfer), 0);
 
-	Packet checkObjectTypeTransfer(rxBufferTransfer);
-	if (checkObjectTypeTransfer.getObjectType() == 4)
-	{
-		Transaction TransactionRecv(rxBufferTransfer);
+	//Packet checkObjectTypeTransfer(rxBufferTransfer);
+
+	//if (checkObjectTypeTransfer.getObjectType() == 4)
+	//{
+	//	Transaction TransactionRecv(rxBufferTransfer);
 		
-		TransactionRecv.display();
+	//	TransactionRecv.display();
 
-		Packet clientPacket(0, 0);
-		clientPacket.setStatus(1);
+	//	Packet clientPacket(4, checkObjectTypeTransfer.getAccountType());
+	//	clientPacket.setStatus(1);
+		
 
-		int clientTotalSize = 0;
-		char* clientTxBuffer = clientPacket.serialize(clientTotalSize);
+	//	int clientTotalSize = 0;
+	//	char* clientTxBuffer = clientPacket.serialize(clientTotalSize);
 
-		send(ConnectionSocket, clientTxBuffer, clientTotalSize, 0);
+	//	clientPacket.display();
+	//	send(ConnectionSocket, clientTxBuffer, clientTotalSize, 0);
 
+	//}
+
+	/*char rxBufferTransfer2[1000] = {};
+	recv(ConnectionSocket, rxBufferTransfer2, sizeof(rxBufferTransfer2), 0);
+
+	Packet checkObjectTypeTransfer2(rxBufferTransfer2);
+	if (checkObjectTypeTransfer2.getObjectType() == 4)
+	{
+		Transaction TransactionRecv2(rxBufferTransfer2);
+		
+		TransactionRecv2.display();
+
+		Packet clientPacket2(0, 0);
+		clientPacket2.setStatus(1);
+
+		int clientTotalSize2 = 0;
+		char* clientTxBuffer2 = clientPacket2.serialize(clientTotalSize2);
+
+		send(ConnectionSocket, clientTxBuffer2, clientTotalSize2, 0);
+
+	}*/
+
+	char rxBufferView[1000] = {};
+	recv(ConnectionSocket, rxBufferView, sizeof(rxBufferView), 0);
+
+	Packet checkObjectTypeView(rxBufferView);
+	if (checkObjectTypeView.getObjectType() == 3)
+	{
+		char firstName[EarnStructs::VARCHARLEN] = "servername";
+		char lastName[EarnStructs::VARCHARLEN] = "serverlastname";
+		char email[EarnStructs::VARCHARLEN] = "serveremail";
+		char phoneNumber[EarnStructs::VARCHARLEN] = "serverphone number";
+		char streetName[EarnStructs::VARCHARLEN] = "serverstreet name";
+		char city[EarnStructs::VARCHARLEN] = "servercity";
+		char province[EarnStructs::VARCHARLEN] = "serverprovince";
+		char zipcode[EarnStructs::ZIPLEN] = "pi123";
+		int accID = 999;
+
+		CreateAccount serverAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+		int viewAccountSize = sizeof(CreateAccount);
+		Packet viewAccount(&serverAccount, viewAccountSize, 1, 0);
+		viewAccount.setStatus(1);
+		int viewAccountTotalSize = 0;
+
+		char* txBufferView = viewAccount.serialize(viewAccountTotalSize);
+
+		send(ConnectionSocket, txBufferView, viewAccountTotalSize, 0);
 	}
-
 
 
 
