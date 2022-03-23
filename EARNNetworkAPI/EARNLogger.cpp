@@ -183,6 +183,8 @@ namespace EarnLogging {
 		outputLog << errorID << ",";
 
 		outputLog << EnumToString(this->getPacketDirection()) << "\n";
+
+		return outputLog.str();
 	}
 	
 	std::string ConnectionLog::logColumnTemplate() {

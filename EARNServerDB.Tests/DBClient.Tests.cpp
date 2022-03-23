@@ -98,7 +98,7 @@ namespace DBClientTests
 		TEST_METHOD(F000_constructorWNoVal_emptyClient_isClient)
 		{
 			//	Arrange & Act
-			EarnDBObjects::DBClient testClient;
+			EarnDBObjects::DBClient testClient();
 
 			//	Assert
 
@@ -116,26 +116,33 @@ namespace DBClientTests
 			EarnStructs::ClientInfo testClientInfo = {};
 			
 			//allocate some dummy data
-			//memcpy(testClientInfo.firstName, "Bob", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.lastName, "Smith", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.email, "BobSmith@email.bob", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.phoneNumber, "123-456-7890", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.street, "Alphabet Street", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.city, "Toronto", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.province, "Ontario", EarnStructs::VARCHARLEN);
-			//memcpy(testClientInfo.zipcode, "B0B 1T3", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.firstName, "Bob", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.lastName, "Smith", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.email, "BobSmith@email.bob", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.phoneNumber, "123-456-7890", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.street, "Alphabet Street", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.city, "Toronto", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.province, "Ontario", EarnStructs::VARCHARLEN);
+			memcpy(testClientInfo.zipcode, "B0B 1T3", EarnStructs::VARCHARLEN);
 
 			//	Act
-			/*
-			* Error at this line:
-			* LNK2001
-			* unresolved external symbol "public: __cdecl EarnDB::DBClient::DBClient(struct EarnStructs::ClientInfo)" (??0DBClient@EarnDB@@QEAA@UClientInfo@EarnStructs@@@Z)	EARNServerDB.Tests	C:\Users\antho\source\Conestoga Comp Sci\Year 02\Winter 2022\COMP72070W22-M&NE-Proj4\EARNBankingSystem\EARNServerDB.Tests\DBClient.Tests.obj	1
-			*/
-			//EarnDBObjects::DBClient testClient(testClientInfo);
-			//std::string testString = typeid(testClientInfo).name();
-			
+			EarnDBObjects::DBClient testClient(testClientInfo);
+
+			EarnStructs::ClientInfo receivedClientInfo = testClient.getClientInfo();
+
+			bool checkValSame = true;
+
+			if (testClientInfo.firstName != receivedClientInfo.firstName) { checkValSame = false; }
+			if (testClientInfo.lastName != receivedClientInfo.lastName) { checkValSame = false; }
+			if (testClientInfo.email != receivedClientInfo.email) { checkValSame = false; }
+			if (testClientInfo.phoneNumber != receivedClientInfo.phoneNumber) { checkValSame = false; }
+			if (testClientInfo.street != receivedClientInfo.street) { checkValSame = false; }
+			if (testClientInfo.city != receivedClientInfo.city) { checkValSame = false; }
+			if (testClientInfo.province != receivedClientInfo.province) { checkValSame = false; }
+			if (testClientInfo.zipcode != receivedClientInfo.zipcode) { checkValSame = false; }
+
 			//	Assert
-			//Assert::IsTrue(typeid(testClientInfo) == typeid(testClient.getClientInfo()));
+			Assert::IsTrue(checkValSame);
 		}
 	};
 
