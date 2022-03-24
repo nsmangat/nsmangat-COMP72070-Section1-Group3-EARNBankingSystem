@@ -7,6 +7,9 @@
 #include <QPixmap>
 #include <QFileDialog>
 #include <QThread>
+#include <iostream>
+#include <string>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClientApp; }
 QT_END_NAMESPACE
@@ -16,7 +19,7 @@ class ClientApp : public QWidget
     Q_OBJECT
 
 public:
-    ClientApp(QWidget *parent = nullptr);
+    ClientApp(QWidget* parent = nullptr);
     ~ClientApp();
 
 private slots:
@@ -41,7 +44,7 @@ private slots:
 
     void on_ViewStatement_pushButton_clicked();
 
-    void on_Transfer_pushButton_clicked();
+    void on_E_Transfer_pushButton_clicked();
 
     void on_Deposit_pushButton_clicked();
 
@@ -88,8 +91,16 @@ private slots:
 
     void on_Logout_pushButton_6_clicked();
 
+    void on_Transfer_pushButton_clicked();
+
+    void on_Logout_pushButton_7_clicked();
+
+    void on_Send_pushButton_2_clicked();
+
+    void on_Signup_pushButton_clicked();
+
 private:
-    Ui::ClientApp *ui;
+    Ui::ClientApp* ui;
 
 };
 #endif // CLIENTAPP_H

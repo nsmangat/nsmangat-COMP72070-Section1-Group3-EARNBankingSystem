@@ -16,6 +16,7 @@ HEADERS += \
     clientapp.h
 
 FORMS += \
+    ../../Merge GUI Test/EARNClientApp/clientapp.ui \
     clientapp.ui
 
 # Default rules for deployment.
