@@ -80,6 +80,7 @@ using namespace EarnStructs;
 	 char* getZipcode(); 
 
 	 void setAccountID(int accountID);
+	 int getAccountID();
 
 	 void display();
 

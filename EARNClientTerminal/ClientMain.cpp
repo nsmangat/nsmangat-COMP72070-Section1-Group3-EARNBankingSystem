@@ -241,6 +241,9 @@ int main(void) {
 		AccountInformation savingsLoginMain;*/
 
 		while (killswitchOne) {
+						
+			killswitchTwo = true;
+			killswitchThree = true;
 
 			menuOne();
 			int choice;
@@ -341,7 +344,7 @@ int main(void) {
 					memcpy(&chequingLoginMain, &chequingLogin, sizeof(chequingLogin));
 					memcpy(&savingsLoginMain, &savingsLogin, sizeof(savingsLogin));
 
-					killswitchOne = false;
+					//killswitchOne = false;
 				}
 				else
 				{
@@ -425,8 +428,10 @@ int main(void) {
 
 					cout << "Logoff succesful" << endl;
 
+					killswitchOne = true;
 					killswitchTwo = false;
 					killswitchThree = false;
+					break;
 				}
 				else
 				{
@@ -437,7 +442,7 @@ int main(void) {
 			{
 				killswitchTwo = false;
 			}
-
+			
 			killswitchThree = true;
 
 		}
@@ -755,6 +760,7 @@ int main(void) {
 
 					cout << "Logoff succesful" << endl;
 
+					killswitchOne = true;
 					killswitchThree = false;
 					break;
 				}

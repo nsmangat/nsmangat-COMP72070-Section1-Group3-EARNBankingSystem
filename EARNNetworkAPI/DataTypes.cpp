@@ -156,6 +156,11 @@ void CreateAccount::setAccountID(int accountID) {
 	this->accountID;
 }
 
+int CreateAccount::getAccountID() {
+
+	return this->accountID;
+}
+
 void CreateAccount::display() {
 
 	cout << "firstName: " << user.firstName << endl;
@@ -192,8 +197,8 @@ Login::Login(char* Username, char* password) {
 
 	strcpy(login.username, Username);
 	strcpy(login.userPasswordHash, password);
-	login.clientID = 22;
-	login.usernumber = 33;
+	login.clientID = 0;
+	login.usernumber = 0;
 	//this->bankNumber = 3;
 	//this->userName = userName;
 	//this->password = password;

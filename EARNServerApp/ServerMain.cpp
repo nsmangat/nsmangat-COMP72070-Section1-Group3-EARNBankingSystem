@@ -352,6 +352,7 @@ int main(void) {
 				int size3 = sizeof(chequing);
 
 				Packet startup(&chequing, size3, &savings, size3, 6);
+				startup.setStatus(1);
 				int totalSize = 0;
 				char* txBuffer = startup.serialize(totalSize);
 
@@ -454,7 +455,7 @@ int main(void) {
 				//database stuff
 
 				//buffertransfer
-				killSwitch = false;
+				//killSwitch = false;
 				break;
 			}
 			case STARTUPACCOUNTINFO:
@@ -487,7 +488,7 @@ int main(void) {
 				//database stuff
 
 				//buffertransfer
-				killSwitch = false;
+				//killSwitch = false;
 				break;
 			}
 			case LOGOFF:
@@ -503,12 +504,12 @@ int main(void) {
 				//database stuff
 
 				//buffertransfer
-				killSwitch = false;
+				//killSwitch = false;
 				break;
 			}
 			default:
 			{
-				killSwitch = false;
+				//killSwitch = false;
 
 				break;
 			}
