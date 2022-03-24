@@ -63,7 +63,7 @@ namespace EarnDBDrivers {
 		password(inputPassword) {
 		//Always run this when instantiating the class, just to make sure it will exist for the runtime of the object
 		if (!this->checkIfDBExists()) {
-			std::cout << "Error connecting to database...";
+			std::cerr << "Error connecting to database..." << std::endl;
 			//if it doesn't exist then just run the init request command...
 			this->initalizeDefaultDB();
 		}
@@ -192,6 +192,7 @@ namespace EarnDBDrivers {
 
 		std::cout << "Setting working directory back to: \"" << workingDir << "\"";
 
+		initSuccess = DBSuccess;
 		return initSuccess;
 	}
 
@@ -211,7 +212,7 @@ namespace EarnDBDrivers {
 			return(returnVal);
 		}
 
-		return 0;
+		return DBSuccess;
 	}
 }
 
@@ -238,7 +239,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::checkClientIDExists(int checkClientID) {
 
-		int checkResult;	//int we will be returning
+		int checkResult = DBNoID;	//int we will be returning
 		try
 		{
 			// Connect to server on localhost
@@ -265,6 +266,12 @@ namespace EarnDBDrivers {
 				std::cout << "check client ID returned: " << (bool)resultRow[0] << std::endl;
 
 				checkResult = (bool)resultRow[0];
+				if (false == checkResult) {
+					checkResult = DBNoID;
+				}
+				else {
+					checkResult = DBSuccess;
+				}
 
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
@@ -288,7 +295,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::checkAccountIDExists(int checkAccountID) {
 
-		int checkResult;	//int we will be returning
+		int checkResult = DBNoID;	//int we will be returning
 		try
 		{
 			// Connect to server on localhost
@@ -315,6 +322,12 @@ namespace EarnDBDrivers {
 				std::cout << "check account ID returned: " << (bool)resultRow[0] << std::endl;
 
 				checkResult = (bool)resultRow[0];
+				if (false == checkResult) {
+					checkResult = DBNoID;
+				}
+				else {
+					checkResult = DBSuccess;
+				}
 
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
@@ -338,7 +351,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::checkTransactionIDExists(int checkTransactionID) {
 
-		int checkResult;	//int we will be returning
+		int checkResult = DBNoID;	//int we will be returning
 		try
 		{
 			// Connect to server on localhost
@@ -365,7 +378,12 @@ namespace EarnDBDrivers {
 				std::cout << "check transaction ID returned: " << (bool)resultRow[0] << std::endl;
 
 				checkResult = (bool)resultRow[0];
-
+				if (false == checkResult) {
+					checkResult = DBNoID;
+				}
+				else {
+					checkResult = DBSuccess;
+				}
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -388,7 +406,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::checkCredentialIDExists(int checkCredentialID) {
 
-		int checkResult;	//bool we will be returning
+		int checkResult = DBNoID;	//bool we will be returning
 		try
 		{
 			// Connect to server on localhost
@@ -415,7 +433,12 @@ namespace EarnDBDrivers {
 				std::cout << "check credential ID returned: " << (bool)resultRow[0] << std::endl;
 
 				checkResult = (bool)resultRow[0];
-
+				if (false == checkResult) {
+					checkResult = DBNoID;
+				}
+				else {
+					checkResult = DBSuccess;
+				}
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -462,7 +485,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient) {
 
-		int getResult;
+		int getResult = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -526,7 +549,7 @@ namespace EarnDBDrivers {
 	}
 
 	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount) {
-		int getResult;
+		int getResult = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -583,7 +606,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction) {
 
-		int getResult;
+		int getResult = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -647,7 +670,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::getObjectsInfo(int& numOfClients, std::vector<EarnDBObjects::DBClient>& clientsVec) {
 
-		int getResult;
+		int getResult = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -710,21 +733,21 @@ namespace EarnDBDrivers {
 					else
 					{
 						std::cout << "Empty list of rows." << std::endl;
-						getResult = -3;
+						getResult = DBNoID;
 					}
 				}
 				else
 				{
 					std::cout << "No row result." << std::endl;
-					getResult = -3;
+					getResult = DBNoID;
 				}
 
-				getResult = 0;
+				getResult = DBSuccess;
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cout << "The following error occurred: " << err << std::endl;
-				getResult = -1;
+				getResult = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -734,7 +757,7 @@ namespace EarnDBDrivers {
 			std::cout << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			getResult = -2;
+			getResult = DBConnError;
 		}
 
 		return getResult;
@@ -742,7 +765,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDBObjects::DBAccount>& clientAccountsVec) {
 
-		int getResult;
+		int getResult = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -798,21 +821,21 @@ namespace EarnDBDrivers {
 					else
 					{
 						std::cout << "Empty list of rows." << std::endl;
-						getResult = -3;
+						getResult = DBNoID;
 					}
 				}
 				else
 				{
 					std::cout << "No row result." << std::endl;
-					getResult = -3;
+					getResult = DBNoID;
 				}
 
-				getResult = 0;
+				getResult = DBSuccess;
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cout << "The following error occurred: " << err << std::endl;
-				getResult = -1;
+				getResult = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -822,7 +845,7 @@ namespace EarnDBDrivers {
 			std::cout << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			getResult = -2;
+			getResult = DBConnError;
 		}
 
 		return getResult;
@@ -830,7 +853,7 @@ namespace EarnDBDrivers {
 
 	int DBReader::getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDBObjects::DBTransaction>& accountTransactionsVec) {
 
-		int getResult;
+		int getResult = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -892,21 +915,21 @@ namespace EarnDBDrivers {
 					else
 					{
 						std::cout << "Empty list of rows." << std::endl;
-						getResult = -3;
+						getResult = DBNoID;
 					}
 				}
 				else
 				{
 					std::cout << "No row result." << std::endl;
-					getResult = -3;
+					getResult = DBNoID;
 				}
 
-				getResult = 0;
+				getResult = DBSuccess;
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cout << "The following error occurred: " << err << std::endl;
-				getResult = -1;
+				getResult = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -916,7 +939,7 @@ namespace EarnDBDrivers {
 			std::cout << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			getResult = -2;
+			getResult = DBConnError;
 		}
 
 		return getResult;
@@ -944,7 +967,7 @@ namespace EarnDBDrivers {
 
 	int DBValidation::validateClient(int usernumber, std::string username, std::string passwordHash) {
 
-		int returnID = 0;
+		int returnID = DBNoID;
 		try
 		{
 			// Connect to server on localhost
@@ -977,12 +1000,17 @@ namespace EarnDBDrivers {
 
 				//print results
 				std::cout << "login attempt returned client id:" << resultRow[0] << std::endl;
+				
 				returnID = (int)resultRow[0];
+				if (0 == returnID) {
+					returnID = DBNoID;
+				}
+
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cout << "The following error occurred: " << err << std::endl;
-				returnID = -1;
+				returnID = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -992,7 +1020,7 @@ namespace EarnDBDrivers {
 			std::cout << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			returnID = -2;
+			returnID = DBConnError;
 		}
 
 		return returnID;
@@ -1010,26 +1038,26 @@ namespace EarnDBDrivers {
 			if (0 < returnID) {
 				std::cout << "Client found returning info..." << std::endl;
 			}
-			else if (-3 == returnID) {
+			else if (DBNoID == returnID) {
 				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
 			}
-			else if (-2 == returnID) {
+			else if (DBConnError == returnID) {
 				std::cerr << "ERROR: DB connection error" << std::endl;
 			}
-			else if (-1 == returnID) {
+			else if (DBSqlError == returnID) {
 				std::cerr << "ERROR: sql error" << std::endl;
 			}
 			else {
 				std::cerr << "ERROR: unknown error" << std::endl;
 			}
 		}
-		else if (0 == returnID) {
+		else if (DBNoID == returnID) {
 			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
 		}
-		else if (-2 == returnID) {
+		else if (DBConnError == returnID) {
 			std::cerr << "ERROR: DB connection error" << std::endl;
 		}
-		else if (-1 == returnID) {
+		else if (DBSqlError == returnID) {
 			std::cerr << "ERROR: sql error" << std::endl;
 		}
 		else {
@@ -1052,26 +1080,26 @@ namespace EarnDBDrivers {
 			if (0 < returnID) {
 				std::cout << "Client found returning info..." << std::endl;
 			}
-			else if (-3 == returnID) {
+			else if (DBNoID == returnID) {
 				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
 			}
-			else if (-2 == returnID) {
+			else if (DBConnError == returnID) {
 				std::cerr << "ERROR: DB connection error" << std::endl;
 			}
-			else if (-1 == returnID) {
+			else if (DBSqlError == returnID) {
 				std::cerr << "ERROR: sql error" << std::endl;
 			}
 			else {
 				std::cerr << "ERROR: unknown error" << std::endl;
 			}
 		}
-		else if (0 == returnID) {
+		else if (DBNoID == returnID) {
 			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
 		}
-		else if (-2 == returnID) {
+		else if (DBConnError == returnID) {
 			std::cerr << "ERROR: DB connection error" << std::endl;
 		}
-		else if (-1 == returnID) {
+		else if (DBSqlError == returnID) {
 			std::cerr << "ERROR: sql error" << std::endl;
 		}
 		else {
@@ -1094,26 +1122,26 @@ namespace EarnDBDrivers {
 			if (0 < returnID) {
 				std::cout << "Client found returning info..." << std::endl;
 			}
-			else if (-3 == returnID) {
+			else if (DBNoID == returnID) {
 				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
 			}
-			else if (-2 == returnID) {
+			else if (DBConnError == returnID) {
 				std::cerr << "ERROR: DB connection error" << std::endl;
 			}
-			else if (-1 == returnID) {
+			else if (DBSqlError == returnID) {
 				std::cerr << "ERROR: sql error" << std::endl;
 			}
 			else {
 				std::cerr << "ERROR: unknown error" << std::endl;
 			}
 		}
-		else if (0 == returnID) {
+		else if (DBNoID == returnID) {
 			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
 		}
-		else if (-2 == returnID) {
+		else if (DBConnError == returnID) {
 			std::cerr << "ERROR: DB connection error" << std::endl;
 		}
-		else if (-1 == returnID) {
+		else if (DBSqlError == returnID) {
 			std::cerr << "ERROR: sql error" << std::endl;
 		}
 		else {
@@ -1144,9 +1172,9 @@ namespace EarnDBDrivers {
 
 	}
 
-	int DBWriter::addObject(EarnDBObjects::DBObject& inputObj) {
+	int DBWriter::addObject(EarnDBObjects::DBObject& inputObject) {
 
-		int returnID = 0;
+		int returnID = DBSuccess;
 		try
 		{
 			// Connect to server on localhost
@@ -1160,20 +1188,27 @@ namespace EarnDBDrivers {
 
 				std::cout << "adding object to database" << std::endl;
 
-				mySession.sql(inputObj.addInfoToDB()).execute();
+				mySession.sql(inputObject.addInfoToDB()).execute();
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @newID").execute();
 				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
 
 				//print results
+				
 				std::cout << "allocated new object id:" << resultRow[0] << std::endl;
 				returnID = (int)resultRow[0];
+				if (0 == returnID) {
+					returnID = DBNoID;
+				}
+				else {
+					inputObject.setObjectID(resultRow[0]);
+				}
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cerr << "The following error occurred: " << err << std::endl;
-				returnID = -1;
+				returnID = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -1183,15 +1218,15 @@ namespace EarnDBDrivers {
 			std::cerr << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			returnID = -2;
+			returnID = DBConnError;
 		}
 
 		return returnID;
 	}
 
-	int DBWriter::modifyObjectInfo(EarnDBObjects::DBObject& inputObj) {
+	int DBWriter::modifyObjectInfo(EarnDBObjects::DBObject& inputObject) {
 
-		int returnVal = 0;
+		int returnVal = DBSuccess;
 		try
 		{
 			// Connect to server on localhost
@@ -1205,16 +1240,16 @@ namespace EarnDBDrivers {
 
 				std::cout << "adding object to database" << std::endl;
 
-				mySession.sql(inputObj.modifyInfoInDB()).execute();
+				mySession.sql(inputObject.modifyInfoInDB()).execute();
 
 				//nothing to check, leave that for function that calls this...
-				returnVal = 0;
+				returnVal = DBSuccess;
 
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cerr << "The following error occurred: " << err << std::endl;
-				returnVal = -1;
+				returnVal = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -1224,15 +1259,15 @@ namespace EarnDBDrivers {
 			std::cerr << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			returnVal = -2;
+			returnVal = DBConnError;
 		}
 
 		return returnVal;
 	}
 
-	int DBWriter::deleteObject(EarnDBObjects::DBObject& inputObj) {
+	int DBWriter::deleteObject(EarnDBObjects::DBObject& inputObject) {
 
-		int returnID = 0;
+		int returnID = DBSuccess;
 		try
 		{
 			// Connect to server on localhost
@@ -1246,13 +1281,13 @@ namespace EarnDBDrivers {
 
 				std::cout << "adding object to database" << std::endl;
 
-				mySession.sql(inputObj.deleteInfoInDB()).execute();
+				mySession.sql(inputObject.deleteInfoInDB()).execute();
 
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
 				std::cerr << "The following error occurred: " << err << std::endl;
-				returnID = -1;
+				returnID = DBSqlError;
 			}
 
 			// Note: session is closed automatically when session object is destructed.
@@ -1262,7 +1297,7 @@ namespace EarnDBDrivers {
 			std::cerr << "The database session could not be opened: " << err << std::endl;
 
 			// Exit with error code
-			returnID = -2;
+			returnID = DBConnError;
 		}
 
 		return returnID;
