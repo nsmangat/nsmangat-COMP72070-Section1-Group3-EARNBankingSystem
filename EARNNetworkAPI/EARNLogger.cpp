@@ -99,6 +99,9 @@ namespace EarnLogging {
 
 //EARNLogObject source
 namespace EarnLogging {
+	EARNLogObject::EARNLogObject() {
+		this->setLogComment("");
+	}
 
 	EARNLogObject::EARNLogObject(std::string inputLogComment) {
 		this->setLogComment(inputLogComment);

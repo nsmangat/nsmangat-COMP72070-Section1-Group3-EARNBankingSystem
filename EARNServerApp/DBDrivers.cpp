@@ -62,7 +62,7 @@ namespace EarnDBDrivers {
 		username(inputUsername),
 		password(inputPassword) {
 		//Always run this when instantiating the class, just to make sure it will exist for the runtime of the object
-		if (!this->checkIfDBExists()) {
+		if (DBSuccess != this->checkIfDBExists()) {
 			std::cerr << "Error connecting to database..." << std::endl;
 			//if it doesn't exist then just run the init request command...
 			this->initalizeDefaultDB();
@@ -114,6 +114,8 @@ namespace EarnDBDrivers {
 		//set back to normal in case of other inputs somewhere else...
 		SetConsoleMode(hStdin, mode);
 
+		std::cout << std::endl << std::endl;
+
 		//set paths & stuff for chdir + system to use
 		std::string sqlPath;
 		sqlPath = (std::string)"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\";
@@ -121,13 +123,23 @@ namespace EarnDBDrivers {
 
 		//save working dir since that is where .sql is...
 		char workingDir[128];
-		std::cout << _getcwd(workingDir, 128) << std::endl;
+		std::cout << "Current Directory: " << _getcwd(workingDir, 128) << std::endl << std::endl;
 
-		std::stringstream sqlStream;
-		sqlStream << "mysql --batch -h" << inputServer << " -u" << rootUsername << " -p" << rootPassword << " < \"" << workingDir << initFile;
+		std::stringstream sqlUpperStream;
+		sqlUpperStream << "mysql --batch -h" << inputServer << " -u" << rootUsername;
 
-		std::string fullCommand = sqlStream.str();
-		std::cout << fullCommand.c_str() << std::endl << std::endl;
+		std::stringstream sqlPassStream;
+		sqlPassStream << " -p" << rootPassword;
+
+		std::stringstream sqlLowerStream;
+		sqlLowerStream << " < \"" << workingDir << initFile;
+
+		std::string fullCommand;
+
+		fullCommand = sqlUpperStream.str() + sqlPassStream.str() + sqlLowerStream.str();
+
+		//hide password in console out
+		std::cout << "Executing Sql Command: " << sqlUpperStream.str() << " -p" << std::string(rootPassword.length(),'#') << sqlLowerStream.str() << std::endl << std::endl;
 
 		//set working dir to sql server where mysql init script lives then run it, while checking for errors
 		int initSuccess = _chdir(sqlPath.c_str());
@@ -167,9 +179,9 @@ namespace EarnDBDrivers {
 			return initSuccess;
 		}
 
-		//Some nice output to say what happened...
+		//Some nice output to say what happened... without bleeding password
 		char newDir[128];
-		std::cout << "Ran Sql Script : \"" << fullCommand << "\" in: \"" << _getcwd(newDir, 128) << "\"" << std::endl;
+		std::cout << std::endl << "Ran Sql Script : \"" << sqlUpperStream.str() << " -p" << std::string(rootPassword.length(), '#') << sqlLowerStream.str() << "\" in: \"" << _getcwd(newDir, 128) << "\"" << std::endl << std::endl;
 
 		//change dir back and tell server user
 		initSuccess = _chdir(workingDir);
@@ -190,18 +202,20 @@ namespace EarnDBDrivers {
 			return initSuccess;
 		}
 
-		std::cout << "Setting working directory back to: \"" << workingDir << "\"";
+		std::cout << "Setting working directory back to: \"" << workingDir << "\"" << std::endl << std::endl;
 
 		initSuccess = DBSuccess;
 		return initSuccess;
 	}
 
 	int DBDriverInterface::checkIfDBExists() {
-
+		bool schemaCheck = false;
 		try
 		{
 			// Connect to server on localhost as reader so nothing changes...
-			mysqlx::abi2::r0::Session mySession(this->server, serverDBPort, this->username, this->password, this->schema);
+			mysqlx::abi2::r0::Session mySession(this->getServer(), serverDBPort, this->getUsername(), this->getPassword(), this->getSchema());
+			mysqlx::abi2::r0::Schema newSchema(mySession, this->getSchema());
+			schemaCheck = newSchema.existsInDatabase();
 		}
 		catch (const mysqlx::abi2::r0::Error& err)
 		{
@@ -211,8 +225,13 @@ namespace EarnDBDrivers {
 			// Exit with error code
 			return(returnVal);
 		}
-
-		return DBSuccess;
+		if (true == schemaCheck) {
+			return DBSuccess;
+		}
+		else {
+			//shouldn't hit this so put unknown
+			return DBUnknownError;
+		}
 	}
 }
 

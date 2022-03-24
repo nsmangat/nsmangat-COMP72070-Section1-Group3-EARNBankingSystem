@@ -122,21 +122,20 @@ namespace EarnLogging {
 		void setLogComment(std::string inputComment);
 	};
 
+	enum DateFormat { YMD_HMS, MDY_HMS, DMY_HMS };
+
 	class EARNLogger {
 		//path to log file specified during creation
 		std::string logFilePath;
-
-		//just cause I needed an input to give both betCurrentTime the same name, and may be useful (currently ALWAYS set to year-month-day since it seems better for timestamps)
-		enum DateFormat{YMD_HMS, MDY_HMS, DMY_HMS};
-
-		//Get the current time as a string to write into a .csv, and get current time format
-		std::string getCurrentTime(DateFormat logDateFormat);
 
 		//Get log file path for writing log information
 		std::string getLogFilePath();
 
 	public:
 		EARNLogger(std::string logFilePath);
+
+		//Get the current time as a string to write into a .csv, and get current time format
+		static std::string getCurrentTime(DateFormat logDateFormat);
 
 		bool logData(EARNLogObject* inputObject);
 	};
