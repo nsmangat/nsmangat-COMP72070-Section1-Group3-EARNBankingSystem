@@ -25,6 +25,23 @@ namespace EarnDBDrivers {
 	//Converts enum to string depending on type
 	const std::string EnumToString(DBSUCCESSTYPE inputType);
 
+	//since this is always used and would have to get changed everywhere
+	const int serverDBPort = 33060;
+
+	//macros for response errors in case they need to be changed later... names self explanitory
+	
+	const int DBSuccess = 0;
+
+	const int DBFail = 1;
+
+	const int DBNoID = -1;
+
+	const int DBConnError = -2;
+
+	const int DBSqlError = -3;
+
+	const int DBUnknownError = -4;
+
 	//DB Driver parent interface, used by reader, writer & validation (can also be used independantly)
 	class DBDriverInterface {
 		//needed to start connections
@@ -64,8 +81,8 @@ namespace EarnDBDrivers {
 
 		//Check & Initalize functions
 
-		//Initalize DB if it doesn't exist, used in checkIFDBExists function and can be used as a static function when server boots up
-		static bool initalizeDefaultDB();
+		//Initalize DB if it doesn't exist, used in checkIFDBExists function and can be used as a static function when server boots up (errors are according to _chdir, system errno responses...)
+		static int initalizeDefaultDB();
 
 		//Checks if the DB exists (0 for exists, -1 for doesn't exist but now initalized, -2 for doesn't exist & error initalizing
 		int checkIfDBExists();
@@ -85,17 +102,17 @@ namespace EarnDBDrivers {
 	class DBReader :public DBDriverInterface {
 		//Subfunctions for checkIDExists
 
-		//Check if Client ID is in database
-		bool checkClientIDExists(int checkClientID);
+		//Check if Client ID is in database (0 for success, 1 for no ID, -2 for conenction error, -3 for sql error)
+		int checkClientIDExists(int checkClientID);
 
-		//Check if Account ID is in database
-		bool checkAccountIDExists(int checkAccountID);
+		//Check if Account ID is in database (0 for success, 1 for no ID, -2 for conenction error, -3 for sql error)
+		int checkAccountIDExists(int checkAccountID);
 
-		//Check if Transaction / Invoice ID is in database
-		bool checkTransactionIDExists(int checkTransactionID);
+		//Check if Transaction / Invoice ID is in database (0 for success, 1 for no ID, -2 for conenction error, -3 for sql error)
+		int checkTransactionIDExists(int checkTransactionID);
 
-		//Check if Credential ID is in database (debugging)
-		bool checkCredentialIDExists(int checkCredentialID);
+		//Check if Credential ID is in database (debugging) (0 for success, 1 for no ID, -2 for conenction error, -3 for sql error)
+		int checkCredentialIDExists(int checkCredentialID);
 
 	public:
 		//Constructor
@@ -107,30 +124,28 @@ namespace EarnDBDrivers {
 
 		//Get single objects
 
-		//Get Client from database (-2 if ID doesn't exist / -1 for error)
+		//Get Client from database (0 for success, -1 if ID doesn't exist, -2 for connection error, -3 for sql error)
 		int getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient);
 
-		//Get Account from database (-2 if ID doesn't exist / -1 for error)
+		//Get Account from database (-3 if ID doesn't exist, -2 for connection error, -1 for sql error)
 		int getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount);
 
-		//Get Transaction from database (-2 if ID doesn't exist / -1 for error)
+		//Get Transaction from database (-3 if ID doesn't exist, -2 for connection error, -1 for sql error)
 		int getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction);
 
-		//Get Object from database, using DBOType and pass by reference
-		int getObjectInfo(int objectID, EarnDBObjects::DBObject& copyObject);
 		//Get all objects from a higher level ID
 
-		//Get all Clients from database (-2 if ID doesn't exist / -1 for error)
+		//Get all Clients from database (-3 if ID doesn't exist, -2 for connection error, -1 for sql error)
 		int getObjectsInfo(int& numOfClients, std::vector<EarnDBObjects::DBClient>& clientsVec);
 
-		//Get all Accounts of a client from database (-2 if ID doesn't exist / -1 for error)
+		//Get all Accounts of a client from database (-3 if ID doesn't exist, -2 for conecetion error, -1 for sql error)
 		int getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDBObjects::DBAccount>& clientAccountsVec);
 
-		//Get all Transactions of an account from database (-2 if ID doesn't exist / -1 for error)
+		//Get all Transactions of an account from database (-3 if ID doesn't exist, -2 for connection error, -1 for sql error)
 		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDBObjects::DBTransaction>& accountTransactionsVec);
 
-		//Check ID function(s) for given ID num, and specified ID type
-		bool checkIDExists(int checkID, EarnStructs::ObjectType idType);
+		//Check ID function(s) for given ID num, and specified ID type (0 for success, 1 for no ID, -2 for connection error, -3 for sql error)
+		int checkIDExists(int checkID, EarnStructs::ObjectType idType);
 	};
 
 	//DB Validation class (used for login / finding client for associated username/Num & password
@@ -146,13 +161,13 @@ namespace EarnDBDrivers {
 			std::string inputUsername,
 			std::string inputPassword);
 
-		//Client login function through username & pass, returns NULL for incorrect login
+		//Client login function through username & pass (NULL for incorrect login on validation side, -3 if ID doesn't exist / client could be gotten,  -2 for conenction error, -1 for sql error)
 		EarnDBObjects::DBClient clientLogin(std::string username, std::string passwordHash);
 
-		//Client login function through usernumber & pass, returns NULL for incorrect login
+		//Client login function through usernumber & pass (NULL for incorrect login on validation side, -3 if ID doesn't exist / client could be gotten,  -2 for conenction error, -1 for sql error)
 		EarnDBObjects::DBClient clientLogin(int usernumber, std::string passwordHash);
 
-		//Client login function using CredentialInfo struct, returns NULL for incorrect login
+		//Client login function using CredentialInfo struct (NULL for incorrect login on validation side, -3 if ID doesn't exist / client could be gotten,  -2 for conenction error, -1 for sql error)
 		EarnDBObjects::DBClient clientLogin(EarnStructs::CredentialInfo inputCredentials);
 	};
 
@@ -169,10 +184,10 @@ namespace EarnDBDrivers {
 		//Add object to database (object's allocated ID on success, -1 for error)
 		int addObject(EarnDBObjects::DBObject& inputObj);
 
-		//Modify object in database (0 for success, -1 for error, -2 for DB Connection error)
+		//Modify object in database (0 for success, -1 for sql error, -2 for DB Connection error)
 		int modifyObjectInfo(EarnDBObjects::DBObject& inputObj);
 
-		//Delete object in database (0 for success, -1 for error, -2 for DB Connection error)
+		//Delete object in database (0 for success, -1 for sql error, -2 for DB Connection error)
 		int deleteObject(EarnDBObjects::DBObject& inputObj);
 	};
 }
