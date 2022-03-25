@@ -120,7 +120,7 @@ namespace EarnLogging {
 //ConnectionLog source
 namespace EarnLogging {
 
-	ConnectionLog::ConnectionLog(Packet* inputPacket, SystemType inputSystemType, RecvOrSend inputDirection, std::string inputLogComment):EARNLogObject(inputLogComment){
+	ConnectionLog::ConnectionLog(Packet* inputPacket, SystemType inputSystemType, RecvOrSend inputDirection, std::string inputLogComment) :EARNLogObject(inputLogComment){
 		this->parentPacket = inputPacket;
 		this->currentSystem = inputSystemType;
 		this->packetDirection = inputDirection;
@@ -148,10 +148,10 @@ namespace EarnLogging {
 
 		//Then from & to IP's
 		outputLog << "From IP,";
-		outputLog << "To IP,";
+		outputLog << this->parentPacket->getIP();
 
 		//Then Packet Type
-		outputLog << "Packet Type,";
+		outputLog << this->parentPacket->getObjectType();
 
 		//Then System Type
 		outputLog << EnumToString(this->getSystemType()) << ",";
@@ -160,7 +160,7 @@ namespace EarnLogging {
 		outputLog << this->parentPacket->getTail() << ",";
 
 		//Then DataSize
-		outputLog << "DataSize,";
+		outputLog << this->parentPacket->getDataSize();
 		
 		//Then parse status
 		std::string statusString;

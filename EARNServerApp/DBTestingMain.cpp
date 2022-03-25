@@ -31,44 +31,74 @@ int main(void) {
 	std::string validationPass =	"@:+fA,UFr[xn_[3>QwBuB#9qi";
 	EarnDBDrivers::DBValidation testValidator(testServer, testSchema, validationUser, validationPass);
 
-	EarnStructs::ClientInfo testClientInfo = { 0 };
-	char testFN[] = "Bob";
-	memcpy_s(testClientInfo.firstName, EarnStructs::VARCHARLEN, testFN, sizeof(testFN));
 
-	char testLN[] = "Smith";
-	memcpy_s(testClientInfo.lastName, EarnStructs::VARCHARLEN, testLN, sizeof(testLN));
+	////now add a client
 
-	char testEM[] = "BobSmith@email.bob";
-	memcpy_s(testClientInfo.email, EarnStructs::VARCHARLEN, , testEM, sizeof(testEM));
+	//EarnStructs::ClientInfo testClientInfo;
+	//string testFN("Bob");
+	//strcpy_s(testClientInfo.firstName, EarnStructs::VARCHARLEN, testFN.c_str());
 
-	char testPN[] = "123-456-7890";
-	memcpy_s(testClientInfo.phoneNumber, EarnStructs::VARCHARLEN, testPN, sizeof(testPN));
+	//char testLN[EarnStructs::VARCHARLEN] = "Smith";
+	//strcpy_s(testClientInfo.lastName, EarnStructs::VARCHARLEN, testLN);
 
-	char testST[] = "Alphabet Street";
-	memcpy_s(testClientInfo.street, EarnStructs::VARCHARLEN, testST, sizeof(testST));
+	//char testEM[EarnStructs::VARCHARLEN] = "BobSmith.email.bob";
+	//strcpy_s(testClientInfo.email, EarnStructs::VARCHARLEN, testEM);
 
-	char testCT[] = "Toronto";
-	memcpy_s(testClientInfo.city, EarnStructs::VARCHARLEN, testCT, sizeof(testCT));
+	//char testPN[EarnStructs::VARCHARLEN] = "123-456-7890";
+	//strcpy_s(testClientInfo.phoneNumber, EarnStructs::VARCHARLEN, testPN);
 
-	char testPN[] = "Ontario";
-	memcpy_s(testClientInfo.province, EarnStructs::VARCHARLEN, testPN, sizeof(testPN));
+	//char testST[EarnStructs::VARCHARLEN] = "Alphabet Street";
+	//strcpy_s(testClientInfo.street, EarnStructs::VARCHARLEN, testST);
 
+	//char testCT[EarnStructs::VARCHARLEN] = "Toronto";
+	//strcpy_s(testClientInfo.city, EarnStructs::VARCHARLEN, testCT);
 
-	memcpy_s(testClientInfo.zipcode, EarnStructs::VARCHARLEN, "B0B 1T3", EarnStructs::ZIPLEN);
+	//char testPR[EarnStructs::VARCHARLEN] = "Ontario";
+	//strcpy_s(testClientInfo.province, EarnStructs::VARCHARLEN, testPR);
 
-	EarnDBObjects::DBClient tesFtClient(testClientInfo);
+	//char testZP[EarnStructs::VARCHARLEN] = "B0B1T3";
+	//strcpy_s(testClientInfo.zipcode, EarnStructs::VARCHARLEN, testZP);
 
-	EarnStructs::AccountInfo testAccountInfo = { 0 };
+	//EarnDBObjects::DBClient testClient(testClientInfo);
 
-	testAccountInfo.clientID = testClient.getObjectID();
+	//add to db so id it updated
+	//testWriter.addObject(testClient);
+
+	//now add credentials
+	EarnStructs::CredentialInfo testCredentialInfo;
+
+	testCredentialInfo.clientID = 1;// testClient.getObjectID();
+	testCredentialInfo.usernumber = 12345;
+
+	char testUN[EarnStructs::VARCHARLEN] = "bobjoe123";
+	strcpy_s(testCredentialInfo.username, EarnStructs::VARCHARLEN, testUN);
+
+	char testUPH[EarnStructs::VARCHARLEN] = "kill3rPassw03rd!!!";
+	strcpy_s(testCredentialInfo.userPasswordHash, EarnStructs::VARCHARLEN, testUPH);
+
+	EarnDBObjects::DBCredential testCredential(testCredentialInfo);
+
+	//testWriter.addObject(testCredential);
+
+	EarnDBObjects::DBClient loggedInClient = testValidator.clientLogin(testCredentialInfo);
+	//now add account
+
+	EarnStructs::AccountInfo testAccountInfo;
+
+	testAccountInfo.clientID = 1;// testClient.getObjectID();
 	testAccountInfo.accountBalance = 123.456;
 	testAccountInfo.accountType = EarnStructs::SAVINGS;
 
 	EarnDBObjects::DBAccount testAccount(testAccountInfo);
 
-	EarnStructs::TransactionInfo testTransactionInfo = { 0 };
+	testWriter.addObject(testAccount);
+
+	//now add transaction
+
+	EarnStructs::TransactionInfo testTransactionInfo;
 	std::string timeStamp = EarnLogging::EARNLogger::getCurrentTime(EarnLogging::DateFormat::YMD_HMS);
-	memcpy(testTransactionInfo.transactionTime, timeStamp.c_str(), EarnStructs::VARCHARLEN);
+
+	strcpy_s(testTransactionInfo.transactionTime, EarnStructs::VARCHARLEN, timeStamp.c_str());
 
 	testTransactionInfo.accountID = testAccount.getObjectID();
 	testTransactionInfo.previousBalance = testAccount.getAccountBalance();
@@ -80,6 +110,12 @@ int main(void) {
 
 	testTransactionInfo.transactionType = EarnStructs::TransactionType::CHEQUE;
 	testTransactionInfo.secondaryAccount = NULL;
+
+	EarnDBObjects::DBTransaction testTransaction(testTransactionInfo);
+
+	testWriter.modifyObjectInfo(testAccount);
+
+	testWriter.addObject(testTransaction);
 
 	return 0;
 }

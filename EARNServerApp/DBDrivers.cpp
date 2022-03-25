@@ -503,6 +503,8 @@ namespace EarnDBDrivers {
 	//Get single functions
 
 	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient) {
+		//first give it it's id so get info query works...
+		copyClient.setObjectID(objectID);
 
 		int getResult = DBNoID;
 		try
@@ -544,7 +546,7 @@ namespace EarnDBDrivers {
 				copyClient.setStreet((std::string)resultRow[5]);
 				copyClient.setCity((std::string)resultRow[6]);
 				copyClient.setProvince((std::string)resultRow[7]);
-				copyClient.setZip((std::string)resultRow[9]);
+				copyClient.setZip((std::string)resultRow[8]);
 
 				getResult = DBSuccess;
 			}
@@ -568,7 +570,11 @@ namespace EarnDBDrivers {
 	}
 
 	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount) {
+		//first give it it's id so get info query works...
+		copyAccount.setObjectID(objectID);
+		
 		int getResult = DBNoID;
+
 		try
 		{
 			// Connect to server on localhost
@@ -624,6 +630,8 @@ namespace EarnDBDrivers {
 	}
 
 	int DBReader::getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction) {
+		//first give it it's id so get info query works...
+		copyTransaction.setObjectID(objectID);
 
 		int getResult = DBNoID;
 		try
@@ -1005,10 +1013,10 @@ namespace EarnDBDrivers {
 
 				//usernumber == 0 if we are using string otherwise use number
 				if (0 == usernumber) {
-					queryString << "CALL checkLoginNamePass(" << username << ", " << passwordHash << ", @returnID)";
+					queryString << "CALL checkLoginNamePass('" << username << "', '" << passwordHash << "', @returnID)";
 				}
 				else {
-					queryString << "CALL checkLoginNumberPass(" << usernumber << ", " << passwordHash << ", @returnID)";
+					queryString << "CALL checkLoginNumberPass(" << usernumber << ", '" << passwordHash << "', @returnID)";
 				}
 
 				mySession.sql(queryString.str()).execute();
@@ -1131,6 +1139,7 @@ namespace EarnDBDrivers {
 
 	EarnDBObjects::DBClient DBValidation::clientLogin(EarnStructs::CredentialInfo inputCredentials) {
 		EarnDBObjects::DBClient returnClient;
+
 		int returnID = this->validateClient(inputCredentials.usernumber, inputCredentials.username, inputCredentials.userPasswordHash);
 
 		//(-3 if ID doesn't exist, -2 for conenction error, -1 for sql error)
@@ -1138,7 +1147,7 @@ namespace EarnDBDrivers {
 			
 			//overload return ID for second operation, since it's return overwrites last...
 			returnID = this->getObjectInfo(returnID, returnClient);
-			if (0 < returnID) {
+			if (DBSuccess == returnID) {
 				std::cout << "Client found returning info..." << std::endl;
 			}
 			else if (DBNoID == returnID) {

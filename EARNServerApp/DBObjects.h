@@ -2,11 +2,15 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <cctype>
 
 #include "DBAccess.h"
 #include <EARNStructs.h>
 
 namespace EarnDBObjects {
+
+	//library func to clean a string so that it has a \0 at the end...
+	int cleanCharString(char* inputCharString);
 
 	//DBObject Interface / abstract class, used by client, account, etc...
 	class DBObject :public EarnDBAccess::DBAccessInterface {
@@ -46,7 +50,7 @@ namespace EarnDBObjects {
 
 		//Struct constructor, for use after deserializing
 		DBClient(const EarnStructs::ClientInfo& copyInfo);
-
+		
 		//Parametrized constructor
 		DBClient(int inputObjectID, const char* inputFirst, const char* inputLast, const char* inputEmail, const char* inputPhone, const char* inputStreet, const char* inputCity, const char* inputProvince, const char* inputZip);
 
@@ -181,7 +185,7 @@ namespace EarnDBObjects {
 		DBCredential(const DBCredential& copyCredentials);
 
 		//Parametrized constructor
-		DBCredential(int inputObjectID, int inputClientID, char inputUserName[EarnStructs::VARCHARLEN], int inputUserNumber, char inputPasswordHash[EarnStructs::VARCHARLEN]);
+		DBCredential(int inputObjectID, int inputClientID, const char* inputUserName, int inputUserNumber, const char* inputPasswordHash);
 
 		//Get functions
 
@@ -209,16 +213,16 @@ namespace EarnDBObjects {
 		//Set ClientID as int
 		void setClientID(int newClientID);
 
-		//Set Username or Usernumber from C string
-		void setUsername(char newUsername[EarnStructs::VARCHARLEN]);
+		//Set Username or Username from C string
+		void setUsername(const char* newUsername);
 		//Set Username or Usernumber from Cpp string
-		void setUsername(std::string newUsernameOrNum);
+		void setUsername(std::string newUsername);
 
 		//Set Usernumber as int
 		void setUsernumber(int newUsernumber);
 
 		//Set PasswordHash from C string
-		void setPasswordHash(char newPasswordHash[EarnStructs::VARCHARLEN]);
+		void setPasswordHash(const char* newPasswordHash);
 		//Set PasswordHash from Cpp string
 		void setPasswordHash(std::string newPasswordHash);
 
@@ -345,7 +349,7 @@ namespace EarnDBObjects {
 		EarnStructs::TransactionType getTransactionType();
 
 		//Get time of transaction as C String
-		char* getTransactionTime(int& lenOfArray);
+		const char* getTransactionTime(int& lenOfArray);
 		//Get time of transaction as Cpp String
 		std::string getTransactionTime();
 

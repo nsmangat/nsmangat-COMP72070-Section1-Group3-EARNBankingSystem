@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `invoice_id` INT NOT NULL AUTO_INCREMENT,
   `account_id` INT NOT NULL,
   `invoice_type_id` INT NOT NULL,
+  `invoice_time` TIMESTAMP,
   `previous_balance` DOUBLE NOT NULL,
   `new_balance` DOUBLE NOT NULL,
   `secondary_account_id` INT NOT NULL,
@@ -136,6 +137,8 @@ CREATE TABLE IF NOT EXISTS `credentials` (
   `client_usernumber` INT NOT NULL,
   `client_username` VARCHAR(45) NULL,
   PRIMARY KEY (`credential_id`),
+  CONSTRAINT uk_usernumber_password_hash UNIQUE (`client_usernumber`,`client_password_hash`),
+  CONSTRAINT uk_username_password_hash UNIQUE (`client_username`,`client_password_hash`),
   INDEX `fk_credentials_clients_idx` (`client_id` ASC) VISIBLE,
   CONSTRAINT `fk_credentials_clients`
     FOREIGN KEY (`client_id`)
@@ -347,6 +350,7 @@ USE `EARNBankingDB`$$
 CREATE PROCEDURE `addTransaction`(
 	IN input_account_id INT,
     IN input_type_id INT,
+    IN input_time TIMESTAMP,
     IN input_previous_balance DOUBLE,
     IN input_new_balance DOUBLE,
     IN input_secondary_id INT,
@@ -358,8 +362,8 @@ BEGIN
     CALL checkAccountExists(input_account_id, checkValue);
 	IF ( checkValue ) THEN
 		BEGIN
-			INSERT INTO invoices (account_id, invoice_type_id, previous_balance, new_balance, secondary_account_id)
-				Value (input_account_id, input_type_id, input_previous_balance, input_new_balance, input_secondary_id);
+			INSERT INTO invoices (account_id, invoice_type_id, invoice_time, previous_balance, new_balance, secondary_account_id)
+				Value (input_account_id, input_type_id, input_time, input_previous_balance, input_new_balance, input_secondary_id);
 			SET new_transaction_id := last_insert_id();
 		END;
 	END IF;
@@ -436,12 +440,14 @@ CREATE PROCEDURE `updateTransaction` (
 	IN input_transaction_id INT,
     IN input_account_id INT,
     IN input_type_id INT,
+    IN input_time TIMESTAMP,
     IN input_previous_balance DOUBLE,
     IN input_new_balance DOUBLE,
     IN input_secondary_id INT)
 BEGIN
 	UPDATE invoices i SET 
 		i.invoice_type_id = input_type_id,
+        i.invoice_time = input_time,
 		i.previous_balance = input_previous_balance,
 		i.new_balance = input_new_balance,
 		i.secondary_account_id = input_secondary_id
@@ -658,6 +664,20 @@ END$$
 
 DELIMITER ;
 
+-- -----------------------------------------------------
+-- procedure getCredentialInfo
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `EARNBankingDB`$$
+CREATE PROCEDURE `getCredentialInfo` (
+	IN input_credential_id INT)
+BEGIN
+	Select * FROM credentials c WHERE c.credential_id = input_credential_id;
+END$$
+
+DELIMITER ;
+
 DROP USER IF EXISTS 'EARNDBReader';
 CREATE USER 'EARNDBReader' IDENTIFIED BY 'Gcugy6/fA{KR9H(r|:1Gp^qyd';
 GRANT SELECT ON TABLE * TO 'EARNDBReader';
@@ -666,11 +686,13 @@ GRANT EXECUTE ON * TO 'EARNDBReader';
 DROP USER IF EXISTS 'EARNDBWriter';
 CREATE USER 'EARNDBWriter' IDENTIFIED BY '|RI?BEe8drU0JoD~_j*|=fS@=';
 GRANT SELECT, INSERT, TRIGGER, UPDATE, DELETE ON TABLE * TO 'EARNDBWriter';
+GRANT EXECUTE ON * TO 'EARNDBWriter';
 
 DROP USER IF EXISTS 'EARNDBValidation';
 CREATE USER 'EARNDBValidation' IDENTIFIED BY '@:+fA,UFr[xn_[3>QwBuB#9qi';
 GRANT SELECT, UPDATE, INSERT, DELETE, TRIGGER ON TABLE `EARNBankingDB`.`credentials` TO 'EARNDBValidation';
 GRANT SELECT ON TABLE * TO 'EARNDBValidation';
+GRANT EXECUTE ON * TO 'EARNDBValidation';
 
 DROP USER IF EXISTS 'EARNDBAdmin';
 CREATE USER 'EARNDBAdmin' IDENTIFIED BY '=&gvxgIDY/^zZRKItYLLsXv3o';
