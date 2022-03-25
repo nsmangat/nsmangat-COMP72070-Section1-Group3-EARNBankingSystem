@@ -262,12 +262,12 @@ namespace EarnDBObjects {
 
 	void DBClient::setZip(const char* newZip) {
 		if (NULL != newZip) {
-			strcpy_s(this->clientInfo.zipcode, EarnStructs::VARCHARLEN, newZip);
+			strcpy_s(this->clientInfo.zipcode, EarnStructs::ZIPLEN, newZip);
 		}
 	}
 	void DBClient::setZip(std::string newZip) {
 		if (!newZip.empty()) {
-			strcpy_s(this->clientInfo.zipcode, EarnStructs::VARCHARLEN, newZip.c_str());
+			strcpy_s(this->clientInfo.zipcode, EarnStructs::ZIPLEN, newZip.c_str());
 		}
 	}
 

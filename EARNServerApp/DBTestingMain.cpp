@@ -5,6 +5,8 @@
 #include "DBAccess.h"
 #include <EARNLogger.h>
 #include <EARNStructs.h>
+#include <Packet.h>
+#include <DataTypes.h>
 
 int main(void) {
 	///operates all use cases in order, comment out sections to speed things up
@@ -34,35 +36,35 @@ int main(void) {
 
 	////now add a client
 
-	//EarnStructs::ClientInfo testClientInfo;
-	//string testFN("Bob");
-	//strcpy_s(testClientInfo.firstName, EarnStructs::VARCHARLEN, testFN.c_str());
+	EarnStructs::ClientInfo testClientInfo;
+	string testFN("Bob");
+	strcpy_s(testClientInfo.firstName, EarnStructs::VARCHARLEN, testFN.c_str());
 
-	//char testLN[EarnStructs::VARCHARLEN] = "Smith";
-	//strcpy_s(testClientInfo.lastName, EarnStructs::VARCHARLEN, testLN);
+	char testLN[EarnStructs::VARCHARLEN] = "Smith";
+	strcpy_s(testClientInfo.lastName, EarnStructs::VARCHARLEN, testLN);
 
-	//char testEM[EarnStructs::VARCHARLEN] = "BobSmith.email.bob";
-	//strcpy_s(testClientInfo.email, EarnStructs::VARCHARLEN, testEM);
+	char testEM[EarnStructs::VARCHARLEN] = "BobSmith.email.bob";
+	strcpy_s(testClientInfo.email, EarnStructs::VARCHARLEN, testEM);
 
-	//char testPN[EarnStructs::VARCHARLEN] = "123-456-7890";
-	//strcpy_s(testClientInfo.phoneNumber, EarnStructs::VARCHARLEN, testPN);
+	char testPN[EarnStructs::VARCHARLEN] = "123-456-7890";
+	strcpy_s(testClientInfo.phoneNumber, EarnStructs::VARCHARLEN, testPN);
 
-	//char testST[EarnStructs::VARCHARLEN] = "Alphabet Street";
-	//strcpy_s(testClientInfo.street, EarnStructs::VARCHARLEN, testST);
+	char testST[EarnStructs::VARCHARLEN] = "Alphabet Street";
+	strcpy_s(testClientInfo.street, EarnStructs::VARCHARLEN, testST);
 
-	//char testCT[EarnStructs::VARCHARLEN] = "Toronto";
-	//strcpy_s(testClientInfo.city, EarnStructs::VARCHARLEN, testCT);
+	char testCT[EarnStructs::VARCHARLEN] = "Toronto";
+	strcpy_s(testClientInfo.city, EarnStructs::VARCHARLEN, testCT);
 
-	//char testPR[EarnStructs::VARCHARLEN] = "Ontario";
-	//strcpy_s(testClientInfo.province, EarnStructs::VARCHARLEN, testPR);
+	char testPR[EarnStructs::VARCHARLEN] = "Ontario";
+	strcpy_s(testClientInfo.province, EarnStructs::VARCHARLEN, testPR);
 
-	//char testZP[EarnStructs::VARCHARLEN] = "B0B1T3";
-	//strcpy_s(testClientInfo.zipcode, EarnStructs::VARCHARLEN, testZP);
+	char testZP[EarnStructs::ZIPLEN] = "B0B1T3";
+	strcpy_s(testClientInfo.zipcode, EarnStructs::ZIPLEN, testZP);
 
-	//EarnDBObjects::DBClient testClient(testClientInfo);
+	EarnDBObjects::DBClient testClient(testClientInfo);
 
 	//add to db so id it updated
-	//testWriter.addObject(testClient);
+	testWriter.addObject(testClient);
 
 	//now add credentials
 	EarnStructs::CredentialInfo testCredentialInfo;
@@ -80,12 +82,12 @@ int main(void) {
 
 	//testWriter.addObject(testCredential);
 
-	EarnDBObjects::DBClient loggedInClient = testValidator.clientLogin(testCredentialInfo);
+	EarnDBObjects::DBClient loggedInClient(testValidator.clientLogin(testCredentialInfo));
 	//now add account
 
 	EarnStructs::AccountInfo testAccountInfo;
 
-	testAccountInfo.clientID = 1;// testClient.getObjectID();
+	testAccountInfo.clientID = testClient.getObjectID();
 	testAccountInfo.accountBalance = 123.456;
 	testAccountInfo.accountType = EarnStructs::SAVINGS;
 

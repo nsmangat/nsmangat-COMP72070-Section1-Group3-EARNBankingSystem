@@ -132,13 +132,11 @@ COMMENT = 'stores invoices / transactions all of which are tied to an associated
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `credentials` (
   `credential_id` INT NOT NULL AUTO_INCREMENT,
-  `client_id` INT NOT NULL,
+  `client_id` INT NOT NULL UNIQUE,
   `client_password_hash` VARCHAR(45) NOT NULL,
-  `client_usernumber` INT NOT NULL,
-  `client_username` VARCHAR(45) NULL,
+  `client_usernumber` INT NOT NULL UNIQUE,
+  `client_username` VARCHAR(45) NULL UNIQUE,
   PRIMARY KEY (`credential_id`),
-  CONSTRAINT uk_usernumber_password_hash UNIQUE (`client_usernumber`,`client_password_hash`),
-  CONSTRAINT uk_username_password_hash UNIQUE (`client_username`,`client_password_hash`),
   INDEX `fk_credentials_clients_idx` (`client_id` ASC) VISIBLE,
   CONSTRAINT `fk_credentials_clients`
     FOREIGN KEY (`client_id`)

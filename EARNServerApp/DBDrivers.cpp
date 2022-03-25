@@ -1026,7 +1026,7 @@ namespace EarnDBDrivers {
 				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
 
 				//print results
-				std::cout << "login attempt returned client id:" << resultRow[0] << std::endl;
+				std::cout << "login attempt returned client id:" << (int) resultRow[0] << std::endl;
 				
 				returnID = (int)resultRow[0];
 				if (0 == returnID) {
@@ -1142,7 +1142,8 @@ namespace EarnDBDrivers {
 
 		int returnID = this->validateClient(inputCredentials.usernumber, inputCredentials.username, inputCredentials.userPasswordHash);
 
-		//(-3 if ID doesn't exist, -2 for conenction error, -1 for sql error)
+		//(DBNoID if ID doesn't exist, DBConnError for DB connection error,	DBSqlError for sql error)
+
 		if (returnID > 0) {
 			
 			//overload return ID for second operation, since it's return overwrites last...
