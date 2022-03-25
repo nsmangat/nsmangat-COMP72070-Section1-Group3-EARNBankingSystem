@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Packet.h"
-
+#include "EARNLogger.h"
 #include <ctime>
 
 
@@ -81,10 +81,8 @@ Packet::Packet(int OpType, int AccType) {								//for client side for a request
 
 void Packet::setTime() {
 
-	time_t now = time(0);
-	char* time = ctime(&now);
-	//HEAD.TimeOfSend = ctime(&now);
-	strcpy(HEAD.TimeOfSend, time);
+	
+	strcpy(HEAD.TimeOfSend, (EarnLogging::EARNLogger::getCurrentTime(EarnLogging::YMD_HMS)).c_str());
 }
 
 //Would have to create a packet object and use that to serialize everything

@@ -29,13 +29,13 @@ namespace EarnLogging {
 
 		if (YMD_HMS == logDateFormat) {
 			
-			outputTime << std::put_time(&logTime, "%F %T");
+			outputTime << std::put_time(&logTime, "%Y/%m/%d %H:%M:%S");
 		}
 		else if (MDY_HMS == logDateFormat) {
-			outputTime << std::put_time(&logTime, "%m-%d-%Y %H:%M:%S");
+			outputTime << std::put_time(&logTime, "%m/%d/%Y %H:%M:%S");
 		}
 		else if (DMY_HMS == logDateFormat) {
-			outputTime << std::put_time(&logTime, "%d-%m-%Y %H:%M:%S");
+			outputTime << std::put_time(&logTime, "%d/%m/%Y %H:%M:%S");
 		}
 		else {
 			outputTime << "TIME CALCULATION ERROR";
@@ -55,10 +55,10 @@ namespace EarnLogging {
 		std::stringstream logColumns;
 
 		//"wrap" objects logs in time logged & comment so that they are consistent + if all logs require these two fields they can always end with ',' without worrying about output...
-		logColumns << "Time Logged (UTC)" << inputObject->logColumnTemplate() << "Log Comment\n";
+		logColumns << "Time Logged (UTC)," << inputObject->logColumnTemplate() << "Log Comment";
 		
 		//then setup log row itself
-		logStream << this->getCurrentTime(YMD_HMS) << "," << inputObject->getloginfo() << inputObject->getLogComment();
+		logStream << this->getCurrentTime(YMD_HMS) << "," << inputObject->getloginfo() << inputObject->getLogComment() << '\n';
 
 		//create file checker of type in (read only)
 		std::ifstream fileCheck;
@@ -72,7 +72,7 @@ namespace EarnLogging {
 			//close read only filestream and create new output stream
 			std::ofstream fileInit;
 			fileInit.open(this->getLogFilePath(), std::fstream::out);
-			fileInit << logColumns.str();
+			fileInit << logColumns.str() << '\n';
 			fileInit.close();
 		}
 		else {
@@ -144,14 +144,15 @@ namespace EarnLogging {
 		std::stringstream outputLog;
 
 		//Get time
-		outputLog << this->parentPacket->getTime() << ",";
+		outputLog << std::string(this->parentPacket->getTime()) << ",";
 
 		//Then from & to IP's
-		outputLog << "From IP,";
-		outputLog << this->parentPacket->getIP();
+		outputLog << this->parentPacket->getIP() << ",";
+
+		outputLog << this->parentPacket->getIP() << ",";
 
 		//Then Packet Type
-		outputLog << this->parentPacket->getObjectType();
+		outputLog << this->parentPacket->getObjectType() << ",";
 
 		//Then System Type
 		outputLog << EnumToString(this->getSystemType()) << ",";
@@ -160,7 +161,7 @@ namespace EarnLogging {
 		outputLog << this->parentPacket->getTail() << ",";
 
 		//Then DataSize
-		outputLog << this->parentPacket->getDataSize();
+		outputLog << this->parentPacket->getDataSize() << ",";
 		
 		//Then parse status
 		std::string statusString;
@@ -185,7 +186,7 @@ namespace EarnLogging {
 
 		outputLog << errorID << ",";
 
-		outputLog << EnumToString(this->getPacketDirection()) << "\n";
+		outputLog << EnumToString(this->getPacketDirection()) << ",";
 
 		return outputLog.str();
 	}

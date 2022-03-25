@@ -34,7 +34,7 @@ int main(void) {
 	EarnDBDrivers::DBValidation testValidator(testServer, testSchema, validationUser, validationPass);
 
 
-	////now add a client
+	//now add a client
 
 	EarnStructs::ClientInfo testClientInfo;
 	string testFN("Bob");
@@ -66,6 +66,10 @@ int main(void) {
 	//add to db so id it updated
 	testWriter.addObject(testClient);
 
+	//modify client
+	testClient.setFirstName("Bobby");
+	testWriter.modifyObjectInfo(testClient);
+
 	//now add credentials
 	EarnStructs::CredentialInfo testCredentialInfo;
 
@@ -80,9 +84,24 @@ int main(void) {
 
 	EarnDBObjects::DBCredential testCredential(testCredentialInfo);
 
-	//testWriter.addObject(testCredential);
+	testWriter.addObject(testCredential);
 
-	EarnDBObjects::DBClient loggedInClient(testValidator.clientLogin(testCredentialInfo));
+	//modify credential
+	char newTestUN[EarnStructs::VARCHARLEN] = "BobJoe321";
+
+	testCredential.setUsername(newTestUN);
+	
+	strcpy_s(testCredentialInfo.username, EarnStructs::VARCHARLEN, newTestUN);
+	
+	testWriter.modifyObjectInfo(testCredential);
+
+	//test each login method
+	EarnDBObjects::DBClient structClient(testValidator.clientLogin(testCredentialInfo));
+
+	EarnDBObjects::DBClient usernameClient = testValidator.clientLogin(testCredentialInfo.username,testCredentialInfo.userPasswordHash);
+
+	EarnDBObjects::DBClient usernumberClient = testValidator.clientLogin(testCredentialInfo.usernumber,testCredentialInfo.userPasswordHash);
+
 	//now add account
 
 	EarnStructs::AccountInfo testAccountInfo;
@@ -118,6 +137,35 @@ int main(void) {
 	testWriter.modifyObjectInfo(testAccount);
 
 	testWriter.addObject(testTransaction);
+
+	testTransaction.setTransactionType(EarnStructs::ACCOUNTTRANSFER);
+	testTransaction.setTransactionSecondaryAcc(1234);
+	testWriter.modifyObjectInfo(testTransaction);
+	
+	Login testLoginData(testCredentialInfo.username,testCredentialInfo.userPasswordHash);
+	Packet testLoginPacket(&testLoginData, sizeof(testLoginData),EarnStructs::CREDENTIALS, EarnStructs::SAVINGS);
+	testLoginPacket.setTime();
+	EarnLogging::ConnectionLog testLoginLog(&testLoginPacket, EarnLogging::SERVERSYSTEM, EarnLogging::RECEIVE, "test log for log into csv");
+
+	EarnLogging::EARNLogger testLogger("testLog.csv");
+	testLogger.logData(&testLoginLog);
+
+	CreateAccount testCreateClient(testClientInfo.firstName, testClientInfo.lastName, testClientInfo.email, testClientInfo.phoneNumber, testClientInfo.street, testClientInfo.city, testClientInfo.province, testClientInfo.zipcode, 2);
+	Packet testCreateClientPacket(&testCreateClient, sizeof(testCreateClient), EarnStructs::CLIENT, EarnStructs::SAVINGS);
+	testCreateClientPacket.setTime();
+	EarnLogging::ConnectionLog testCreateClientLog(&testCreateClientPacket, EarnLogging::SERVERSYSTEM, EarnLogging::RECEIVE, "test log for client into csv");
+
+	testLogger.logData(&testCreateClientLog);
+
+	Transaction testTransactionData(testTransactionInfo.accountID, testTransactionInfo.transactionType, testTransactionInfo.previousBalance, testTransactionInfo.newBalance, testTransactionInfo.secondaryAccount);
+	Packet testTransactionPacket(&testTransactionData, sizeof(testTransactionData), EarnStructs::TRANSACTION, EarnStructs::SAVINGS);
+	EarnLogging::ConnectionLog testTransactionLog(&testTransactionPacket, EarnLogging::CLIENTSYSTEM, EarnLogging::SEND, "test log for transaction");
+	testLogger.logData(&testTransactionLog);
+
+	AccountInformation testAccountData(testAccount.getObjectID(), testAccount.getAccountType(), testAccount.getAccountBalance());
+	Packet testAccountPacket(&testAccountData, sizeof(testAccountData), EarnStructs::ACCOUNT, EarnStructs::SAVINGS);
+	EarnLogging::ConnectionLog testAccountLog(&testAccountPacket, EarnLogging::CLIENTSYSTEM, EarnLogging::SEND, "test log for account");
+	testLogger.logData(&testAccountLog);
 
 	return 0;
 }
