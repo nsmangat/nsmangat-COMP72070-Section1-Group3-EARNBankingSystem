@@ -174,9 +174,6 @@
       <Project>{5a6ee3ae-c2aa-4acb-937b-e694c2f74286}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
