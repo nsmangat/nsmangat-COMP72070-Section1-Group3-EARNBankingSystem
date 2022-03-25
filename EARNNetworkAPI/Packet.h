@@ -6,6 +6,7 @@
 //
 #define IP_SIZE 10
 #define IP_ADDR "127.0.0.1"
+#define BFT_SIZE 1024
 
 class Packet {
 
@@ -32,6 +33,7 @@ public:
 
 	Packet(DataTypes* data, int size, int OpType, int accType);
 	Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType);
+	Packet(char* src, int objType);
 
 	Packet(char* src);									//to populate header
 
@@ -60,6 +62,10 @@ public:
 
 	char* getIP();
 	int getDataSize();
+
+	void setDataBFT(char* BFTBuffer);
+
+	
 
 	/*char* setupPacketToSend(DataTypes* obj, int size, );*/
 };

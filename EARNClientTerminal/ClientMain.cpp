@@ -692,6 +692,7 @@ int main(void) {
 
 				send(ClientSocket, txBuffer, totalSize, 0);
 
+
 				recv(ClientSocket, rxBuffer, sizeof(rxBuffer), 0);
 
 				Packet checkStatus(rxBuffer);
@@ -714,6 +715,55 @@ int main(void) {
 			case 6:
 			{
 
+				//send request to view picture
+
+				Packet BFTRequest(9, 0);
+				int size = 0;
+
+				txBuffer = BFTRequest.serialize(size);
+				send(ClientSocket, txBuffer, size, 0);
+
+
+				//receiving bytes for picture
+				int TotalSize = BFT_SIZE + HeadSize + sizeof(int);
+				char RxBuffer[BFT_SIZE + HeadSize + sizeof(int)] = {};
+
+			/*	recv(ClientSocket, RxBuffer, TotalSize, 0);*/
+
+				char BFTBuffer[1024] = {};
+
+				//memcpy(BFTBuffer, RxBuffer, TotalSize);
+
+				char fName[50] = "recvImage.JPG";
+
+				FILE* fp = fopen(fName, "wb");
+
+				bool receivingBytesLoop = true;
+				char ack[3] = "ok";
+
+				while (receivingBytesLoop)
+				{
+
+					int size = recv(ClientSocket, RxBuffer, TotalSize, 0);
+					memcpy(BFTBuffer, RxBuffer + HeadSize, BFT_SIZE);
+
+					//int size = recv(ClientSocket, TxBuffer, sizeof(TxBuffer), 0);
+					if (size > HeadSize + sizeof(int))
+					{
+						fwrite(BFTBuffer, sizeof(BFTBuffer), 1, fp);
+
+						send(ClientSocket, ack, sizeof(ack), 0);
+					}
+					else
+					{
+						receivingBytesLoop = false;
+					}
+
+				}
+
+				fclose(fp);
+
+				cout << "\nStatements received!\n" << endl;
 
 				break;
 			}

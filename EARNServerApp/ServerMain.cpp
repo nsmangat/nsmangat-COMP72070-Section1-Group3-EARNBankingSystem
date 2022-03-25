@@ -391,8 +391,7 @@ int main(void) {
 
 			case ACCOUNT:
 			{
-				cout << "ACCOUNT Reached" << endl;
-
+			
 				AccountInformation recvAccount(rxBuffer);
 
 				int id = recvAccount.getClientID();
@@ -450,8 +449,41 @@ int main(void) {
 
 				break;
 			}
-			case CLIENT:
+			case BIGFILETRANSFER:
 			{
+				
+				char BFTBuffer[BFT_SIZE];
+
+				FILE* fp = fopen("sendPic.jpg", "rb");
+
+				int len;
+				char buf[3] = {};
+				Packet BFTSend(BFTBuffer, checkOperation.getObjectType());
+				char* BFTSendBuffer;
+
+				while ((len = fread(BFTBuffer, sizeof(BFTBuffer), 1, fp)) > 0)
+				{
+					
+					BFTSend.setDataBFT(BFTBuffer);
+					int size = 0;
+					BFTSendBuffer = BFTSend.serialize(size);
+
+					send(ConnectionSocket, BFTSendBuffer, size, 0);
+
+					recv(ConnectionSocket, buf, sizeof(buf), 0);
+				}
+
+				Packet empty(9, 0);
+				int size1 = 0;
+				char* doneBuffer = empty.serialize(size1);
+				
+				send(ConnectionSocket, doneBuffer, size1, 0);
+
+				fclose(fp);
+
+				//
+
+				
 				//database stuff
 
 				//buffertransfer

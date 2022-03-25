@@ -153,7 +153,7 @@ char* CreateAccount::getZipcode() {
 
 void CreateAccount::setAccountID(int accountID) {
 
-	this->accountID;
+	this->accountID = accountID;
 }
 
 int CreateAccount::getAccountID() {

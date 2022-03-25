@@ -79,6 +79,39 @@ Packet::Packet(int OpType, int AccType) {								//for client side for a request
 	Tail = 0;
 }
 
+Packet::Packet(char* src, int objType) {					//BFT
+
+	if (Data) {
+
+		delete Data;
+	}
+	Data = new char[BFT_SIZE];
+	
+	memcpy(Data, src, BFT_SIZE);
+	
+	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
+	strcpy(HEAD.fromIP, IP_ADDR);
+
+	HEAD.accountType = 0;
+	HEAD.objectType = objType;
+	HEAD.dataSize = 1024;
+	HEAD.status = 0;
+	Tail = 12345;
+
+}
+
+void Packet::setDataBFT(char* BFTBuffer) {
+
+	if (Data) {
+
+		delete Data;
+	}
+	Data = new char[BFT_SIZE];
+
+	memcpy(Data, BFTBuffer, BFT_SIZE);
+}
+
+
 void Packet::setTime() {
 
 	time_t now = time(0);
@@ -178,7 +211,3 @@ int Packet::getDataSize() {
 	return HEAD.dataSize;
 }
 
-void setupPacketToSend()
-{
-
-}

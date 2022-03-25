@@ -236,6 +236,7 @@ using namespace EarnStructs;
 	 Transaction(int accID, TransactionType type, double pBalance, double nBalance, int secAcc);
 	 Transaction(char* src);
 	 Transaction();
+
 	 void display();
 
 	 int getAccID();
