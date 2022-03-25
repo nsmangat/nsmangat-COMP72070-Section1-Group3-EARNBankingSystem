@@ -14,14 +14,11 @@ class Packet {
 
 		char toIP[IP_SIZE];
 		char fromIP[IP_SIZE];
-		//int operationType;
-		int objectType;
+		int objectType;					//type of packet ie transaction packet, view account packet, logoff packet ect. 
 		int dataSize;
 		char TimeOfSend[VARCHARLEN];
-		//int branchID;
 		int accountType;				//chequing or savings
 		int status;						//0 for default, 1 for success, 2 for failure
-
 
 	}HEAD;
 
@@ -65,7 +62,4 @@ public:
 
 	void setDataBFT(char* BFTBuffer);
 
-	
-
-	/*char* setupPacketToSend(DataTypes* obj, int size, );*/
 };

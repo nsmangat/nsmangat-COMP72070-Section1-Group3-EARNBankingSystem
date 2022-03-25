@@ -5,7 +5,6 @@
 #include <ctime>
 
 
-
 Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 
 	if (Data) {
@@ -23,11 +22,10 @@ Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 	HEAD.objectType = OpType;
 	HEAD.dataSize = size;
 	HEAD.status = 0;
-	//HEAD.branchID = 1;
 	Tail = 12345;
 }
 
-//for parsing 2 structs 
+//for parsing 2 structs ie for CreateAccount need CreateAccount and Login object 
 Packet::Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType) {
 
 	if (Data) {
@@ -57,7 +55,6 @@ Packet::Packet(char* src)									//to populate header on server
 	HEAD.dataSize = 0;
 	Data = nullptr;
 	TxBuffer = nullptr;
-	//Tail = 122;
 
 	memcpy(&Tail, src + HeadSize + previousSize, sizeof(int));
 }
@@ -71,7 +68,6 @@ Packet::Packet(int OpType, int AccType) {								//for client side for a request
 	HEAD.accountType = AccType;
 	HEAD.objectType = OpType;
 	HEAD.dataSize = 0;
-	//HEAD.branchID = 1;
 
 	Data = nullptr;
 	TxBuffer = nullptr;
@@ -134,9 +130,6 @@ char* Packet::serialize(int& size) {
 	TxBuffer = new char[size];
 
 	setTime();
-
-	//cout << "Head size: " << sizeof(Header) << endl;
-
 
 	memcpy(TxBuffer, &HEAD, sizeof(Header));
 	if(Data == nullptr)

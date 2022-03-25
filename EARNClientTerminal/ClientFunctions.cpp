@@ -29,7 +29,6 @@ void menuThree(int choice) {
 	if(choice == 1)
 	{
 		cout << "Chequings account" << endl << endl;
-
 	}
 	else
 	{
@@ -52,51 +51,40 @@ CreateAccount inputAccountInfo()
 {
 	cout << "Please input your first name" << endl;
 	char firstName[STRING_LENGTH];
-	//cin.getline(firstName, STRING_LENGTH);
 	cin >> firstName;
 
 	cout << "Please input your last name" << endl;
 	char lastName[STRING_LENGTH];
-	//cin.getline(lastName, STRING_LENGTH);
 	cin >> lastName;
 	
 	cout << "Please input your email" << endl;
 	char email[STRING_LENGTH];
-	//cin.getline(email, STRING_LENGTH);
 	cin >> email;
 
 	cout << "Please input your phoneNumber" << endl;
 	char phoneNumber[STRING_LENGTH];
 	cin >> phoneNumber;
-	//cin.getline(phoneNumber, STRING_LENGTH);
 
 	cout << "Please input your streetName" << endl;
 	char streetName[STRING_LENGTH];
 	cin >> streetName;
-	//cin.getline(streetName, STRING_LENGTH);
 
 	cout << "Please input your city" << endl;
 	char city[STRING_LENGTH];
 	cin >> city;
-	//cin.getline(city, STRING_LENGTH);
 
 	cout << "Please input your province" << endl;
 	char province[STRING_LENGTH];
 	cin >> province;
-	//cin.getline(province, STRING_LENGTH);
 
 	cout << "Please input your zipcode" << endl;
 	char zipcode[STRING_LENGTH];
 	cin >> zipcode;
-	//cin.getline(zipcode, STRING_LENGTH);
 
 	int accID = 0;
 
-	//CreateAccount* testAccount = new CreateAccount(firstName, lastName, userName, password, email, phoneNumber, streetName, city, province, accID);
 	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
 	return testAccount;	
-
-	//CreateAccount = function()
 
 }
 
@@ -106,12 +94,10 @@ Login inputLoginInfo()
 	cout << "Please input your username" << endl;
 	char userName[STRING_LENGTH];
 	cin >> userName;
-	//cin.getline(userName, STRING_LENGTH);
 
 	cout << "Please input your password" << endl;
 	char password[STRING_LENGTH];
 	cin >> password;
-	//cin.getline(password, STRING_LENGTH);
 
 	Login testLogin(userName, password);
 
@@ -122,7 +108,6 @@ Login inputForgotPassword()
 {
 	cout << "Please input your email for the account you forgot your password for" << endl;
 	char userName[STRING_LENGTH];
-	//cin.getline(userName, STRING_LENGTH);
 	cin >> userName;
 
 	char password[STRING_LENGTH] = {};

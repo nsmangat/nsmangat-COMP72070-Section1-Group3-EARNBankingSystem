@@ -27,22 +27,12 @@ using namespace EarnStructs;
 	int accountID;
 
  public:
-	 //virtual void setAccountID(int num) = 0;
 	 virtual void display() = 0;
  };
 
  class CreateAccount: public DataTypes {		//size 290
 
 	 EarnStructs::ClientInfo user;
-	 /*char firstName[STRING_LENGTH];
-	 char lastName[STRING_LENGTH];
-	 char userName[STRING_LENGTH];
-	 char password[STRING_LENGTH];
-	 char email[STRING_LENGTH];
-	 char phoneNumber[STRING_LENGTH];
-	 char streetName[STRING_LENGTH];
-	 char city[STRING_LENGTH];
-	 char province[STRING_LENGTH];*/
 
  public:
 
@@ -54,12 +44,6 @@ using namespace EarnStructs;
 
 	 void setLastName(char* lName); 
 	 char* getLastName();
-
-	 //void setUserName(char* uName);
-	 //char* getUserName(); 
-
-	 //void setpassword(char* pass); 
-	 //char* getPassword(); 
 
 	 void setEmail(char* email); 
 	 char* getEmail(); 
@@ -89,29 +73,12 @@ using namespace EarnStructs;
 
  class Login : public DataTypes {		//size 80
 
-	 //string userName;
-	 //string password;
-
 	 CredentialInfo login;
-
-	 //char userName[STRING_LENGTH];
-	 //char password[STRING_LENGTH];
-	//int bankNumber;
 	 
  public:
 
-	 //Login(string Username, string password);
 	 Login(char* Username, char* password); 
-	 //Login(int bankNumber, string password); 
-	 //Login(int bankNumber, char* password); 
-
 	 Login(char* src);
-
-	 //string getUserName(); 
-	 //void setUserName(string userName); 
-
-	 //string getPassword(); 
-	 //void setPassword(string userName); 
 
 	 int getClientID(); 
 	 void setClientID(int clientID); 
@@ -125,106 +92,12 @@ using namespace EarnStructs;
 	 char* getPassword(); 
 	 void setPassword(char* userName); 
 
-	/* int getBankNumber(); 
-	 void setBankNumber(int bankNumber);*/
-
 	 void setAccountID(int accountID); 
 
 	 void display();
 
 	 CredentialInfo getLoginStruct();
  };
-
- //class Deposit : public DataTypes{		//Size 12
-
-	// int amount;
-	// int depositType;
-	// int depositID;
-
- //public:
-
-	// Deposit(int amount, int depositType, int DepositID);
-	// Deposit(char* src);
-
-	// void setAmount(int amount);
-	// int getAmount();
-
-	// void setDepositType(int Type);
-	// int getDepositType();
-
-	// void setDepositID(int ID);
-	// int getDepositID();
-
-	// void setAccountID(int accountID);
-	// int getAccountID();
-
-	// void display();
- //};
-
- //class Withdraw : public DataTypes {		//size 12
-
-	// int amount;
-	// int withdrawType;
-	// int withdrawTypeID;
-
- //public:
-
-	// Withdraw(int amount, int withdrawType, int withdrawTypeID);
-	// Withdraw(char* src);
-
-	// void setAmount(int amount);
-	// int getAmount();
-
-	// void setWithdrawType(int Type);
-	// int getWithdrawType();
-
-	// void setWithdrawTypeID(int ID);
-	// int getWithdrawTypeID();
-
-	// void setAccountID(int accountID);
-	// void display();
-
- //};
-
- //class TransferBetweenAccount : public DataTypes {		//size 12
-
-	// int amount;
-	// int receiverAccountID;
-	// int transferID;
-
- //public:
-
-	// TransferBetweenAccount(int amount, int receiverAccountID, int transferID);
-	// TransferBetweenAccount(char* src);
-
-	// void setAmount(int amount);
-	// int getAmount();
-
-	// void setReceiverAccountID(int receiverAccountID);
-	// int getReceiverAccountID();
-
-	// void setTransferID(int transferID);
-	// int getTransferID();
-
-	// void setAccountID(int accountID);
-	// void display();
- //};
-
- //class TransactionConfirmation : public DataTypes {
-
-	// int currentBalance;
-	// int transactionID;
-
- //public:
-	// TransactionConfirmation(char* src);							//client receives confirmation
-
-	// int getCurrentBalance();
-	// void setCurrentBalance(int currentBalance);
-
-	// int getTransactionID();
-	// void setTransactionID(int transactionID);
-
- //};
 
 
  class Transaction : public DataTypes {
