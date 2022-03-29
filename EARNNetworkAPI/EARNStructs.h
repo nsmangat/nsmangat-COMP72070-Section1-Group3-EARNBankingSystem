@@ -11,7 +11,7 @@ namespace EarnStructs  {
 
 	//Enummeration for different types of Objects
 	//CREATEACCOUNT is to know we sending 2 structs
-	//STARTUPACCOUNTINFO = server response after login so client has their savings and chequings account
+	//STARTUPACCOUNTINFO = server response after login so client has their savings and chequings account   *we not using this anymore, this is not ACCOUNT
 	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION, CREATEACCOUNT, STARTUPACCOUNTINFO, FORGETPASSWORD, LOGOFF, BIGFILETRANSFER, SHUTDOWN };
 
 	//Structure for Client object's info, to ease serialization

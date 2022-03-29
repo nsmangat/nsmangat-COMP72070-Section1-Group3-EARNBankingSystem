@@ -43,184 +43,6 @@ int main(void) {
 	}
 
 
-	//menuOne();
-
-
-	//CreateAccount test = inputAccountInfo();
-	//Login loginTest = inputLoginInfo();
-
-
-	//char firstName[EarnStructs::VARCHARLEN] = "firstname";
-	//char lastName[EarnStructs::VARCHARLEN] = "lastname";
-	//char email[EarnStructs::VARCHARLEN] = "email";
-	//char phoneNumber[EarnStructs::VARCHARLEN] = "phone number";
-	//char streetName[EarnStructs::VARCHARLEN] = "street name";
-	//char city[EarnStructs::VARCHARLEN] = "city";
-	//char province[EarnStructs::VARCHARLEN] = "province";
-	//char zipcode[EarnStructs::ZIPLEN] = "zip12";
-	//int accID = 234;
-
-	//char username[EarnStructs::VARCHARLEN] = "username";
-	//char password[EarnStructs::VARCHARLEN] = "password";
-
-	//CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
-	//Login testLogin(username, password);
-
-	//int size1 = sizeof(CreateAccount);
-	//int size2 = sizeof(Login);
-
-	//Packet testPacket(&testAccount, size1, &testLogin, size2, 5);
-
-	//testAccount.display();
-	//testLogin.display();
-	////int size = sizeof(test);
-	////Packet testPacket(&test, size, 0, 0);
-
-
-	//int sendSize = 0;
-	//char* txBuffer = testPacket.serialize(sendSize);
-
-	//char rxBuffer[1000] = {};
-	//memcpy(rxBuffer, txBuffer, sendSize);
-	//
-	//
-	//char rxBuffer1[1000] = {};
-	//char rxBuffer2[1000] = {};
-
-
-	//memcpy(rxBuffer1, rxBuffer, size1 + HeadSize);
-
-	//memcpy(rxBuffer2, rxBuffer, HeadSize);
-	//memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);
-
-	//CreateAccount testAccountRecv(rxBuffer1);
-	//Login testLoginRecv(rxBuffer2);
-
-	//cout << endl;
-	//testAccountRecv.display();
-	//testLoginRecv.display();
-
-
-	//send(ClientSocket, txBuffer, sendSize, 0);
-
-
-	//char rxBufferMain[1000] = {};
-
-	//recv(ClientSocket, rxBufferMain, sizeof(rxBuffer), 0);
-	//char rxBufferChequing[1000] = {};
-	//char rxBufferSaving[1000] = {};
-	//
-	////memcpy(rxBufferChequing, rxBufferMain, sendSize);
-
-
-	//int size3 = sizeof(AccountInformation);
-	//
-
-
-	//memcpy(rxBufferChequing, rxBufferMain, size3 + HeadSize);
-
-	//memcpy(rxBufferSaving, rxBufferMain, HeadSize);
-	//memcpy(rxBufferSaving + HeadSize, rxBufferMain + HeadSize + size3, size3);
-	//
-	//AccountInformation chequing(rxBufferChequing);
-	//AccountInformation savings(rxBufferSaving);
-	//cout << endl;
-	//chequing.display();
-	//savings.display();
-	//cout << endl;
-
-
-
-	////Credential
-
-	//char usernameTest[EarnStructs::VARCHARLEN] = "username2";
-	//char passwordTest[EarnStructs::VARCHARLEN] = "password2";
-	//Login testLoginMain(usernameTest, passwordTest);
-
-	//int sizeLogin = sizeof(Login);
-
-	//Packet loginPacket(&testLoginMain, sizeLogin, 2, 1);
-	//int loginSize = 0;
-	//char* loginTxBuffer = loginPacket.serialize(loginSize);
-
-
-	//send(ClientSocket, loginTxBuffer, loginSize, 0);
-
-	//char rxBufferLoginSuccess[1000] = {};
-
-	//recv(ClientSocket, rxBufferLoginSuccess, sizeof(rxBufferLoginSuccess), 0);
-
-	//char rxBufferChequingLogin[1000] = {};
-	//char rxBufferSavingLogin[1000] = {};
-	//
-	////memcpy(rxBufferChequing, rxBufferMain, sendSize);
-
-
-	//int sizeLoginRecv = sizeof(AccountInformation);
-	//
-
-
-	//memcpy(rxBufferChequingLogin, rxBufferLoginSuccess, sizeLoginRecv + HeadSize);
-
-	//memcpy(rxBufferSavingLogin, rxBufferLoginSuccess, HeadSize);
-	//memcpy(rxBufferSavingLogin + HeadSize, rxBufferLoginSuccess + HeadSize + sizeLoginRecv, sizeLoginRecv);
-	//
-	//AccountInformation chequingLogin(rxBufferChequingLogin);
-	//AccountInformation savingsLogin(rxBufferSavingLogin);
-	//cout << endl;
-	//chequingLogin.display();
-	//savingsLogin.display();
-	//cout << endl;
-
-
-	////View Account
-
-
-	//Packet clientPacket(1, 0);
-	//int clientPacketSize = 0;
-	//char* clientTxBuffer = clientPacket.serialize(clientPacketSize);
-
-	//send(ClientSocket, clientTxBuffer, clientPacketSize, 0);
-
-	//char rxBufferView[1000] = {};
-	//recv(ClientSocket, rxBufferView, sizeof(rxBufferView), 0);
-
-	//CreateAccount viewTest(rxBufferView);
-
-	//viewTest.display();
-
-
-
-	////Transaction ie etransfer
-
-
-	//Transaction testTransaction(786, ETRANSFER, 100, 80, 1234);
-
-	//int transactionSize = sizeof(testTransaction);
-
-	//Packet transactionPacket(&testTransaction, transactionSize, 4, 1);
-
-	//int transactionTotalSize = 0;
-
-	//char* transactiontxBuffer = transactionPacket.serialize(transactionTotalSize);
-
-	//send(ClientSocket, transactiontxBuffer, transactionTotalSize, 0);
-
-
-	//char rxBufferTransfer[1000] = {};
-	//recv(ClientSocket, rxBufferTransfer, sizeof(rxBufferTransfer), 0);
-
-	//Packet transferSuccess(rxBufferTransfer);
-	//int checkSuccess = transferSuccess.getStatus();
-
-	//if(checkSuccess = 1)
-	//{
-	//	cout << "Update balance" << endl;
-	//}
-
-
-
-
 	bool mainLoop = true;
 
 	bool killswitchOne = true;
@@ -236,10 +58,7 @@ int main(void) {
 	while (mainLoop)
 	{
 		
-
-		/*AccountInformation chequingLoginMain;
-		AccountInformation savingsLoginMain;*/
-
+	//menu 1 
 		while (killswitchOne) {
 						
 			killswitchTwo = true;
@@ -255,10 +74,9 @@ int main(void) {
 					cout << "Shutting Down." << endl;
 				}
 				else
-					cout << "wrong input" << endl;	//put logic to go back to login menu
+					cout << "wrong input" << endl;	
 			}
 			
-
 
 			char* txBuffer = nullptr;
 			char rxBuffer[1000] = {};
@@ -387,7 +205,7 @@ int main(void) {
 
 				break;
 			}
-			case 10:
+			case 10:												//Exit, no menu option since admin command
 			{
 				Packet shutdownPacket(10, 0);
 
@@ -410,7 +228,6 @@ int main(void) {
 					killswitchOne = false;
 					killswitchTwo = false;
 					killswitchThree = false;
-
 				}
 				else
 				{
@@ -429,8 +246,7 @@ int main(void) {
 
 		}
 
-		//bool killswitchTwo = true;
-		//int choice;
+		//menu 2
 		while (killswitchTwo) {
 
 			char* txBuffer = nullptr;
@@ -442,10 +258,10 @@ int main(void) {
 			if (choice < 0 || choice > 3)
 			{
 
-				cout << "Wrong input, please try again" << endl;	//put logic to go back to login menu
+				cout << "Wrong input, please try again" << endl;	
 
 			}
-			else if (choice == 3)
+			else if (choice == 3)													//logoff from menu 2
 			{
 				int logoffSize = sizeof(chequingLoginMain);
 
@@ -461,7 +277,7 @@ int main(void) {
 				Packet checkStatus(rxBuffer);
 
 				int status = checkStatus.getStatus();
-
+				//check if good packet
 				if (status == 1) {
 
 					cout << "Logoff succesful" << endl;
@@ -485,7 +301,6 @@ int main(void) {
 
 		}
 
-		//bool killswitchThree = true;
 
 		while (killswitchThree) {
 
@@ -498,7 +313,7 @@ int main(void) {
 
 			if (transactionChoice < 0 || transactionChoice > 9)
 			{
-				cout << "Wrong input, please try again" << endl;	//put logic to go back to login menu
+				cout << "Wrong input, please try again" << endl;	
 				break;
 			}
 
@@ -602,7 +417,7 @@ int main(void) {
 
 				break;
 			}
-			case 3:
+			case 3:									//transfer between accounts
 			{
 				Transaction transferTransaction;
 				if (choice == 1)
@@ -667,7 +482,7 @@ int main(void) {
 
 				break;
 			}
-			case 4:
+			case 4:												//deposit cheque, basically same as receive e-transfer 
 			{
 				Transaction depositChequeTransaction;
 				if (choice == 1)
@@ -719,7 +534,7 @@ int main(void) {
 
 				break;
 			}
-			case 5:
+			case 5:															//view account details 
 			{
 				int viewAccountSize = sizeof(chequingLoginMain);
 
@@ -750,7 +565,7 @@ int main(void) {
 
 				break;
 			}
-			case 6:
+			case 6:												//view statements picture 
 			{
 
 				//send request to view picture
@@ -805,7 +620,7 @@ int main(void) {
 
 				break;
 			}
-			case 7:
+			case 7:								//view current balance, client has balance so not sending any packets or anything 
 			{
 				if (choice == 1)
 				{
@@ -820,14 +635,14 @@ int main(void) {
 
 					break;
 				}
-			case 8:
+			case 8:										//go back to previous menu ie menu 2 to switch accounts (or log off)
 			{
 				killswitchOne = false;
 				killswitchTwo = true;
 				killswitchThree = false;
 				break;
 			}
-			case 9:
+			case 9:										//log off 
 			{
 				int logoffSize = sizeof(chequingLoginMain);
 
