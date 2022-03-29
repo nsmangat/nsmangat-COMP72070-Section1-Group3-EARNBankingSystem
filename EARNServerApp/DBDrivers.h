@@ -38,6 +38,9 @@ namespace EarnDBDrivers {
 		DBUnknownError = -4
 	};
 
+	//Converts enum to string depending on type
+	const std::string EnumToString(DBResponses inputType);
+
 	//DB Driver parent interface, used by reader, writer & validation (can also be used independantly)
 	class DBDriverInterface {
 		//needed to start connections
@@ -99,16 +102,16 @@ namespace EarnDBDrivers {
 		//Subfunctions for checkIDExists
 
 		//Check if Client ID is in database (use DBResponses:: for returns)
-		int checkClientIDExists(int checkClientID);
+		DBResponses checkClientIDExists(int checkClientID);
 
 		//Check if Account ID is in database (use DBResponses:: for returns)
-		int checkAccountIDExists(int checkAccountID);
+		DBResponses checkAccountIDExists(int checkAccountID);
 
 		//Check if Transaction / Invoice ID is in database (use DBResponses:: for returns)
-		int checkTransactionIDExists(int checkTransactionID);
+		DBResponses checkTransactionIDExists(int checkTransactionID);
 
 		//Check if Credential ID is in database (debugging) (use DBResponses:: for returns)
-		int checkCredentialIDExists(int checkCredentialID);
+		DBResponses checkCredentialIDExists(int checkCredentialID);
 
 	public:
 		//Constructor
@@ -121,27 +124,27 @@ namespace EarnDBDrivers {
 		//Get single objects
 
 		//Get Client from database (use DBResponses:: for returns)
-		int getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient);
+		DBResponses getObjectInfo(int objectID, EarnDBObjects::DBClient& copyClient);
 
 		//Get Account from database (use DBResponses:: for returns)
-		int getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount);
+		DBResponses getObjectInfo(int objectID, EarnDBObjects::DBAccount& copyAccount);
 
 		//Get Transaction from database (use DBResponses:: for returns)
-		int getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction);
+		DBResponses getObjectInfo(int objectID, EarnDBObjects::DBTransaction& copyTransaction);
 
 		//Get all objects from a higher level ID
 
 		//Get all Clients from database (use DBResponses:: for returns)
-		int getObjectsInfo(int& numOfClients, std::vector<EarnDBObjects::DBClient>& clientsVec);
+		DBResponses getObjectsInfo(int& numOfClients, std::vector<EarnDBObjects::DBClient>& clientsVec);
 
 		//Get all Accounts of a client from database (use DBResponses:: for returns)
-		int getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDBObjects::DBAccount>& clientAccountsVec);
+		DBResponses getObjectsInfo(int clientID, int& numOfAccounts, std::vector<EarnDBObjects::DBAccount>& clientAccountsVec);
 
 		//Get all Transactions of an account from database (use DBResponses:: for returns)
-		int getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDBObjects::DBTransaction>& accountTransactionsVec);
+		DBResponses getObjectsInfo(int accountID, int& numOfTransactions, std::vector<EarnDBObjects::DBTransaction>& accountTransactionsVec);
 
 		//Check ID function(s) for given ID num, and specified ID type (use DBResponses:: for returns)
-		int checkIDExists(int checkID, EarnStructs::ObjectType idType);
+		DBResponses checkIDExists(int checkID, EarnStructs::ObjectType idType);
 	};
 
 	//DB Validation class (used for login / finding client for associated username/Num & password
@@ -178,12 +181,12 @@ namespace EarnDBDrivers {
 			std::string inputPassword);
 
 		//Add object to database (object's allocated ID on success, use DBResponses:: for error returns)
-		int addObject(EarnDBObjects::DBObject& inputObject);
+		DBResponses addObject(EarnDBObjects::DBObject& inputObject);
 
 		//Modify object in database (use DBResponses:: for returns)
-		int modifyObjectInfo(EarnDBObjects::DBObject& inputObject);
+		DBResponses modifyObjectInfo(EarnDBObjects::DBObject& inputObject);
 
 		//Delete object in database (use DBResponses:: for returns)
-		int deleteObject(EarnDBObjects::DBObject& inputObject);
+		DBResponses deleteObject(EarnDBObjects::DBObject& inputObject);
 	};
 }

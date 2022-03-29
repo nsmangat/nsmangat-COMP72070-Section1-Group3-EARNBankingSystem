@@ -373,8 +373,10 @@ namespace EarnDBObjects {
 		//Set transaction type...
 		void setTransactionType(EarnStructs::TransactionType newTransactionType);
 
-		//Set time of transaction
+		//Set time of transaction as C string
 		void setTransactionTime(const char* newTransactionTime);
+		//Set time of transaction as Cpp string
+		void setTransactionTime(std::string newTransactionTime);
 
 		//Set balance before transaction
 		void setTransactionPreviousBal(double newTransactionPB);

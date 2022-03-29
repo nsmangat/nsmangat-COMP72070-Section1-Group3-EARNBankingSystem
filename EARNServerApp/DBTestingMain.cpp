@@ -64,16 +64,18 @@ int main(void) {
 	EarnDBObjects::DBClient testClient(testClientInfo);
 
 	//add to db so id it updated
-	testWriter.addObject(testClient);
-
+	EarnDBDrivers::DBResponses responseVal = testWriter.addObject(testClient);
+	std::cout << "Adding client to DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+	
 	//modify client
 	testClient.setFirstName("Bobby");
-	testWriter.modifyObjectInfo(testClient);
+	responseVal = testWriter.modifyObjectInfo(testClient);
+	std::cout << "Modifying client in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	//now add credentials
 	EarnStructs::CredentialInfo testCredentialInfo;
 
-	testCredentialInfo.clientID = 1;// testClient.getObjectID();
+	testCredentialInfo.clientID = testClient.getObjectID();// testClient.getObjectID();
 	testCredentialInfo.usernumber = 12345;
 
 	char testUN[EarnStructs::VARCHARLEN] = "bobjoe123";
@@ -84,7 +86,8 @@ int main(void) {
 
 	EarnDBObjects::DBCredential testCredential(testCredentialInfo);
 
-	testWriter.addObject(testCredential);
+	responseVal = testWriter.addObject(testCredential);
+	std::cout << "Adding Credential to DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	//modify credential
 	char newTestUN[EarnStructs::VARCHARLEN] = "BobJoe321";
@@ -93,7 +96,8 @@ int main(void) {
 	
 	strcpy_s(testCredentialInfo.username, EarnStructs::VARCHARLEN, newTestUN);
 	
-	testWriter.modifyObjectInfo(testCredential);
+	responseVal = testWriter.modifyObjectInfo(testCredential);
+	std::cout << "Modifying credential in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	//test each login method
 	EarnDBObjects::DBClient structClient(testValidator.clientLogin(testCredentialInfo));
@@ -112,7 +116,8 @@ int main(void) {
 
 	EarnDBObjects::DBAccount testAccount(testAccountInfo);
 
-	testWriter.addObject(testAccount);
+	responseVal = testWriter.addObject(testAccount);
+	std::cout << "Adding account to DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	//now add transaction
 
@@ -134,14 +139,20 @@ int main(void) {
 
 	EarnDBObjects::DBTransaction testTransaction(testTransactionInfo);
 
-	testWriter.modifyObjectInfo(testAccount);
+	responseVal = testWriter.modifyObjectInfo(testAccount);
+	std::cout << "Modify account in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
-	testWriter.addObject(testTransaction);
+	responseVal = testWriter.addObject(testTransaction);
+	std::cout << "Adding transaction to DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	testTransaction.setTransactionType(EarnStructs::ACCOUNTTRANSFER);
 	testTransaction.setTransactionSecondaryAcc(1234);
 	testWriter.modifyObjectInfo(testTransaction);
-	
+	std::cout << "Modifying transaction in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	//now test logging
+
+	//credential packet logging
 	Login testLoginData(testCredentialInfo.username,testCredentialInfo.userPasswordHash);
 	Packet testLoginPacket(&testLoginData, sizeof(testLoginData),EarnStructs::CREDENTIALS, EarnStructs::SAVINGS);
 	testLoginPacket.setTime();
@@ -150,6 +161,7 @@ int main(void) {
 	EarnLogging::EARNLogger testLogger("testLog.csv");
 	testLogger.logData(&testLoginLog);
 
+	//client packet logging
 	CreateAccount testCreateClient(testClientInfo.firstName, testClientInfo.lastName, testClientInfo.email, testClientInfo.phoneNumber, testClientInfo.street, testClientInfo.city, testClientInfo.province, testClientInfo.zipcode, 2);
 	Packet testCreateClientPacket(&testCreateClient, sizeof(testCreateClient), EarnStructs::CLIENT, EarnStructs::SAVINGS);
 	testCreateClientPacket.setTime();
@@ -157,15 +169,60 @@ int main(void) {
 
 	testLogger.logData(&testCreateClientLog);
 
+	//transaction packet logging
 	Transaction testTransactionData(testTransactionInfo.accountID, testTransactionInfo.transactionType, testTransactionInfo.previousBalance, testTransactionInfo.newBalance, testTransactionInfo.secondaryAccount);
 	Packet testTransactionPacket(&testTransactionData, sizeof(testTransactionData), EarnStructs::TRANSACTION, EarnStructs::SAVINGS);
+	testTransactionPacket.setTime();
 	EarnLogging::ConnectionLog testTransactionLog(&testTransactionPacket, EarnLogging::CLIENTSYSTEM, EarnLogging::SEND, "test log for transaction");
 	testLogger.logData(&testTransactionLog);
 
+	//account packet logging
 	AccountInformation testAccountData(testAccount.getObjectID(), testAccount.getAccountType(), testAccount.getAccountBalance());
 	Packet testAccountPacket(&testAccountData, sizeof(testAccountData), EarnStructs::ACCOUNT, EarnStructs::SAVINGS);
+	testAccountPacket.setTime();
 	EarnLogging::ConnectionLog testAccountLog(&testAccountPacket, EarnLogging::CLIENTSYSTEM, EarnLogging::SEND, "test log for account");
 	testLogger.logData(&testAccountLog);
+
+	EarnDBObjects::DBClient testGetClient;
+	
+	responseVal = testReader.getObjectInfo(testClient.getObjectID(), testGetClient);
+	std::cout << "getting client from DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	if (0 != strcmp(testGetClient.getFirstName().c_str(), testClient.getFirstName().c_str())) {
+		std::cerr << "returned client is not the same" << std::endl;
+	}
+
+	EarnDBObjects::DBAccount testGetAccount;
+
+	responseVal = testReader.getObjectInfo(testAccount.getObjectID(), testGetAccount);
+	std::cout << "getting account from DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	if (testGetAccount.getAccountBalance() != testAccount.getAccountBalance()) {
+		std::cerr << "returned account is not the same" << std::endl;
+	}
+
+	EarnDBObjects::DBTransaction testGetTransaction;
+
+	responseVal = testReader.getObjectInfo(testTransaction.getObjectID(), testGetTransaction);
+	std::cout << "getting transaction from DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	if (testGetTransaction.getTransactionPreviousBal() != testTransaction.getTransactionPreviousBal()) {
+		std::cerr << "returned transaction is not the same" << std::endl;
+	}
+
+	//now test all deletes so I don't fill db while testing
+
+	responseVal = testWriter.deleteObject(testClient);
+	std::cout << "Deleting client in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	responseVal = testWriter.deleteObject(testCredential);
+	std::cout << "Deleting credential in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	responseVal = testWriter.deleteObject(testAccount);
+	std::cout << "Deleting account in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
+
+	responseVal = testWriter.deleteObject(testTransaction);
+	std::cout << "Deleting transaction in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	return 0;
 }

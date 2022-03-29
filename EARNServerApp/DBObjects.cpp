@@ -353,7 +353,8 @@ namespace EarnDBObjects {
 		//setup output call based on updateClient procedure in mySql DB (inputs above)
 
 		std::stringstream outputQuery;
-		outputQuery << "CALL updateClient('" << this->getFirstName();
+		outputQuery << "CALL updateClient('" << this->getObjectID();
+		outputQuery << "', '" << this->getFirstName();
 		outputQuery << "', '" << this->getLastName();
 		outputQuery << "', '" << this->getEmail();
 		outputQuery << "', '" << this->getPhoneNum();
@@ -833,6 +834,11 @@ namespace EarnDBObjects {
 	void DBTransaction::setTransactionTime(const char* newTransactionTime) {
 		if (NULL != newTransactionTime) {
 			strcpy_s(this->transactionInfo.transactionTime, EarnStructs::VARCHARLEN, newTransactionTime);
+		}
+	}
+	void DBTransaction::setTransactionTime(std::string newTransactionTime) {
+		if (!newTransactionTime.empty()) {
+			strcpy_s(this->transactionInfo.transactionTime, EarnStructs::VARCHARLEN, newTransactionTime.c_str());
 		}
 	}
 

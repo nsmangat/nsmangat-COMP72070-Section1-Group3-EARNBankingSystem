@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `invoice_id` INT NOT NULL AUTO_INCREMENT,
   `account_id` INT NOT NULL,
   `invoice_type_id` INT NOT NULL,
-  `invoice_time` TIMESTAMP,
+  `invoice_time` DATETIME,
   `previous_balance` DOUBLE NOT NULL,
   `new_balance` DOUBLE NOT NULL,
   `secondary_account_id` INT NOT NULL,
@@ -191,7 +191,7 @@ USE `EARNBankingDB`$$
 CREATE PROCEDURE `getTransactionInfo` (
 	IN input_transaction_id INT)
 BEGIN
-	Select * FROM invoices i WHERE i.invoice_id = input_transaction_id;
+	Select i.invoice_id, i.account_id, i.invoice_type_id, CAST(i.invoice_time as CHAR), i.previous_balance, i.new_balance, i.secondary_account_id FROM invoices i WHERE i.invoice_id = input_transaction_id;
 END$$
 
 DELIMITER ;
@@ -238,7 +238,7 @@ USE `EARNBankingDB`$$
 CREATE PROCEDURE `getTransactionsForAccount` (
 	IN input_account_id INT)
 BEGIN
-	SELECT * FROM invoices i where i.account_id = input_account_id;
+	Select i.invoice_id, i.account_id, i.invoice_type_id, CAST(i.invoice_time as CHAR), i.previous_balance, i.new_balance, i.secondary_account_id FROM invoices i WHERE i.account_id = input_account_id;
 END$$
 
 DELIMITER ;
