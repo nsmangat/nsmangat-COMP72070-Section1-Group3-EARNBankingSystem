@@ -251,8 +251,13 @@ int main(void) {
 
 			if (choice < 0 || choice > 3)
 			{
-				cout << "wrong input" << endl;	//put logic to go back to login menu
+				if (choice == 10) {
+					cout << "Shutting Down." << endl;
+				}
+				else
+					cout << "wrong input" << endl;	//put logic to go back to login menu
 			}
+			
 
 
 			char* txBuffer = nullptr;
@@ -382,6 +387,38 @@ int main(void) {
 
 				break;
 			}
+			case 10:
+			{
+				Packet shutdownPacket(10, 0);
+
+				int totalSize = 0;
+				txBuffer = shutdownPacket.serialize(totalSize);
+
+				send(ClientSocket, txBuffer, totalSize, 0);
+
+				recv(ClientSocket, rxBuffer, sizeof(rxBuffer), 0);
+
+				Packet checkStatus(rxBuffer);
+
+				int status = checkStatus.getStatus();
+
+				if (status == 1)
+				{
+					cout << "Server Shutting Down." << endl;
+
+					mainLoop = false;
+					killswitchOne = false;
+					killswitchTwo = false;
+					killswitchThree = false;
+
+				}
+				else
+				{
+					cout << "Server failed to receive shutdwon message." << endl;
+				}
+
+				break;
+			}
 			default:
 			{
 				cout << "Wrong input, please try again" << endl;
@@ -404,6 +441,7 @@ int main(void) {
 			cin >> choice;
 			if (choice < 0 || choice > 3)
 			{
+
 				cout << "Wrong input, please try again" << endl;	//put logic to go back to login menu
 
 			}
@@ -834,6 +872,7 @@ int main(void) {
 		}
 	}
 
+	cout << "\n\nClient Shutting Down." << endl;
 
 	closesocket(ClientSocket);
 
