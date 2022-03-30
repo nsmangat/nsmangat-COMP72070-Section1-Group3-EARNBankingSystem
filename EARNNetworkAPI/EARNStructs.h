@@ -32,7 +32,7 @@ namespace EarnStructs  {
 	struct CredentialInfo {
 		int clientID;
 		char username[VARCHARLEN];
-		int usernumber;
+		unsigned int usernumber;
 		char userPasswordHash[VARCHARLEN];
 	};
 

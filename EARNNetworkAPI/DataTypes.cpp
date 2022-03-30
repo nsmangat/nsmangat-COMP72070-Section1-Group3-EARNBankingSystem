@@ -2,12 +2,41 @@
 
 #include "DataTypes.h"
 #include "EARNStructs.h"
+#include <sstream>
+#include <iomanip>
 #include <ctime>
 #define START_BASE
 
 
 using namespace std;
 using namespace EarnStructs;
+
+//Library func for get time used elsewhere in the program
+std::string getCurrentTime(DateFormat logDateFormat) {
+	std::stringstream outputTime;
+	time_t rawtime;
+	struct tm logTime;
+
+	time(&rawtime);
+
+	gmtime_s(&logTime, &rawtime);
+
+	if (YMD_HMS == logDateFormat) {
+
+		outputTime << std::put_time(&logTime, "%Y/%m/%d %H:%M:%S");
+	}
+	else if (MDY_HMS == logDateFormat) {
+		outputTime << std::put_time(&logTime, "%m/%d/%Y %H:%M:%S");
+	}
+	else if (DMY_HMS == logDateFormat) {
+		outputTime << std::put_time(&logTime, "%d/%m/%Y %H:%M:%S");
+	}
+	else {
+		outputTime << "TIME CALCULATION ERROR";
+	}
+
+	return outputTime.str();
+}
 
 //Create Account
 
@@ -312,10 +341,8 @@ char* Transaction::getTransactionTime() {
 }
 
 void Transaction::setTransactionTime() {
-
-	time_t now = time(0);
-	char* time = ctime(&now);
-	strcpy(TInfo.transactionTime, time);
+	
+	strcpy(TInfo.transactionTime, getCurrentTime(YMD_HMS).c_str());
 }
 
 double Transaction::getPreviousBalance() {

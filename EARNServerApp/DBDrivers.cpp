@@ -1003,7 +1003,7 @@ namespace EarnDBDrivers {
 
 	//Validation functions
 
-	int DBValidation::validateClient(int usernumber, std::string username, std::string passwordHash) {
+	int DBValidation::validateClient(unsigned int usernumber, std::string username, std::string passwordHash) {
 
 		int returnVal = DBNoID;
 		try
@@ -1106,7 +1106,7 @@ namespace EarnDBDrivers {
 		return returnClient;
 	}
 
-	EarnDBObjects::DBClient DBValidation::clientLogin(int usernumber, std::string passwordHash) {
+	EarnDBObjects::DBClient DBValidation::clientLogin(unsigned int usernumber, std::string passwordHash) {
 		EarnDBObjects::DBClient returnClient;
 		int returnVal = this->validateClient(usernumber, "", passwordHash);
 

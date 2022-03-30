@@ -150,7 +150,7 @@ namespace EarnDBDrivers {
 	//DB Validation class (used for login / finding client for associated username/Num & password
 	class DBValidation :public DBReader {
 		//Private validate client function used by login
-		int validateClient(int usernumber, std::string username, std::string passwordHash);
+		int validateClient(unsigned int usernumber, std::string username, std::string passwordHash);
 
 	public:
 		//Constructor
@@ -164,7 +164,7 @@ namespace EarnDBDrivers {
 		EarnDBObjects::DBClient clientLogin(std::string username, std::string passwordHash);
 
 		//Client login function through usernumber & pass (use DBResponses:: for returns)
-		EarnDBObjects::DBClient clientLogin(int usernumber, std::string passwordHash);
+		EarnDBObjects::DBClient clientLogin(unsigned int usernumber, std::string passwordHash);
 
 		//Client login function using CredentialInfo struct (use DBResponses:: for returns)
 		EarnDBObjects::DBClient clientLogin(EarnStructs::CredentialInfo inputCredentials);

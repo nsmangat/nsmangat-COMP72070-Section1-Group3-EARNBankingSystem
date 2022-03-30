@@ -8,9 +8,9 @@
 #include <ctime>
 #include <iostream>
 
-#include "../EARNNetworkAPI/DataTypes.h"
-#include "../EARNNetworkAPI/Packet.h"
-#include "../EARNNetworkAPI/EARNStructs.h"
+#include <DataTypes.h>		//"../EARNNetworkAPI/DataTypes.h"
+#include <Packet.h>		//../EARNNetworkAPI/Packet.h"
+#include <EARNStructs.h>	//"../EARNNetworkAPI/EARNStructs.h"
 #include "ClientFunctions.h"
 
 

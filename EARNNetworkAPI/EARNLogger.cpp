@@ -16,33 +16,7 @@ namespace EarnLogging {
 		this->logFilePath = inputFilePath;
 	}
 
-	//Time / Get functions
-
-	std::string EARNLogger::getCurrentTime(DateFormat logDateFormat) {
-		std::stringstream outputTime;
-		time_t rawtime;
-		struct tm logTime;
-
-		time(&rawtime);
-
-		gmtime_s(&logTime, &rawtime);
-
-		if (YMD_HMS == logDateFormat) {
-			
-			outputTime << std::put_time(&logTime, "%Y/%m/%d %H:%M:%S");
-		}
-		else if (MDY_HMS == logDateFormat) {
-			outputTime << std::put_time(&logTime, "%m/%d/%Y %H:%M:%S");
-		}
-		else if (DMY_HMS == logDateFormat) {
-			outputTime << std::put_time(&logTime, "%d/%m/%Y %H:%M:%S");
-		}
-		else {
-			outputTime << "TIME CALCULATION ERROR";
-		}
-
-		return outputTime.str();
-	}
+	//Get functions
 
 	std::string EARNLogger::getLogFilePath() {
 		return this->logFilePath;
@@ -58,7 +32,7 @@ namespace EarnLogging {
 		logColumns << "Time Logged (UTC)," << inputObject->logColumnTemplate() << "Log Comment";
 		
 		//then setup log row itself
-		logStream << this->getCurrentTime(YMD_HMS) << "," << inputObject->getloginfo() << inputObject->getLogComment() << '\n';
+		logStream << getCurrentTime(YMD_HMS) << "," << inputObject->getloginfo() << inputObject->getLogComment() << '\n';
 
 		//create file checker of type in (read only)
 		std::ifstream fileCheck;
@@ -152,7 +126,7 @@ namespace EarnLogging {
 		outputLog << this->parentPacket->getIP() << ",";
 
 		//Then Packet Type
-		outputLog << this->parentPacket->getObjectType() << ",";
+		outputLog << EnumToString((ObjectType) this->parentPacket->getObjectType()) << ",";
 
 		//Then System Type
 		outputLog << EnumToString(this->getSystemType()) << ",";

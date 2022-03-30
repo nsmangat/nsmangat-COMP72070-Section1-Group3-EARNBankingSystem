@@ -2,17 +2,23 @@
 #include "EARNStructs.h"
 
 namespace EarnStructs {
-
+	//OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION, CREATEACCOUNT, STARTUPACCOUNTINFO, FORGETPASSWORD, LOGOFF, BIGFILETRANSFER, SHUTDOWN
 	const std::string EnumToString(ObjectType inputType)
 	{
 		switch (inputType)
 		{
-		case OBJECTNULL:	return "OBJECTNULL";
-		case CLIENT:		return "CLIENT";
-		case CREDENTIALS:	return "CREDENTIALS";
-		case ACCOUNT:		return "ACCOUNT";
-		case TRANSACTION:	return "TRANSACTION";
-		default:			return "[Unknown Type]";
+		case OBJECTNULL:			return "OBJECTNULL";
+		case CLIENT:				return "CLIENT";
+		case CREDENTIALS:			return "CREDENTIALS";
+		case ACCOUNT:				return "ACCOUNT";
+		case TRANSACTION:			return "TRANSACTION";
+		case CREATEACCOUNT:			return "CREATEACCOUNT";
+		case STARTUPACCOUNTINFO:	return "STARTUPACCOUNTINFO";
+		case FORGETPASSWORD:		return "FORGETPASSWORD";
+		case LOGOFF:				return "LOGOFF";
+		case BIGFILETRANSFER:		return "BIGFILETRANSFER";
+		case SHUTDOWN:				return "SHUTDOWN";
+		default:					return "[Unknown Type]";
 		}
 	}
 
@@ -34,8 +40,6 @@ namespace EarnStructs {
 		case TRANSACTIONNULL:	return "TRANSACTIONNULL";
 		case ETRANSFER:			return "ETRANSFER";
 		case CHEQUE:			return "CHEQUE";
-		case WITHDRAW:			return "WITHDRAW";
-		case ACCOUNTTRANSFER:	return "ACCOUNTTRANSFER";
 		default:				return "[Unknown Type]";
 		}
 	}

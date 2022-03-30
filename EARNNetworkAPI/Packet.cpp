@@ -110,10 +110,8 @@ void Packet::setDataBFT(char* BFTBuffer) {
 
 void Packet::setTime() {
 
-	time_t now = time(0);
-	char* time = ctime(&now);
-	//HEAD.TimeOfSend = ctime(&now);
-	strcpy(HEAD.TimeOfSend, time);
+	
+	strcpy(HEAD.TimeOfSend, getCurrentTime(YMD_HMS).c_str());
 }
 
 //Would have to create a packet object and use that to serialize everything

@@ -14,6 +14,11 @@ enum dataTypeChoice { CreateUserType, LoginType, DepositType, WithdrawType, Tran
 using namespace std;
 using namespace EarnStructs;
 
+//library def for time function
+enum DateFormat { YMD_HMS, MDY_HMS, DMY_HMS };
+
+std::string getCurrentTime(DateFormat logDateFormat);
+
 //bytes 8-12 are the accountID
 //bytes 1-16 are together in the beginnning 
 //last 2 bytes are after the child object

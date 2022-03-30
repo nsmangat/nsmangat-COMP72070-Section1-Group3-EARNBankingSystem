@@ -416,7 +416,7 @@ namespace EarnDBObjects {
 		this->setPasswordHash(copyCredentials.credentialInfo.userPasswordHash);
 	}
 
-	DBCredential::DBCredential(int inputObjectID, int inputClientID, const char* inputUsername, int inputUsernumber, const char* inputPasswordHash) :DBObject(EarnStructs::CREDENTIALS, inputObjectID) {
+	DBCredential::DBCredential(int inputObjectID, int inputClientID, const char* inputUsername, unsigned int inputUsernumber, const char* inputPasswordHash) :DBObject(EarnStructs::CREDENTIALS, inputObjectID) {
 		this->setClientID(inputClientID);
 		this->setUsername(inputUsername);
 		this->setUsernumber(inputUsernumber);
@@ -438,7 +438,7 @@ namespace EarnDBObjects {
 		return outputUsernameOrNum.substr(0, strlen(this->credentialInfo.username));
 	}
 
-	int DBCredential::getUsernumber() {
+	unsigned int DBCredential::getUsernumber() {
 		return this->credentialInfo.usernumber;
 	}
 
@@ -472,7 +472,7 @@ namespace EarnDBObjects {
 		}
 	}
 
-	void DBCredential::setUsernumber(int newUsernumber) {
+	void DBCredential::setUsernumber(unsigned int newUsernumber) {
 		this->credentialInfo.usernumber = newUsernumber;
 	}
 
@@ -520,7 +520,7 @@ namespace EarnDBObjects {
 		/*
 			IN input_client_id INT,
 			IN input_username VARCHAR(45),
-			IN input_usernumber INT,
+			IN input_usernumber INT UNSIGNED,
 			IN input_password_hash VARCHAR(45),
 			OUT new_credential_id INT
 		*/

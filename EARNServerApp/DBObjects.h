@@ -185,7 +185,7 @@ namespace EarnDBObjects {
 		DBCredential(const DBCredential& copyCredentials);
 
 		//Parametrized constructor
-		DBCredential(int inputObjectID, int inputClientID, const char* inputUserName, int inputUserNumber, const char* inputPasswordHash);
+		DBCredential(int inputObjectID, int inputClientID, const char* inputUserName, unsigned int inputUserNumber, const char* inputPasswordHash);
 
 		//Get functions
 
@@ -198,7 +198,7 @@ namespace EarnDBObjects {
 		std::string getUsername();
 
 		//Get Usernumber as int
-		int getUsernumber();
+		unsigned int getUsernumber();
 
 		//Get PasswordHash as C string
 		const char* getPasswordHash(int& lenOfArray);
@@ -219,7 +219,7 @@ namespace EarnDBObjects {
 		void setUsername(std::string newUsername);
 
 		//Set Usernumber as int
-		void setUsernumber(int newUsernumber);
+		void setUsernumber(unsigned int newUsernumber);
 
 		//Set PasswordHash from C string
 		void setPasswordHash(const char* newPasswordHash);

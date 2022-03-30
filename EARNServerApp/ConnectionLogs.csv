@@ -1,0 +1,23 @@
+Time Logged (UTC),Time Sent (UTC),From IP,To IP,Packet Type,System Type,CRC,DataSize,Success / Fail,Error Dump ID,Send / Receive,Log Comment
+2022/03/30 04:36:56,2022/03/30 04:36:56,127.0.0.1,127.0.0.1,2,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:36:56,2022/03/30 04:36:56,127.0.0.1,127.0.0.1,6,SERVERSYSTEM,12345,64,Success,0,SEND,sending response for login
+2022/03/30 04:37:02,2022/03/30 04:37:02,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:03,2022/03/30 04:37:03,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,0,0,Success,0,SEND,sending response for view client
+2022/03/30 04:37:13,2022/03/30 04:37:13,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:13,2022/03/30 04:37:13,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,0,0,Success,0,SEND,sending response for view client
+2022/03/30 04:37:17,2022/03/30 04:37:17,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:17,2022/03/30 04:37:17,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,0,0,Success,0,SEND,sending response for view client
+2022/03/30 04:37:23,2022/03/30 04:37:23,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:23,2022/03/30 04:37:23,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,0,0,Success,0,SEND,sending response for view client
+2022/03/30 04:37:25,2022/03/30 04:37:25,127.0.0.1,127.0.0.1,3,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:27,2022/03/30 04:37:27,127.0.0.1,127.0.0.1,9,SERVERSYSTEM,0,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:27,,127.0.0.1,127.0.0.1,9,SERVERSYSTEM,12345,1024,Unknown / Default Status,0,SEND,beginning large file transfer...
+2022/03/30 04:37:27,2022/03/30 04:37:27,127.0.0.1,127.0.0.1,9,SERVERSYSTEM,12345,1024,Unknown / Default Status,0,SEND,finished large file transfer
+2022/03/30 04:37:36,2022/03/30 04:37:36,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:36,2022/03/30 04:37:36,127.0.0.1,127.0.0.1,4,SERVERSYSTEM,0,0,Success,0,SEND,sending response for view client
+2022/03/30 04:37:39,2022/03/30 04:37:39,127.0.0.1,127.0.0.1,8,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:37:39,2022/03/30 04:37:39,127.0.0.1,127.0.0.1,8,SERVERSYSTEM,0,0,Success,0,SEND,sending response for logoff
+2022/03/30 04:38:21,2022/03/30 04:38:21,127.0.0.1,127.0.0.1,5,SERVERSYSTEM,12345,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:38:21,2022/03/30 04:38:21,127.0.0.1,127.0.0.1,6,SERVERSYSTEM,12345,64,Success,0,SEND,sending response for client creation
+2022/03/30 04:38:24,2022/03/30 04:38:24,127.0.0.1,127.0.0.1,10,SERVERSYSTEM,0,0,Unknown / Default Status,0,RECEIVE,received log from client
+2022/03/30 04:38:24,2022/03/30 04:38:24,127.0.0.1,127.0.0.1,10,SERVERSYSTEM,0,0,Success,0,SEND,sending response for shutdown

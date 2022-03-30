@@ -96,7 +96,6 @@ INSERT IGNORE INTO `EARNBankingDB`.`invoice_type` (
     VALUES 
 	('E-Transfer'),
     ('Cheque'),
-    ('Withdraw'),
     ('Account-Transfer');
     
 -- -----------------------------------------------------
@@ -134,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `credentials` (
   `credential_id` INT NOT NULL AUTO_INCREMENT,
   `client_id` INT NOT NULL UNIQUE,
   `client_password_hash` VARCHAR(45) NOT NULL,
-  `client_usernumber` INT NOT NULL UNIQUE,
+  `client_usernumber` INT UNSIGNED NOT NULL UNIQUE,
   `client_username` VARCHAR(45) NULL UNIQUE,
   PRIMARY KEY (`credential_id`),
   INDEX `fk_credentials_clients_idx` (`client_id` ASC) VISIBLE,
@@ -270,7 +269,7 @@ DROP PROCEDURE IF EXISTS `checkLoginNumberPass`;
 DELIMITER $$
 USE `EARNBankingDB`$$
 CREATE PROCEDURE `checkLoginNumberPass` (
-	IN input_usernumber INT,
+	IN input_usernumber INT UNSIGNED,
     IN input_Password VARCHAR(45),
     OUT received_client_id INT)
 BEGIN
@@ -521,7 +520,7 @@ USE `EARNBankingDB`$$
 CREATE PROCEDURE `addCredential` (
 	IN input_client_id INT,
     IN input_username VARCHAR(45),
-    IN input_usernumber INT,
+    IN input_usernumber INT UNSIGNED,
     IN input_password_hash VARCHAR(45),
     OUT new_credential_id INT)
 BEGIN
@@ -551,7 +550,7 @@ USE `EARNBankingDB`$$
 CREATE PROCEDURE `updateCredential` (
 	IN input_client_id INT,
     IN input_username VARCHAR(45),
-    IN input_usernumber INT,
+    IN input_usernumber INT UNSIGNED,
     IN input_password_hash VARCHAR(45))
 BEGIN
 	UPDATE credentials c SET
