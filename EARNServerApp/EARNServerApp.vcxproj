@@ -166,6 +166,7 @@
     <ClCompile Include="DBDrivers.cpp" />
     <ClCompile Include="DBObjects.cpp" />
     <ClCompile Include="DBTestingMain.cpp" />
+    <ClCompile Include="ServerMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBAccess.h" />

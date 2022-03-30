@@ -9,8 +9,9 @@ namespace EarnStructs  {
 	//Length of zip codes, since they are always the same
 	const int ZIPLEN = 7;
 
-	//Enummeration for different types of Objects
-	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION };
+	//CREATEACCOUNT is to know we sending 2 structs
+	//STARTUPACCOUNTINFO = server response after login so client has their savings and chequings account   *we not using this anymore, this is not ACCOUNT
+	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION, CREATEACCOUNT, STARTUPACCOUNTINFO, FORGETPASSWORD, LOGOFF, BIGFILETRANSFER, SHUTDOWN };
 
 	//Converts enum to string depending on type to assist logging
 	const std::string EnumToString(ObjectType inputType);
@@ -40,7 +41,7 @@ namespace EarnStructs  {
 
 	//Converts enum to string depending on type
 	const std::string EnumToString(AccountType inputType);
-
+  
 	//Structure for Account object's info, to ease serialization
 	struct AccountInfo {
 		int clientID;
@@ -49,7 +50,7 @@ namespace EarnStructs  {
 	};
 
 	//Enummeration for transaction types
-	enum TransactionType { TRANSACTIONNULL, ETRANSFER, CHEQUE, WITHDRAW, ACCOUNTTRANSFER };
+	enum TransactionType { TRANSACTIONNULL, ETRANSFER, CHEQUE, ACCOUNTTRANSFER };
 
 	//Converts enum to string depending on type
 	const std::string EnumToString(TransactionType inputType);
