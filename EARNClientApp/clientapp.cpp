@@ -1,7 +1,21 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "clientapp.h"
 #include "ui_clientapp.h"
-#include <QMessageBox>
-#include <QGraphicsDropShadowEffect>
+#define MAX_BUFFER 30
+#define MAX_ZIPCODE 6
+#define RAW_BUFFER_SIZE 500
+#define BFT_SIZE_CLIENT 1200
+#include <QIODevice>
+#include <QFile>
+#include <QTextStream>
+#include <QBuffer>
+#include <QByteArray>
+#include <QImage>
+#include <cstring>
+#include <QSaveFile>
+
+AccountInformation chequingLoginMain;
+AccountInformation savingsLoginMain;
 
 ClientApp::ClientApp(QWidget* parent)
     : QWidget(parent)
@@ -9,144 +23,340 @@ ClientApp::ClientApp(QWidget* parent)
 {
     ui->setupUi(this);
 
-    display_Account_Info();
 }
 
 ClientApp::~ClientApp()
 {
+    delete this->socket;
     delete ui;
 }
+void ClientApp::connectServer()
+{
+    socket = new QTcpSocket();
 
+    QString IP;
+    int port;
+    port = 27000;
+    IP = "127.0.0.1";
+
+    socket->connectToHost(IP, port);
+
+    //Waiting for the connection to succeed
+    if(!socket->waitForConnected(27000))
+    {
+        qDebug() << "Connection failed!";
+        return;
+    }
+    qDebug() << "Connect successfully!";
+}
+void ClientApp::socket_Read_Data()
+{
+    QByteArray buffer;
+    //Read Buffer Data
+    buffer = socket->readAll();
+}
+void ClientApp::display_Balance()
+{
+    ui->ChequingBalance_label->setText(QString::number(chequingLoginMain.getAccountBalance()));
+    ui->SavingBalance_label->setText(QString::number(savingsLoginMain.getAccountBalance()));
+
+
+}
 void ClientApp::display_Account_Info()
 {
     //Display user's data in
-    ui->Name_label->setText("Admin Test");
-    ui->Email_label->setText("admin@earn.ca");
-    ui->PhoneNum_label->setText("012345");
-    ui->Address_label->setText("1 Street Blv, Kitchener,ON, Canada");
+    ui->Name_label->setText("");
+    ui->PhoneNum_label->setText("");
+    ui->PostalCode_label->setText("");
+    ui->Address_label->setText("");
+    ui->Email_label->setText("");
 }
 
 void ClientApp::on_BackToMenu_pushButton_6_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
+    disconnect();
 }
-
 
 void ClientApp::on_Login_pushButton_clicked()
 {
-    QString cardNum = ui->CardNum_lineEdit->text();
-    QString password = ui->Password_lineEdit->text();
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
 
-    if (cardNum == "123456789" && password == "admin")
-    {
+    char cardNum[45];
+    char password[45];
+
+    strcpy(cardNum,ui->CardNum_lineEdit->text().toStdString().c_str());
+    strcpy(password, ui->Password_lineEdit->text().toStdString().c_str());
+
+    Login loginObj(cardNum, password);
+
+    //send to server
+    int loginSize = sizeof(loginObj);
+    Packet loginPacket(&loginObj, loginSize, 2, 0);
+    int totalSize = 0;
+    txBuffer = loginPacket.serialize(totalSize);
+    socket->write(txBuffer, 500);    //send
+    socket->flush();
+
+    //recieve data from server
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, RAW_BUFFER_SIZE);
+
+    int sizeLoginRecv = sizeof(AccountInformation);
+    char rxBufferChequingLogin[1000] = {};
+    char rxBufferSavingLogin[1000] = {};
+
+
+    memcpy(rxBufferChequingLogin, rxBuffer, sizeLoginRecv + HeadSize);
+
+    Packet checkStatus(rxBufferChequingLogin);
+
+    int status = checkStatus.getStatus();   //verify the return message type (success/fail)
+
+    if (status == 1) {
+
+        memcpy(rxBufferSavingLogin, rxBuffer, HeadSize);
+        memcpy(rxBufferSavingLogin + HeadSize, rxBuffer + HeadSize + sizeLoginRecv, sizeLoginRecv);
+
+        AccountInformation chequingLogin(rxBufferChequingLogin);
+        AccountInformation savingsLogin(rxBufferSavingLogin);
+
+        memcpy(&chequingLoginMain, &chequingLogin, sizeof(chequingLogin));
+        memcpy(&savingsLoginMain, &savingsLogin, sizeof(savingsLogin));
+
         ui->stackedWidget->setCurrentIndex(3);
+
     }
-    else {
+    else
+    {
         QMessageBox::warning(this, "Login", "Card number or password is incorrect.");
     }
 
     ui->CardNum_lineEdit->clear();
     ui->Password_lineEdit->clear();
-    /*if(!mydb.isOpen())
-     * {
-     * qDebug()<<Failed to open the database";
-     * return;
-     * }
-     *
-     * QSqlQuery qry;
-     * if(qry.exec("select* from <table> where cardNumber='"+cardNum +"' and password='"+password+"'")
-     * {
-     *  int count = 0;
-     *  while(qry.next()){count++;}
-     *  if(count == 1)
-     *  {
-     *     ui->stackedWidget->setCurrentIndex(3);
-     *  }
-     *  else{
-     *      QMessageBox::warning(this, "Login", "Card number or password is incorrect.");
-     *  }
-     */
+
+
 }
 
 void ClientApp::on_SendResetLink_pushButton_clicked()
 {
-    QString email = ui->email_lineEdit->text();
 
-    if (email == "admin@gmail.com")
+
+    char cardNum[MAX_BUFFER];
+    char password[MAX_BUFFER]={};
+    char* rxBuffer = new char[RAW_BUFFER_SIZE];
+    char* txBuffer = new char[RAW_BUFFER_SIZE];
+
+    strcpy(cardNum,ui->email_lineEdit->text().toStdString().c_str());
+
+    Login loginObj(cardNum, password);
+
+    int loginSize = sizeof(loginObj);
+
+    Packet loginPacket(&loginObj, loginSize, 7, 0);
+    int totalSize = 0;
+    txBuffer = loginPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+    socket->waitForReadyRead();
+    socket->read(rxBuffer,RAW_BUFFER_SIZE);   //recv
+
+    char rxBufferArray[1000]={};
+    memcpy(rxBufferArray, rxBuffer, totalSize);     //check
+
+
+    Packet checkStatus(rxBufferArray);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1)
     {
         QMessageBox::information(this, "Reset Password", "A reset link is sent to your email.");
     }
     else {
-        QMessageBox::warning(this, "Reset Password", "Card Number or Email is incorrect.");
+        QMessageBox::warning(this, "Reset Password", "Email is inavlid.");
     }
     ui->email_lineEdit->clear();
 }
 
-
-void ClientApp::on_BackToLogin_pushButton_clicked()
+void ClientApp::on_BackToLogin_pushButton_clicked() //logout
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    int logoffSize = sizeof(chequingLoginMain);
+
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
 }
 
-
-void ClientApp::on_BackToLogin_pushButton_2_clicked()
+void ClientApp::on_BackToLogin_pushButton_2_clicked() //logout
 {
-    ui->stackedWidget->setCurrentIndex(0);
-}
+    int logoffSize = sizeof(chequingLoginMain);
 
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
+}
 
 void ClientApp::on_ResetPassword_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-
 void ClientApp::on_Signin_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
 }
 
-
 void ClientApp::on_Logout_pushButton_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    int logoffSize = sizeof(chequingLoginMain);
+
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
 }
 
-//Menu page
+//---------Menu page---------
 void ClientApp::on_ViewStatement_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(4);
 }
-
 
 void ClientApp::on_E_Transfer_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
 }
 
-
 void ClientApp::on_Deposit_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(6);
 }
-
 
 void ClientApp::on_AddAcc_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(7);
 }
 
-
 void ClientApp::on_ViewAcc_pushButton_clicked()
 {
+    int viewAccountSize = sizeof(chequingLoginMain);
+
+    Packet viewAccountPacket(&chequingLoginMain, viewAccountSize, 3, 0);
+    int totalSize = 0;
+    char* txBuffer= new char[1000];
+    txBuffer = viewAccountPacket.serialize(totalSize);
+
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+
+    // Read Buffer Data
+    socket->waitForReadyRead();
+    char* rxBuffer = new char[500];
+    int num = socket->read(rxBuffer, 500);
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+        CreateAccount AccountInfoTest(rxBuffer);
+        QString fullName = QString::fromStdString(AccountInfoTest.getFirstName())+" "+QString::fromStdString(AccountInfoTest.getLastName());;
+        ui->Name_label->setText(fullName);
+        ui->PhoneNum_label->setText(QString::fromStdString(AccountInfoTest.getPhoneNumber()));
+        ui->PostalCode_label_2->setText(QString::fromStdString(AccountInfoTest.getZipcode()));
+        ui->Address_label->setText(QString::fromStdString(AccountInfoTest.getStreetName())+", "+ QString::fromStdString(AccountInfoTest.getCity())+", "+QString::fromStdString(AccountInfoTest.getProvince()));
+        ui->Email_label->setText(QString::fromStdString(AccountInfoTest.getEmail()));
+    }
+    else
+    {
+        QMessageBox::critical(
+                    this,
+                    tr("View Account"),
+                    tr("Unable to view account information at the moment"));
+    }
+
+
     ui->stackedWidget->setCurrentIndex(8);
 }
 
-void ClientApp::on_pushButton_4_clicked()
-{
-    ///
-}
-//Add Account Page
+//-------Add Account Page-----
 void ClientApp::on_BackToMenu_pushButton_4_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
@@ -155,57 +365,134 @@ void ClientApp::on_BackToMenu_pushButton_4_clicked()
 
 void ClientApp::on_Logout_pushButton_5_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    int logoffSize = sizeof(chequingLoginMain);
+
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
 
 }
 
-
+//-------View Transaction Activities Page-----
 void ClientApp::on_ImageDisplayPushButton_clicked()
 {
-    QPixmap pic("C:/Users/letra/Downloads/TransactionActivities.png");
+    Packet BFTRequest(9, 0);
+    int size = 0;
+    //char* rxBuffer = new char[RAW_BUFFER_SIZE];
+    char* txBuffer = new char[500];
+    txBuffer = BFTRequest.serialize(size);
+
+    socket->write(txBuffer, size);    //send
+    socket->flush();
+
+    //receiving bytes for picture
+    int TotalSize = BFT_SIZE + HeadSize + sizeof(int);
+    char RxBuffer[BFT_SIZE + HeadSize + sizeof(int)] = {};
+
+    char BFTBuffer[BFT_SIZE] = {};
+
+    char fName[500] = "C:/Users/letra/Downloads/NewServer/nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-NetworkAPI_Client_Eazaz_Nav/EARNClientApp/recvImage.JPG";
+
+    FILE* fp = fopen(fName, "wb");
+    bool receivingBytesLoop = true;
+    char ack[3] = "ok";
+
+    //file.open(QIODevice::WriteOnly);
+    //qDebug() << "File Opened!";
+    //QTextStream out(&file);
+    while (receivingBytesLoop)
+    {
+        socket->waitForReadyRead();
+        int size = socket->read(RxBuffer, TotalSize);       //recv
+
+        memcpy(BFTBuffer, RxBuffer + HeadSize, BFT_SIZE);
+
+        //int size = recv(ClientSocket, TxBuffer, sizeof(TxBuffer), 0);
+        if (size > (int)(HeadSize + sizeof(int)))
+        {
+            fwrite(BFTBuffer, sizeof(BFTBuffer), 1, fp);
+
+            socket->write(ack, sizeof(ack));    //send
+            socket->flush();
+        }
+        else
+        {
+            receivingBytesLoop = false;
+        }
+
+    }
+    fclose(fp);
+
+
+    QPixmap pic(fName);
     ui->labelImage->setPixmap(pic);
+
 }
 
 
 void ClientApp::on_BackToMenu_pushButton_clicked()
 {
+    ui->labelImage->clear();
     ui->stackedWidget->setCurrentIndex(3);
 }
 
 void ClientApp::on_Logout_pushButton_2_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
-}
+    int logoffSize = sizeof(chequingLoginMain);
 
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
 
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
 
+    txBuffer = logoffPacket.serialize(totalSize);
 
-void ClientApp::on_ToOtherPeople_pushButton_clicked()
-{
-    QPushButton* target = qobject_cast<QPushButton*>(sender());
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
 
-    if (target != nullptr)
-    {
-        target->setStyleSheet(QString("#%1 { background-color: green; }").arg(target->objectName()));
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
 
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
     }
-}
-
-
-void ClientApp::on_ToMyAcc_pushButton_pressed()
-{
-    QPushButton* target = qobject_cast<QPushButton*>(sender());
-    if (target != nullptr)
+    else
     {
-        target->setStyleSheet(QString("#%1 { background-color: red; }").arg(target->objectName()));
+        qDebug("Logoff unsuccesful, please try again");
     }
+
 }
 
-/*void ClientApp::setupUI()
-{
-   int index = ui->To_comboBox->findText("Saving Account", QtCore.Qt);
-}
-*/
+
 void ClientApp::on_BackToMenu_pushButton_2_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
@@ -213,59 +500,240 @@ void ClientApp::on_BackToMenu_pushButton_2_clicked()
 
 void ClientApp::on_Logout_pushButton_3_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    int logoffSize = sizeof(chequingLoginMain);
+
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
 }
 
-
+//-------e-Transfer Page-----
 void ClientApp::on_Send_pushButton_clicked()
 {
-    if (ui->To_lineEdit->text() != "" && ui->Amount_lineEdit->text() != "")
+
+    if(ui->Amount_lineEdit->text()=="" ||ui->To_lineEdit->text() =="")
     {
         QMessageBox::information(
-            this,
-            tr("Transaction"),
-            tr("Transaction Completed"));
+                    this,
+                    tr("Transaction"),
+                    tr("Transaction InCompleted"));
     }
-    /*else if( account.balance < ui->Amount_lineEdit->Text())
-            QMessageBox::critical(
-            this,
-            tr("Transaction"),
-            tr("Insufficient balance") );
-    */
-    else {
-        QMessageBox::critical(
-            this,
-            tr("Transaction"),
-            tr("Incorrect input data"));
-    }
-    ui->To_lineEdit->clear();
-    ui->Amount_lineEdit->clear();
-}
+    else
+    {
+        double amount = ui->Amount_lineEdit->text().toDouble();
+        int sendAcc = ui->To_lineEdit->text().toInt();
+        double newBalance;
+        int choice;
+        QString chequingType = "Chequing Account";
+        //QString savingType = "Saving";
+        Transaction sendEtransferTransaction;
+        int etransferSize;
+        int totalSize = 0;
+        char* rxBuffer = new char[RAW_BUFFER_SIZE];
+        char* txBuffer = new char[RAW_BUFFER_SIZE];
 
+        if (ui->From_comboBox->currentText() == chequingType)
+        {
+            newBalance = chequingLoginMain.getAccountBalance() - amount;
+            Transaction sendEtransfer(chequingLoginMain.getClientID(), ETRANSFER, chequingLoginMain.getAccountBalance(), newBalance, sendAcc);
+            sendEtransferTransaction =sendEtransfer;
+            choice = 1;
+            etransferSize = sizeof(sendEtransferTransaction);
+            Packet etransferSendPacket(&sendEtransferTransaction, etransferSize, 4, choice);
+            txBuffer = etransferSendPacket.serialize(totalSize);
+
+        }
+        else
+        {
+            newBalance = savingsLoginMain.getAccountBalance() - amount;
+            Transaction sendEtransfer(savingsLoginMain.getClientID(), ETRANSFER, savingsLoginMain.getAccountBalance(), newBalance, sendAcc);
+            sendEtransferTransaction =sendEtransfer;
+            choice=2;
+            etransferSize = sizeof(sendEtransferTransaction);
+            Packet etransferSendPacket(&sendEtransferTransaction, etransferSize, 4, choice);
+            txBuffer = etransferSendPacket.serialize(totalSize);
+
+        }
+
+        // int etransferSize = sizeof(sendEtransferTransaction);
+        //Packet etransferSendPacket(&sendEtransferTransaction, etransferSize, 4, choice);
+
+
+        socket->write(txBuffer, totalSize);    //send
+        socket->flush();
+        socket->waitForReadyRead();
+        socket->read(rxBuffer,RAW_BUFFER_SIZE);   //recv
+
+        Packet checkStatus(rxBuffer);       //deserialize
+
+        int status = checkStatus.getStatus();
+
+        if (status == 1) {
+            QMessageBox::information(
+                        this,
+                        tr("Transaction"),
+                        tr("Transaction Completed"));
+
+            if (choice == 1)
+            {
+
+                chequingLoginMain.setAccountBalance(sendEtransferTransaction.getNewBalance());
+
+            }
+            else if (choice == 2)
+            {
+                savingsLoginMain.setAccountBalance(sendEtransferTransaction.getNewBalance());
+            }
+        }else {
+            QMessageBox::critical(
+                        this,
+                        tr("Transaction"),
+                        tr("Transaction Incompleted. Insufficient funds."));
+        }
+        ui->To_lineEdit->clear();
+        ui->Amount_lineEdit->clear();
+    }
+}
 
 void ClientApp::on_BackToMenu_pushButton_3_clicked()
 {
     ui->stackedWidget->setCurrentIndex(3);
 }
 
-
 void ClientApp::on_Logout_pushButton_4_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
-}
+    int logoffSize = sizeof(chequingLoginMain);
 
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
+}
 
 void ClientApp::on_DepositComplete_pushButton_clicked()
 {
     //Verify that all required fields are filled
     if (!ui->FrontpageImage_label->pixmap().isNull() && !ui->BackpageImage_label->pixmap().isNull()
-        && ui->Amount_lineEdit_2->isModified())
+            && ui->Amount_lineEdit_2->isModified())
     {
-        //Successful message
-        QMessageBox::information(
-            this,
-            tr("Deposit"),
-            tr("Deposit submitted.\nSent images will be verifed and balance will officially updated in 3 business days."));
+        int choice;
+        double amount= ui->Amount_lineEdit_2->text().toDouble();
+        Transaction depositChequeTransaction;
+        int depositChequeSize;
+        int totalSize = 0;
+        char* rxBuffer = new char[RAW_BUFFER_SIZE];
+        char* txBuffer = new char[RAW_BUFFER_SIZE];
+
+        if (ui->AccType_comboBox->currentText()== "Chequing Account")
+        {
+            //depositChequeTransaction = depositCheque(chequingLoginMain);
+
+            double nBalance = chequingLoginMain.getAccountBalance() + amount;
+
+            Transaction send(chequingLoginMain.getClientID(), CHEQUE, chequingLoginMain.getAccountBalance(), nBalance, 0);		//secAcc set to zero because no acc needed
+            depositChequeTransaction = send;
+            choice = 1;
+            depositChequeSize = sizeof(depositChequeTransaction);
+
+        }
+        else
+        {
+            //depositChequeTransaction = depositCheque(savingsLoginMain);
+            double nBalance = savingsLoginMain.getAccountBalance() + amount;
+
+            Transaction send(savingsLoginMain.getClientID(), CHEQUE, savingsLoginMain.getAccountBalance(), nBalance, 0);		//secAcc set to zero because no acc needed
+            depositChequeTransaction = send;
+            choice = 2;
+            depositChequeSize = sizeof(depositChequeTransaction);
+
+        }
+
+        Packet depositChequeRecvPacket(&depositChequeTransaction, depositChequeSize, 4, choice);
+
+        txBuffer = depositChequeRecvPacket.serialize(totalSize);
+
+        socket->write(txBuffer, totalSize);    //send
+        socket->flush();
+        socket->waitForReadyRead();
+
+        socket->read(rxBuffer,RAW_BUFFER_SIZE);   //recv
+
+        Packet checkStatus(rxBuffer);
+
+        int status = checkStatus.getStatus();
+
+        if (status == 1) {
+
+            //Successful message
+            QMessageBox::information(
+                        this,
+                        tr("Deposit"),
+                        tr("Deposit submitted.\nSent images will be verifed and balance will officially updated in 3 business days."));
+
+            if (choice == 1)
+            {
+                chequingLoginMain.setAccountBalance(depositChequeTransaction.getNewBalance());
+            }
+            else if (choice == 2)
+            {
+                savingsLoginMain.setAccountBalance(depositChequeTransaction.getNewBalance());
+            }
+        }
+        else
+        {
+            //Unsuccessful message
+            QMessageBox::information(
+                        this,
+                        tr("Deposit"),
+                        tr("Deposit Unsuccessful. Please try again."));
+        }
 
         //Clear input information after completing deposit
         ui->FrontpageImage_label->clear();
@@ -277,9 +745,9 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
     {
         //Fail message if required field(s) is missing
         QMessageBox::critical(
-            this,
-            tr("Deposit"),
-            tr("Insufficient information"));
+                    this,
+                    tr("Deposit"),
+                    tr("Insufficient information"));
     }
 
 }
@@ -300,13 +768,12 @@ void ClientApp::on_AddFrontpage_pushButton_clicked()
         else
         {
             QMessageBox::warning(
-                this,
-                tr("Image Error"),
-                tr("Unable to load image."));
+                        this,
+                        tr("Image Error"),
+                        tr("Unable to load image."));
         }
     }
 }
-
 
 void ClientApp::on_AddBackpage_pushButton_clicked()
 {
@@ -324,13 +791,12 @@ void ClientApp::on_AddBackpage_pushButton_clicked()
         else
         {
             QMessageBox::warning(
-                this,
-                tr("Image Error"),
-                tr("Unable to load image."));
+                        this,
+                        tr("Image Error"),
+                        tr("Unable to load image."));
         }
     }
 }
-
 
 void ClientApp::on_InvestingAcc_checkBox_stateChanged(int arg)
 {
@@ -358,96 +824,341 @@ void ClientApp::on_BackToMenu_pushButton_5_clicked()
     ui->stackedWidget->setCurrentIndex(3);
 }
 
-
 void ClientApp::on_Logout_pushButton_6_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
-}
+    int logoffSize = sizeof(chequingLoginMain);
 
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
+}
 
 void ClientApp::on_Transfer_pushButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(9);
 }
 
-
 void ClientApp::on_Logout_pushButton_7_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    int logoffSize = sizeof(chequingLoginMain);
+
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
 }
 
-
-void ClientApp::on_Send_pushButton_2_clicked()
+void ClientApp::on_Send_pushButton_2_clicked()             //Send to my accs
 {
     if (ui->From_comboBox_2->currentIndex() == ui->To_comboBox->currentIndex()) //if send chequing to chequing or saving to saving
     {
         QMessageBox::critical(
-            this,
-            tr("Error"),
-            tr("FROM and TO fields are the same."));
+                    this,
+                    tr("Error"),
+                    tr("FROM and TO fields are the same."));
     }
     else if (ui->Amount_lineEdit_3->text() != "")
     {
-        QMessageBox::information(
-            this,
-            tr("Transaction"),
-            tr("Transaction Completed"));
+        int choice;
+        Transaction transferTransaction;
+        double amount= ui->Amount_lineEdit_3->text().toDouble();
+
+        if(ui->From_comboBox_2->currentText()=="Chequing Account"){
+            choice =1;
+        }else{
+            choice =2;
+        }
+
+        if(choice == 1)
+        {
+            double newBalance = chequingLoginMain.getAccountBalance() - amount;
+            Transaction transferBetween(chequingLoginMain.getClientID(), ACCOUNTTRANSFER, chequingLoginMain.getAccountBalance(), newBalance, savingsLoginMain.getClientID());
+            transferTransaction = transferBetween;
+        }
+        else
+        {
+            double newBalance = savingsLoginMain.getAccountBalance() - amount;
+            Transaction transferBetween(savingsLoginMain.getClientID(), ACCOUNTTRANSFER, savingsLoginMain.getAccountBalance(), newBalance, chequingLoginMain.getClientID());
+            transferTransaction = transferBetween;
+        }
+
+        int transferSize = sizeof(transferTransaction);
+
+        Packet transferSendPacket(&transferTransaction, transferSize, 4, choice);
+        int totalSize = 0;
+        char* rxBuffer = new char[RAW_BUFFER_SIZE];
+        char* txBuffer = new char[RAW_BUFFER_SIZE];
+
+        txBuffer = transferSendPacket.serialize(totalSize);
+
+        socket->write(txBuffer, totalSize);    //send
+        socket->flush();
+        socket->waitForReadyRead();
+        socket->read(rxBuffer,RAW_BUFFER_SIZE);   //recv
+
+        Packet checkStatus(rxBuffer);
+
+        int status = checkStatus.getStatus();
+
+        if (status == 1) {
+
+            if (choice == 1)
+            {
+                chequingLoginMain.setAccountBalance(transferTransaction.getNewBalance());
+
+                double amount = transferTransaction.getPreviousBalance() - transferTransaction.getNewBalance();
+                savingsLoginMain.setAccountBalance(savingsLoginMain.getAccountBalance() + amount);
+
+                QMessageBox::information(
+                            this,
+                            tr("Transaction"),
+                            tr("Transaction Completed"));
+
+            }
+            else if (choice == 2)
+            {
+
+                savingsLoginMain.setAccountBalance(transferTransaction.getNewBalance());
+
+                double amount = transferTransaction.getPreviousBalance() - transferTransaction.getNewBalance();
+                chequingLoginMain.setAccountBalance(chequingLoginMain.getAccountBalance() + amount);
+
+                QMessageBox::information(
+                            this,
+                            tr("Transaction"),
+                            tr("Transaction Completed"));
+            }
+        }
+        else
+        {
+
+            QMessageBox::information(
+                        this,
+                        tr("Transaction"),
+                        tr("Transaction Incompleted. Insufficient funds"));
+        }
     }
-    /*else if( account.balance < ui->Amount_lineEdit->Text())
-            QMessageBox::critical(
-            this,
-            tr("Transaction"),
-            tr("Insufficient balance") );
-    */
+
     else {
         QMessageBox::critical(
-            this,
-            tr("Error"),
-            tr("AMOUNT field is not filled."));
+                    this,
+                    tr("Error"),
+                    tr("AMOUNT field is not filled."));
     }
     ui->Amount_lineEdit_3->clear();
 }
 
-
 void ClientApp::on_Signup_pushButton_clicked()  //Create new user
 {
     if (ui->FirstName_lineEdit->text() != "" &&
-        ui->LastName_lineEdit->text() != "" &&
-        ui->UserName_lineEdit->text() != "" &&
-        ui->NewPassword_lineEdit->text() != "" &&
-        ui->ConfirmPassword_lineEdit->text() != "" &&
-        ui->Email_lineEdit->text() != "" &&
-        ui->Street_lineEdit->text() != "" &&
-        ui->City_lineEdit->text() != "" &&
-        ui->Province_lineEdit->text() != "" &&
-        ui->PostalCode_lineEdit->text() != "" &&
-        ui->Phone_lineEdit->text() != "")
+            ui->LastName_lineEdit->text() != "" &&
+            ui->UserName_lineEdit->text() != "" &&
+            ui->NewPassword_lineEdit->text() != "" &&
+            ui->ConfirmPassword_lineEdit->text() != "" &&
+            ui->Email_lineEdit->text() != "" &&
+            ui->Street_lineEdit->text() != "" &&
+            ui->City_lineEdit->text() != "" &&
+            ui->Province_lineEdit->text() != "" &&
+            ui->PostalCode_lineEdit->text() != "" &&
+            ui->Phone_lineEdit->text() != "")
     {
-        QString firstName = ui->FirstName_lineEdit->text();
-        QString lastName = ui->LastName_lineEdit->text();
-        QString userName = ui->UserName_lineEdit->text();
-        QString newPassword = ui->NewPassword_lineEdit->text();
-        QString confirmPassword = ui->ConfirmPassword_lineEdit->text();
-        QString email = ui->Email_lineEdit->text();
-        QString street = ui->Street_lineEdit->text();
-        QString city = ui->City_lineEdit->text();
-        QString province = ui->Province_lineEdit->text();
-        QString postalCode = ui->PostalCode_lineEdit->text();
-        QString phone = ui->Phone_lineEdit->text();
+
+        char firstName[45] = {};
+        char lastName[45] = {};
+        char email[45] = {};
+        char phoneNumber[45] = {};
+        char street[45] = {};
+        char city[45] = {};
+        char province[45] = {};
+        char zipcode[6] = {};
+
+        char userName[45] = {};
+        char password[45] = {};
+
+        int accountID = 0;
+
+        strcpy(firstName,ui->FirstName_lineEdit->text().toStdString().c_str());
+        strcpy(lastName,ui->LastName_lineEdit->text().toStdString().c_str());
+        strcpy(email,ui->Email_lineEdit->text().toStdString().c_str());
+        strcpy(phoneNumber,ui->Phone_lineEdit->text().toStdString().c_str());
+        strcpy(street,ui->Street_lineEdit->text().toStdString().c_str());
+        strcpy(city,ui->City_lineEdit->text().toStdString().c_str());
+        strcpy(province,ui->Province_lineEdit->text().toStdString().c_str());
+        strcpy(zipcode,ui->PostalCode_lineEdit->text().toStdString().c_str());
+
+        strcpy(userName,ui->UserName_lineEdit->text().toStdString().c_str());
+        strcpy(password,ui->ConfirmPassword_lineEdit->text().toStdString().c_str());
 
         //Call the constructor CreateAccount
+        CreateAccount acc(firstName, lastName, email, phoneNumber, street, city, province, zipcode, accountID);
+        Login loginSetup(userName, password);
 
-        QMessageBox::information(
-            this,
-            tr("Sign In"),
-            tr("Done."));
+        int accSize = 344;
+        int loginSize = sizeof(loginSetup);
+        Packet loginPacket(&acc, accSize, &loginSetup, loginSize, 5);
+        int totalSize = 0;
+        char* txBuffer= new char[1000];
+        txBuffer = loginPacket.serialize(totalSize);
+
+
+
+
+
+        socket->write(txBuffer, totalSize);    //send
+        socket->flush();
+
+        //recieve data from server
+
+        // Read Buffer Data
+        socket->waitForReadyRead();
+        char* rxBuffer = new char[500];
+
+
+        int num = socket->read(rxBuffer, 500);
+
+        int sizeLoginRecv = sizeof(AccountInformation) + 8;
+        char rxBufferChequingLogin[1000] = {};
+        char rxBufferSavingLogin[1000] = {};
+
+
+        memcpy(rxBufferChequingLogin, rxBuffer, sizeLoginRecv + HeadSize);
+
+        Packet checkStatus(rxBufferChequingLogin);
+
+        int status = checkStatus.getStatus();   //verify the return message type (success/fail)
+
+        if (status == 1) {
+
+            memcpy(rxBufferSavingLogin, rxBuffer, HeadSize);
+            memcpy(rxBufferSavingLogin + HeadSize, rxBuffer + HeadSize + sizeLoginRecv, sizeLoginRecv);
+
+            AccountInformation chequingLogin(rxBufferChequingLogin);
+            AccountInformation savingsLogin(rxBufferSavingLogin);
+
+            memcpy(&chequingLoginMain, &chequingLogin, sizeof(chequingLogin));
+            memcpy(&savingsLoginMain, &savingsLogin, sizeof(savingsLogin));
+
+
+
+
+            /*               //ui->stackedWidget->setCurrentIndex(8);
+               double balance = chequingLoginMain.getAccountBalance();
+               QString balancestr = QString::number(balance);
+               ui->ChequingBalance_label->setText(balancestr);
+  */             QMessageBox::information(
+                        this,
+                        tr("Sign In"),
+                        tr("Account creation is completed."));
+            ui->stackedWidget->setCurrentIndex(3);
+        }
+        else
+        {
+            QMessageBox::warning(this, "Sign up", "Create account is unsuccessful.");
+        }
+
+
     }
     else
     {
         QMessageBox::critical(
-            this,
-            tr("Error"),
-            tr("All fields is not filled."));
+                    this,
+                    tr("Error"),
+                    tr("All fields are not filled."));
     }
+
+
+}
+
+void ClientApp::on_Logout_pushButton_8_clicked()
+{
+    int logoffSize = sizeof(chequingLoginMain);
+
+    Packet logoffPacket(&chequingLoginMain, logoffSize, 8, 1);
+
+    int totalSize = 0;
+    char* rxBuffer = new char[500];
+    char* txBuffer = new char[500];
+
+    txBuffer = logoffPacket.serialize(totalSize);
+
+    socket->write(txBuffer, totalSize);    //send
+    socket->flush();
+
+    socket->waitForReadyRead();
+    int num = socket->read(rxBuffer, 500);  //recv
+
+    Packet checkStatus(rxBuffer);
+
+    int status = checkStatus.getStatus();
+
+    if (status == 1) {
+
+       ui->stackedWidget->setCurrentIndex(0);
+    }
+    else
+    {
+        qDebug("Logoff unsuccesful, please try again");
+    }
+
+}
+
+void ClientApp::on_BackToMenu_pushButton_7_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+}
+
+void ClientApp::on_ViewBalance_pushButton_clicked()
+{
+    ui->ChequingBalance_label->setText(QString::number(chequingLoginMain.getAccountBalance()));
+    ui->SavingBalance_label->setText(QString::number(savingsLoginMain.getAccountBalance()));
+
+    ui->stackedWidget->setCurrentIndex(10);
 }
 
