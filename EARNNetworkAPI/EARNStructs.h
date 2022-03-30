@@ -4,16 +4,17 @@ namespace EarnStructs  {
 	//Macros for EarnDB objects (length of strings...
 	
 	//Length of varchars, so we don't overwrite in database
-	const int VARCHARLEN = 45;
+	const int VARCHARLEN = 46;
 	
 	//Length of zip codes, since they are always the same
-	const int ZIPLEN = 6;
-
-	//Enummeration for different types of Objects
+	const int ZIPLEN = 7;
 
 	//CREATEACCOUNT is to know we sending 2 structs
 	//STARTUPACCOUNTINFO = server response after login so client has their savings and chequings account   *we not using this anymore, this is not ACCOUNT
 	enum ObjectType { OBJECTNULL, CLIENT, CREDENTIALS, ACCOUNT, TRANSACTION, CREATEACCOUNT, STARTUPACCOUNTINFO, FORGETPASSWORD, LOGOFF, BIGFILETRANSFER, SHUTDOWN };
+
+	//Converts enum to string depending on type to assist logging
+	const std::string EnumToString(ObjectType inputType);
 
 	//Structure for Client object's info, to ease serialization
 	struct ClientInfo {
@@ -38,6 +39,9 @@ namespace EarnStructs  {
 	//Enummeration for Account types
 	enum AccountType { ACCOUNTNULL, CHEQUINGS, SAVINGS };
 
+	//Converts enum to string depending on type
+	const std::string EnumToString(AccountType inputType);
+  
 	//Structure for Account object's info, to ease serialization
 	struct AccountInfo {
 		int clientID;
@@ -47,6 +51,9 @@ namespace EarnStructs  {
 
 	//Enummeration for transaction types
 	enum TransactionType { TRANSACTIONNULL, ETRANSFER, CHEQUE, ACCOUNTTRANSFER };
+
+	//Converts enum to string depending on type
+	const std::string EnumToString(TransactionType inputType);
 
 	//Structure for Transaction object's info, to ease serialization
 	struct TransactionInfo {
