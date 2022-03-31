@@ -364,7 +364,7 @@ int main(void) {
 
 				char BFTBuffer[BFT_SIZE];
 
-				FILE* fp = fopen("Statement.jpeg", "rb");
+				FILE* fp = fopen("EARNBank_Statement.jpg", "rb");
 
 				int len;
 				char buf[3] = {};
