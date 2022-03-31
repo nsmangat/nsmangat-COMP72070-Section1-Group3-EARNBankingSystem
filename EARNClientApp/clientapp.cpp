@@ -454,8 +454,8 @@ void ClientApp::on_ImageDisplayPushButton_clicked()
     char BFTBuffer[BFT_SIZE] = {};
 
     //char fName[500] = "C:/Users/eazaz/Downloads/nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-MergingFInalRelease/nsmangat-COMP72070-Section1-Group3-EARNBankingSystem-MergingFInalRelease/EARNClientApp/recvImage.JPG";
-    char fName[500] = "../EARNClientApp/recvImage.JPG";
-    FILE* fp = fopen(fName, "wb");
+    QString fName = QDir::currentPath() + "/../recvImage.jpg";
+    FILE* fp = fopen(fName.toStdString().c_str(), "wb");
     bool receivingBytesLoop = true;
     char ack[3] = "ok";
 
@@ -488,7 +488,6 @@ void ClientApp::on_ImageDisplayPushButton_clicked()
 
     QPixmap pic(fName);
     ui->labelImage->setPixmap(pic);
-
 }
 
 
