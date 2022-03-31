@@ -1,17 +1,17 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Packet.h"
-
+#include <cstring>
 #include <ctime>
 
 
 Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 
-	if (Data) {
+//	if (Data) {
 
-		delete Data;
-	}
-	Data = new char[size];
+//		delete Data;
+//	}
+    Data = new char[size];
 
 	memcpy(Data, data, size);
 
@@ -28,10 +28,10 @@ Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 //for parsing 2 structs ie for CreateAccount need CreateAccount and Login object 
 Packet::Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType) {
 
-	if (Data) {
+//	if (Data) {
 
-		delete Data;
-	}
+//		delete Data;
+//	}
 	Data = new char[size1 + size2];
 
 	memcpy(Data, data1, size1);
@@ -77,10 +77,10 @@ Packet::Packet(int OpType, int AccType) {								//for client side for a request
 
 Packet::Packet(char* src, int objType) {					//BFT
 
-	if (Data) {
+//	if (Data) {
 
-		delete Data;
-	}
+//		delete Data;
+//	}
 	Data = new char[BFT_SIZE];
 	
 	memcpy(Data, src, BFT_SIZE);
@@ -98,10 +98,10 @@ Packet::Packet(char* src, int objType) {					//BFT
 
 void Packet::setDataBFT(char* BFTBuffer) {
 
-	if (Data) {
+//	if (Data) {
 
-		delete Data;
-	}
+//		delete Data;
+//	}
 	Data = new char[BFT_SIZE];
 
 	memcpy(Data, BFTBuffer, BFT_SIZE);
@@ -118,10 +118,10 @@ void Packet::setTime() {
 
 char* Packet::serialize(int& size) {
 
-	if (TxBuffer) {
+//	if (TxBuffer) {
 
-		delete TxBuffer;
-	}
+//		delete TxBuffer;
+//	}
 
 	size = sizeof(Header) + HEAD.dataSize + sizeof(int);
 
@@ -157,9 +157,9 @@ void Packet::display() {
 	cout << "Tail:" << Tail << endl;
 	cout << "Data:" << &Data << endl;
 }
+//get operations for header
 
-int Packet::getObjectType() {									//get operations for header 
-
+int Packet::getObjectType() {
 	return HEAD.objectType;
 }
 

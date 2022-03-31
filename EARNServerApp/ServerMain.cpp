@@ -137,7 +137,7 @@ int main(void) {
 			memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);	//get login info
 
 			CreateAccount RxClient(rxBuffer1);
-			Login RxLogin(rxBuffer2);
+			Login RxLogin(rxBuffer2,12);
 
 			RxClient.display();
 			RxLogin.display();
@@ -195,41 +195,58 @@ int main(void) {
 		}
 		case CREDENTIALS:		//Validate username and password
 		{
-			Login userLogin(rxBuffer);
+			Login userLogin(rxBuffer,12);
 
 			userLogin.display();
 
 
 
 			//database authenticates 
-			DBClient currentClient = serverDBValidator.clientLogin(userLogin.getLoginStruct());
-			vector<DBAccount> clientAccounts;
+			DBClient currentClient;
+			DBResponses clientResponse = serverDBValidator.clientLogin(userLogin.getLoginStruct(), currentClient);
 
-			int numOfAccounts;
-			DBResponses responseVal = serverDBReader.getObjectsInfo(currentClient.getObjectID(), numOfAccounts, clientAccounts);
+			if (DBSuccess == clientResponse) {
+				vector<DBAccount> clientAccounts;
 
-			AccountInformation chequingLogin(currentClient.getObjectID(), clientAccounts[0].getAccountType(), clientAccounts[0].getAccountBalance());
-			AccountInformation savingsLogin(currentClient.getObjectID(), clientAccounts[1].getAccountType(), clientAccounts[1].getAccountBalance());
+				int numOfAccounts;
+				DBResponses responseVal = serverDBReader.getObjectsInfo(currentClient.getObjectID(), numOfAccounts, clientAccounts);
 
-			int size3 = sizeof(chequingLogin);
+				AccountInformation chequingLogin(currentClient.getObjectID(), clientAccounts[0].getAccountType(), clientAccounts[0].getAccountBalance());
+				AccountInformation savingsLogin(currentClient.getObjectID(), clientAccounts[1].getAccountType(), clientAccounts[1].getAccountBalance());
 
-			Packet LoginSuccess(&chequingLogin, size3, &savingsLogin, size3, 6);
+				int size3 = sizeof(chequingLogin);
 
-			if (DBSuccess == responseVal) {
-				LoginSuccess.setStatus(1);
+				Packet LoginSuccess(&chequingLogin, size3, &savingsLogin, size3, 6);
+
+				if (DBSuccess == responseVal) {
+					LoginSuccess.setStatus(1);
+				}
+				else {
+					LoginSuccess.setStatus(0);
+				}
+
+				int totalSizeLogin = 0;
+				char* txBufferLogin = LoginSuccess.serialize(totalSizeLogin);
+
+				EarnLogging::ConnectionLog sendLog(&LoginSuccess, SERVERSYSTEM, SEND, "sending response for login");
+				testLogger.logData(&sendLog);
+
+				send(ConnectionSocket, txBufferLogin, totalSizeLogin, 0);
+
 			}
 			else {
-				LoginSuccess.setStatus(0);
+
+				Packet LoginFail(2, 0);
+				LoginFail.setStatus(0);
+
+				int totalSizeLogin = 0;
+				char* txBufferLogin = LoginFail.serialize(totalSizeLogin);
+
+				EarnLogging::ConnectionLog sendLog(&LoginFail, SERVERSYSTEM, SEND, "sending error response for login");
+				testLogger.logData(&sendLog);
+
+				send(ConnectionSocket, txBufferLogin, totalSizeLogin, 0);
 			}
-
-			int totalSizeLogin = 0;
-			char* txBufferLogin = LoginSuccess.serialize(totalSizeLogin);
-
-			EarnLogging::ConnectionLog sendLog(&LoginSuccess, SERVERSYSTEM, SEND, "sending response for login");
-			testLogger.logData(&sendLog);
-
-			send(ConnectionSocket, txBufferLogin, totalSizeLogin, 0);
-
 			break;
 		}
 
@@ -385,7 +402,7 @@ int main(void) {
 		//}
 		case FORGETPASSWORD:		//Validate email for reset password link
 		{
-			Login testLogin(rxBuffer);
+			Login testLogin(rxBuffer,12);
 
 			testLogin.display();
 

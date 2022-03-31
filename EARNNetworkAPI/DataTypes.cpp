@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iomanip>
 #include <ctime>
+#include <cstring>
 #define START_BASE
 
 
@@ -56,24 +57,25 @@ CreateAccount::CreateAccount(char* firstName, char* lastName, char* email, char*
 CreateAccount::CreateAccount(char* src) {
 
 	int count = 0;
-	int startBase = 16;
+	int startBase = 12;
 
 	memcpy(&accountID, src + HeadSize +  8, sizeof(int));
-	memcpy(user.firstName, src + HeadSize + startBase, sizeof(user.firstName));
-	count++;
-	memcpy(user.lastName, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-	count++;
-	memcpy(user.email, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-	count++;
-	memcpy(user.phoneNumber, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-	count++;
-	memcpy(user.street, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-	count++;
-	memcpy(user.city, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-	count++;
-	memcpy(user.province, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-	count++;
-	memcpy(user.zipcode, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.zipcode));
+    memcpy(&user, src + HeadSize + startBase, sizeof(user));
+//	memcpy(user.firstName, src + HeadSize + startBase, sizeof(user.firstName));
+//	count++;
+//	memcpy(user.lastName, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+//	count++;
+//	memcpy(user.email, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+//	count++;
+//	memcpy(user.phoneNumber, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+//	count++;
+//	memcpy(user.street, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+//	count++;
+//	memcpy(user.city, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+//	count++;
+//	memcpy(user.province, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+//	count++;
+//	memcpy(user.zipcode, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.zipcode));
 
 }
 
@@ -198,10 +200,10 @@ Login::Login(char* Username, char* password) {
 }
 
 
-Login::Login(char* src) {
+Login::Login(char* src, int startBase) {
 
 	//int count = 0;
-	int startBase = 16;
+	
 
 	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
 
@@ -292,7 +294,7 @@ Transaction::Transaction(int accID, TransactionType type, double pBalance, doubl
 Transaction::Transaction(char* src) {
 
 	int count = 0;
-	int startBase = 16;
+	int startBase = 12;
 
 	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
 	memcpy(&TInfo, src + HeadSize + startBase, sizeof(TInfo));

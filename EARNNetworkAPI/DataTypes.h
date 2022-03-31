@@ -83,7 +83,7 @@ std::string getCurrentTime(DateFormat logDateFormat);
  public:
 
 	 Login(char* Username, char* password); 
-	 Login(char* src);
+	 Login(char* src, int startBase);
 
 	 int getClientID(); 
 	 void setClientID(int clientID); 

@@ -4,6 +4,7 @@
 //#include <filesystem>
 //#include <ctime>
 //#include <iomanip>
+#include <cstring>
 
 #include "EARNStructs.h"
 #include "EARNLogger.h"
