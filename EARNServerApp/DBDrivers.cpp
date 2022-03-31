@@ -626,7 +626,7 @@ namespace EarnDBDrivers {
 					std::cout << "Client ID: " << resultRow[1] << std::endl;
 
 					EarnStructs::AccountType getType = ((EarnStructs::AccountType)(int)resultRow[2]);
-					std::cout << "Account Type: " << typeid(getType).name() << std::endl;
+					std::cout << "Account Type: " << EnumToString(getType) << std::endl;
 					std::cout << "Account Balance: $" << resultRow[3] << std::endl;
 
 					//now set the info into referenced account

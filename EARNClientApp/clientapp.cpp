@@ -34,7 +34,7 @@ ClientApp::~ClientApp()
     delete this->socket;
     delete ui;
 }
-void ClientApp::connectServer()
+QTcpSocket* ClientApp::connectServer()
 {
     socket = new QTcpSocket();
 
@@ -49,9 +49,11 @@ void ClientApp::connectServer()
     if (!socket->waitForConnected(27000))
     {
         qDebug() << "Connection failed!";
-        return;
+        return NULL;
     }
     qDebug() << "Connect successfully!";
+
+    return socket;
 }
 void ClientApp::socket_Read_Data()
 {
@@ -610,7 +612,7 @@ void ClientApp::on_Send_pushButton_clicked()
         if (ui->From_comboBox->currentText() == chequingType)
         {
             newBalance = chequingLoginMain.getAccountBalance() - amount;
-            Transaction sendEtransfer(chequingLoginMain.getClientID(), ETRANSFER, chequingLoginMain.getAccountBalance(), newBalance, sendAcc);
+            Transaction sendEtransfer(chequingLoginMain.getObjectID(), ETRANSFER, chequingLoginMain.getAccountBalance(), newBalance, sendAcc);
             sendEtransferTransaction = sendEtransfer;
             choice = 1;
             etransferSize = sizeof(sendEtransferTransaction);
@@ -624,7 +626,7 @@ void ClientApp::on_Send_pushButton_clicked()
         else
         {
             newBalance = savingsLoginMain.getAccountBalance() - amount;
-            Transaction sendEtransfer(savingsLoginMain.getClientID(), ETRANSFER, savingsLoginMain.getAccountBalance(), newBalance, sendAcc);
+            Transaction sendEtransfer(savingsLoginMain.getObjectID(), ETRANSFER, savingsLoginMain.getAccountBalance(), newBalance, sendAcc);
             sendEtransferTransaction = sendEtransfer;
             choice = 2;
             etransferSize = sizeof(sendEtransferTransaction);
@@ -743,7 +745,7 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
 
             double nBalance = chequingLoginMain.getAccountBalance() + amount;
 
-            Transaction send(chequingLoginMain.getClientID(), CHEQUE, chequingLoginMain.getAccountBalance(), nBalance, 0);		//secAcc set to zero because no acc needed
+            Transaction send(chequingLoginMain.getObjectID(), CHEQUE, chequingLoginMain.getAccountBalance(), nBalance, 0);		//secAcc set to zero because no acc needed
             depositChequeTransaction = send;
             choice = 1;
             depositChequeSize = sizeof(depositChequeTransaction);
@@ -754,7 +756,7 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
             //depositChequeTransaction = depositCheque(savingsLoginMain);
             double nBalance = savingsLoginMain.getAccountBalance() + amount;
 
-            Transaction send(savingsLoginMain.getClientID(), CHEQUE, savingsLoginMain.getAccountBalance(), nBalance, 0);		//secAcc set to zero because no acc needed
+            Transaction send(savingsLoginMain.getObjectID(), CHEQUE, savingsLoginMain.getAccountBalance(), nBalance, 0);		//secAcc set to zero because no acc needed
             depositChequeTransaction = send;
             choice = 2;
             depositChequeSize = sizeof(depositChequeTransaction);
@@ -1004,13 +1006,13 @@ void ClientApp::on_Send_pushButton_2_clicked()             //Send to my accs
         if (choice == 1)
         {
             double newBalance = chequingLoginMain.getAccountBalance() - amount;
-            Transaction transferBetween(chequingLoginMain.getClientID(), ACCOUNTTRANSFER, chequingLoginMain.getAccountBalance(), newBalance, savingsLoginMain.getClientID());
+            Transaction transferBetween(chequingLoginMain.getObjectID(), ACCOUNTTRANSFER, chequingLoginMain.getAccountBalance(), newBalance, savingsLoginMain.getObjectID());
             transferTransaction = transferBetween;
         }
         else
         {
             double newBalance = savingsLoginMain.getAccountBalance() - amount;
-            Transaction transferBetween(savingsLoginMain.getClientID(), ACCOUNTTRANSFER, savingsLoginMain.getAccountBalance(), newBalance, chequingLoginMain.getClientID());
+            Transaction transferBetween(savingsLoginMain.getObjectID(), ACCOUNTTRANSFER, savingsLoginMain.getAccountBalance(), newBalance, chequingLoginMain.getObjectID());
             transferTransaction = transferBetween;
         }
 

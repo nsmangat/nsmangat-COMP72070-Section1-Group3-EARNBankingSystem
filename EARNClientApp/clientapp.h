@@ -38,7 +38,7 @@ class ClientApp : public QWidget
 
 public:
     explicit ClientApp(QWidget* parent = 0);
-    void connectServer();
+    QTcpSocket* connectServer();
     ~ClientApp();
 private:
     Ui::ClientApp *ui;
@@ -49,7 +49,7 @@ private slots:
     void display_Balance();
     void socket_Read_Data();
 
-   void on_BackToMenu_pushButton_6_clicked();
+    void on_BackToMenu_pushButton_6_clicked();
 
     void on_Login_pushButton_clicked();
 

@@ -29,10 +29,12 @@ std::string getCurrentTime(DateFormat logDateFormat);
 class DataTypes {
 
 protected:
-	int accountID;
+	int objectID;
 
 public:
 	virtual void display() = 0;
+
+	int getObjectID();
 };
 
 class CreateAccount : public DataTypes {		//size 290
@@ -146,7 +148,7 @@ class AccountInformation : public DataTypes {
 
 public:
 
-	AccountInformation(int id, AccountType type, double balance);
+	AccountInformation(int accountID, int clientID, AccountType type, double balance);
 	AccountInformation(char* src);
 	AccountInformation();
 
