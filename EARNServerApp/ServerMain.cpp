@@ -68,7 +68,7 @@ int main(void) {
 		WSACleanup();
 		return 0;
 	}
-	
+
 
 	bool killSwitch = true;
 
@@ -136,8 +136,8 @@ int main(void) {
 			memcpy(rxBuffer2, rxBuffer, HeadSize);
 			memcpy(rxBuffer2 + HeadSize, rxBuffer + HeadSize + size1, size2);	//get login info
 
-			CreateAccount RxClient(rxBuffer1);
-			Login RxLogin(rxBuffer2,12);
+			CreateAccount RxClient(rxBuffer1, 12);
+			Login RxLogin(rxBuffer2, 4);
 
 			RxClient.display();
 			RxLogin.display();
@@ -145,7 +145,7 @@ int main(void) {
 			//database authenticates 
 			DBClient newClient(RxClient.getClientInfoStruct());
 			DBResponses responseVal = serverDBWriter.addObject(newClient);
-			
+
 			RxLogin.setClientID(newClient.getObjectID());
 
 			//unique enough for program to make user numbers...
@@ -154,7 +154,7 @@ int main(void) {
 			hashString += newClient.getLastName();
 			hashString += to_string(newClient.getObjectID());
 
-			size_t newUserNum = hash<string> {} (hashString);
+			size_t newUserNum = hash<string>{} (hashString);
 
 			RxLogin.setUserNumber((unsigned int)newUserNum);
 
@@ -175,7 +175,7 @@ int main(void) {
 
 			int size3 = sizeof(newChequing);
 			Packet startup(&newChequing, size3, &newSavings, size3, 6);
-			
+
 			if (DBSuccess == responseVal) {
 				startup.setStatus(1);
 			}
@@ -195,7 +195,7 @@ int main(void) {
 		}
 		case CREDENTIALS:		//Validate username and password
 		{
-			Login userLogin(rxBuffer,12);
+			Login userLogin(rxBuffer, 12);
 
 			userLogin.display();
 
@@ -294,7 +294,7 @@ int main(void) {
 		}
 		case TRANSACTION:		//Can be any of the transaction types
 		{
-			Transaction TransactionRecv(rxBuffer);
+			Transaction TransactionRecv(rxBuffer, 16);
 
 			TransactionRecv.display();
 			int currentTransaction = TransactionRecv.getTransactionType();
@@ -309,7 +309,7 @@ int main(void) {
 
 			currentAccount.setBalance(TransactionRecv.getNewBalance());
 
-			if (ACCOUNTTRANSFER == (TransactionType)TransactionRecv.getTransactionType()){
+			if (ACCOUNTTRANSFER == (TransactionType)TransactionRecv.getTransactionType()) {
 				DBAccount otherAccount;
 				serverDBReader.getObjectInfo(TransactionRecv.getSecondaryAccount(), otherAccount);
 
@@ -323,7 +323,7 @@ int main(void) {
 				otherTransactionInfo.newBalance = newBalance;
 				otherTransactionInfo.previousBalance = previousBalance;
 				otherTransactionInfo.secondaryAccount = currentAccount.getObjectID();
-				strncpy(otherTransactionInfo.transactionTime,newTransaction.getTransactionTime().c_str(),VARCHARLEN);
+				strncpy(otherTransactionInfo.transactionTime, newTransaction.getTransactionTime().c_str(), VARCHARLEN);
 				otherTransactionInfo.transactionType = ACCOUNTTRANSFER;
 
 				DBTransaction otherTransaction(otherTransactionInfo);
@@ -388,7 +388,7 @@ int main(void) {
 
 			fclose(fp);
 
-			
+
 			//database stuff
 
 			break;
@@ -402,7 +402,7 @@ int main(void) {
 		//}
 		case FORGETPASSWORD:		//Validate email for reset password link
 		{
-			Login testLogin(rxBuffer,12);
+			Login testLogin(rxBuffer, 12);
 
 			testLogin.display();
 
@@ -421,7 +421,7 @@ int main(void) {
 
 			//database stuff
 
-			
+
 			break;
 		}
 		case LOGOFF:		//Logoff account

@@ -54,28 +54,28 @@ CreateAccount::CreateAccount(char* firstName, char* lastName, char* email, char*
 	this->accountID = accountID;
 }
 
-CreateAccount::CreateAccount(char* src) {
+CreateAccount::CreateAccount(char* src, int startBase) {
 
 	int count = 0;
-	int startBase = 12;
+	//int startBase = 12;
 
-	memcpy(&accountID, src + HeadSize +  8, sizeof(int));
-    memcpy(&user, src + HeadSize + startBase, sizeof(user));
-//	memcpy(user.firstName, src + HeadSize + startBase, sizeof(user.firstName));
-//	count++;
-//	memcpy(user.lastName, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-//	count++;
-//	memcpy(user.email, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-//	count++;
-//	memcpy(user.phoneNumber, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-//	count++;
-//	memcpy(user.street, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-//	count++;
-//	memcpy(user.city, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-//	count++;
-//	memcpy(user.province, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
-//	count++;
-//	memcpy(user.zipcode, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.zipcode));
+	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
+	memcpy(&user, src + HeadSize + startBase, sizeof(user));
+	//	memcpy(user.firstName, src + HeadSize + startBase, sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.lastName, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.email, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.phoneNumber, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.street, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.city, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.province, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.firstName));
+	//	count++;
+	//	memcpy(user.zipcode, src + HeadSize + startBase + (count * sizeof(user.firstName)), sizeof(user.zipcode));
 
 }
 
@@ -203,7 +203,7 @@ Login::Login(char* Username, char* password) {
 Login::Login(char* src, int startBase) {
 
 	//int count = 0;
-	
+
 
 	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
 
@@ -211,7 +211,7 @@ Login::Login(char* src, int startBase) {
 }
 
 int Login::getClientID() {
-	
+
 	return login.clientID;
 }
 
@@ -261,7 +261,7 @@ void Login::display() {
 
 	cout << "cientID: " << login.clientID << endl;
 	cout << "userName: " << login.username << endl;
-	cout << "usernumber: " << login.usernumber<< endl;
+	cout << "usernumber: " << login.usernumber << endl;
 	cout << "password: " << login.userPasswordHash << endl;
 }
 
@@ -291,10 +291,10 @@ Transaction::Transaction(int accID, TransactionType type, double pBalance, doubl
 
 }
 
-Transaction::Transaction(char* src) {
+Transaction::Transaction(char* src, int startBase) {
 
 	int count = 0;
-	int startBase = 12;
+	//int startBase = 12;
 
 	memcpy(&accountID, src + HeadSize + 8, sizeof(int));
 	memcpy(&TInfo, src + HeadSize + startBase, sizeof(TInfo));
@@ -343,7 +343,7 @@ char* Transaction::getTransactionTime() {
 }
 
 void Transaction::setTransactionTime() {
-	
+
 	strcpy(TInfo.transactionTime, getCurrentTime(YMD_HMS).c_str());
 }
 
@@ -460,11 +460,11 @@ void AccountInformation::display() {
 	cout << "Client ID: " << accInfo.clientID << endl;
 	cout << "AccountType: " << accInfo.accountType << endl;
 	cout << "Balance: $" << accInfo.accountBalance << endl;
-	
+
 }
 
 //get struct
 AccountInfo AccountInformation::getAccountInfoStruct() {
-	
+
 	return accInfo;
 }
