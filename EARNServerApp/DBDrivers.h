@@ -161,13 +161,13 @@ namespace EarnDBDrivers {
 			std::string inputPassword);
 
 		//Client login function through username & pass (use DBResponses:: for returns)
-		EarnDBObjects::DBClient clientLogin(std::string username, std::string passwordHash);
+		DBResponses clientLogin(std::string username, std::string passwordHash, EarnDBObjects::DBClient& returnClient);
 
 		//Client login function through usernumber & pass (use DBResponses:: for returns)
-		EarnDBObjects::DBClient clientLogin(unsigned int usernumber, std::string passwordHash);
+		DBResponses clientLogin(unsigned int usernumber, std::string passwordHash, EarnDBObjects::DBClient& returnClient);
 
 		//Client login function using CredentialInfo struct (use DBResponses:: for returns)
-		EarnDBObjects::DBClient clientLogin(EarnStructs::CredentialInfo inputCredentials);
+		DBResponses clientLogin(EarnStructs::CredentialInfo inputCredentials, EarnDBObjects::DBClient& returnClient);
 	};
 
 	////DB Writer class (used in adding, modifying, and deleting info)

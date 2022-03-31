@@ -13,6 +13,1602 @@
   <property name="windowTitle">
    <string>ClientApp</string>
   </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="styleSheet">
+      <string notr="true">color:white;</string>
+     </property>
+     <property name="midLineWidth">
+      <number>-5</number>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page2_Login">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="Login_label">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>40</y>
+         <width>101</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Login</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="CarNum_label">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>160</y>
+         <width>281</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Card Number/User Name:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="PassWord_label">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>280</y>
+         <width>151</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Password:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Login_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>400</y>
+         <width>121</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Login</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="CardNum_lineEdit">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>200</y>
+         <width>401</width>
+         <height>51</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="Password_lineEdit">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>310</y>
+         <width>401</width>
+         <height>51</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Signin_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>290</x>
+         <y>500</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Don't have an account?</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ResetPassword_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>280</y>
+         <width>131</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Forgot password?</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="Reset_page">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="Login_label_2">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>60</y>
+         <width>271</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Reset Password</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>170</y>
+         <width>401</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="email_label">
+          <property name="text">
+           <string>Email:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="email_lineEdit"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="SendResetLink_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>400</y>
+         <width>201</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Send reset link</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToLogin_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>30</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Login</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page3_Signup">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="Signup_label">
+       <property name="geometry">
+        <rect>
+         <x>330</x>
+         <y>40</y>
+         <width>141</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Sign up</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToLogin_pushButton_2">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>30</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Login</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>120</y>
+         <width>551</width>
+         <height>380</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="3" column="0">
+         <widget class="QLabel" name="NewPassword_label">
+          <property name="text">
+           <string>Password:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="Phone_label">
+          <property name="text">
+           <string>Phone Number:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="PostalCode_label">
+          <property name="text">
+           <string>Postal Code:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="Email_label_2">
+          <property name="text">
+           <string>Email:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="City_label">
+          <property name="text">
+           <string>City:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="LastName_label">
+          <property name="text">
+           <string>Last Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="Street_label">
+          <property name="text">
+           <string>Street:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="UserName_label">
+          <property name="text">
+           <string>User Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="FirstName_label">
+          <property name="text">
+           <string>First Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="ConfirmPassword_label">
+          <property name="text">
+           <string>Confirm Password:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="Province_label">
+          <property name="text">
+           <string>Province:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="FirstName_lineEdit">
+          <property name="styleSheet">
+           <string notr="true">border-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 178, 102, 255), stop:0.55 rgba(235, 148, 61, 255), stop:0.98 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 0, 0));</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="LastName_lineEdit"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLineEdit" name="UserName_lineEdit"/>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLineEdit" name="NewPassword_lineEdit"/>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLineEdit" name="ConfirmPassword_lineEdit"/>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLineEdit" name="Email_lineEdit"/>
+        </item>
+        <item row="6" column="2">
+         <widget class="QLineEdit" name="Phone_lineEdit"/>
+        </item>
+        <item row="7" column="2">
+         <widget class="QLineEdit" name="Street_lineEdit"/>
+        </item>
+        <item row="8" column="2">
+         <widget class="QLineEdit" name="City_lineEdit"/>
+        </item>
+        <item row="9" column="2">
+         <widget class="QLineEdit" name="Province_lineEdit"/>
+        </item>
+        <item row="10" column="2">
+         <widget class="QLineEdit" name="PostalCode_lineEdit"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="Signup_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>520</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Sign up</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page4_Menu">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QPushButton" name="ViewStatement_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>170</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View Statements</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="E_Transfer_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>170</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>E-transfers</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="AddAcc_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>330</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add account</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Deposit_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>250</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Deposit</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ViewAcc_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>330</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>My account</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Menu_label">
+       <property name="geometry">
+        <rect>
+         <x>350</x>
+         <y>70</y>
+         <width>101</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Menu</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>670</x>
+         <y>30</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Transfer_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>250</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Transfer</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ViewBalance_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>420</y>
+         <width>171</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>View Balance</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page5_Statments">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="ViewStatement_label">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>40</y>
+         <width>351</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Account's Activities</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_2">
+       <property name="geometry">
+        <rect>
+         <x>680</x>
+         <y>30</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToMenu_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>30</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelImage">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>170</y>
+         <width>491</width>
+         <height>341</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::WinPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ImageDisplayPushButton">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>118</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Display Statments</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page6_ETransfer">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="Transfer_label">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>60</y>
+         <width>181</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>E-transfer</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="From_label">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>140</y>
+         <width>63</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>FROM:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="To_label">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>250</y>
+         <width>63</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>TO:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Amount_label">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>360</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>AMOUNT:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Send_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>490</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToMenu_pushButton_2">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>30</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_3">
+       <property name="geometry">
+        <rect>
+         <x>670</x>
+         <y>30</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="From_comboBox">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>170</y>
+         <width>451</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Chequing Account</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Saving Account</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLineEdit" name="Amount_lineEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>390</y>
+         <width>451</width>
+         <height>51</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="To_lineEdit">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>280</y>
+         <width>451</width>
+         <height>51</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page7_Deposit">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="Deposit_label">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>50</y>
+         <width>141</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Deposit</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Frontpage_label">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>150</y>
+         <width>231</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Front page of the cheque:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="DepositComplete_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>650</x>
+         <y>490</y>
+         <width>91</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Done</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Backpage_label_2">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>260</y>
+         <width>201</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Back page of the cheque:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_4">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>40</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToMenu_pushButton_3">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>30</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="Amount_lineEdit_2">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>450</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Amount_label_3">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>450</y>
+         <width>71</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Amount:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="AccType_label">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>390</y>
+         <width>71</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Account:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="AccType_comboBox">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>400</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Chequing Account</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Saving Account</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="FrontpageImage_label">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>150</y>
+         <width>241</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+									border:bold 3px ;
+									border-color: rgb(255, 255, 255);
+									background-color: rgb(157, 157, 157);
+								</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="AddFrontpage_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>180</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+									color: rgb(0, 0, 0);
+									background-color: rgb(200, 200, 200);
+								</string>
+       </property>
+       <property name="text">
+        <string>Choose an image</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="BackpageImage_label">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>260</y>
+         <width>241</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+									border:bold 3px ;
+									border-color: rgb(255, 255, 255);
+									background-color: rgb(157, 157, 157);
+								</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="AddBackpage_pushButton">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>290</y>
+         <width>151</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+									color: rgb(0, 0, 0);
+									background-color: rgb(200, 200, 200);
+								</string>
+       </property>
+       <property name="text">
+        <string>Choose an image</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page8_AddAcc">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="AddAcc_label">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>70</y>
+         <width>331</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Add New Accounts</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="InvestingAcc_checkBox">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>190</y>
+         <width>191</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Investing Account</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_5">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>40</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToMenu_pushButton_4">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>30</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page9_MyAcc">
+      <property name="styleSheet">
+       <string notr="true">
+								background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QLabel" name="MyAcc_label">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>60</y>
+         <width>221</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>My Account</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_6">
+       <property name="geometry">
+        <rect>
+         <x>640</x>
+         <y>40</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToMenu_pushButton_5">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>40</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>160</y>
+         <width>521</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="5" column="1">
+         <widget class="QLabel" name="Address_label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="Name_label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Email:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLabel" name="PostalCode_label_2">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="Email_label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Address:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Phone Number:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Postal Code:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Full Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="PhoneNum_label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page10_Transfer">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(47, 47, 47)
+							</string>
+      </property>
+      <widget class="QPushButton" name="BackToMenu_pushButton_6">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>40</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_7">
+       <property name="geometry">
+        <rect>
+         <x>650</x>
+         <y>50</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Transfer_label_2">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>80</y>
+         <width>151</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Transfer</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="From_label_2">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>150</y>
+         <width>63</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>FROM:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="From_comboBox_2">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>180</y>
+         <width>451</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Chequing Account</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Saving Account</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="To_label_2">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>260</y>
+         <width>63</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>TO:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="To_comboBox">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>290</y>
+         <width>451</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Chequing Account</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Saving Account</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLineEdit" name="Amount_lineEdit_3">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>400</y>
+         <width>451</width>
+         <height>51</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Amount_label_2">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>370</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>AMOUNT:</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Send_pushButton_2">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>500</y>
+         <width>101</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="page11_ViewBalance">
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(47, 47, 47)</string>
+      </property>
+      <widget class="QLabel" name="CurrentBalance_label_2">
+       <property name="geometry">
+        <rect>
+         <x>260</x>
+         <y>80</y>
+         <width>281</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Current Balance</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="BackToMenu_pushButton_7">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>40</y>
+         <width>111</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Back to Menu</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Logout_pushButton_8">
+       <property name="geometry">
+        <rect>
+         <x>640</x>
+         <y>40</y>
+         <width>83</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Logout</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>170</y>
+         <width>501</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="1" column="1">
+         <widget class="QLabel" name="SavingBalance_label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="ChequingBalance_label">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Chequing:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Saving:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

@@ -9,7 +9,7 @@
 
 #define STRING_LENGTH 30
 const int HeadSize = 84;
-enum dataTypeChoice { CreateUserType, LoginType, DepositType, WithdrawType, TransferType, LogoffType};
+enum dataTypeChoice { CreateUserType, LoginType, DepositType, WithdrawType, TransferType, LogoffType };
 
 using namespace std;
 using namespace EarnStructs;
@@ -26,140 +26,142 @@ std::string getCurrentTime(DateFormat logDateFormat);
 //crc is after data
 //ie src + head size + data = 132+288 if create account, then crc right after ie starting at 422
 
- class DataTypes {
-	
- protected:
-	int accountID;
+class DataTypes {
 
- public:
-	 virtual void display() = 0;
- };
+protected:
+	int objectID;
 
- class CreateAccount: public DataTypes {		//size 290
+public:
+	virtual void display() = 0;
 
-	 EarnStructs::ClientInfo user;
-
- public:
-
-	 CreateAccount(char* firstName, char* lastName, char* email, char* phoneNumber, char* streetName, char* city, char* province, char* zipcode, int accountID);
-	 CreateAccount(char* src);
-
-	 void setFirstName(char* fName);
-	 char* getFirstName(); 
-
-	 void setLastName(char* lName); 
-	 char* getLastName();
-
-	 void setEmail(char* email); 
-	 char* getEmail(); 
-
-	 void setPhoneNumber(char* pNumber); 
-	 char* getPhoneNumber(); 
-
-	 void setStreetName(char* StName);
-	 char* getStreetName(); 
-
-	 void setCity(char* cName);
-	 char* getCity(); 
-
-	 void setProvince(char* province); 
-	 char* getProvince(); 
-
-	 void setZipcode(char* zipcode); 
-	 char* getZipcode(); 
-
-	 void setAccountID(int accountID);
-	 int getAccountID();
-
-	 void display();
-
-	 ClientInfo getClientInfoStruct();
+	int getObjectID();
 };
 
- class Login : public DataTypes {		//size 80
+class CreateAccount : public DataTypes {		//size 290
 
-	 CredentialInfo login;
-	 
- public:
+	EarnStructs::ClientInfo user;
 
-	 Login(char* Username, char* password); 
-	 Login(char* src);
+public:
 
-	 int getClientID(); 
-	 void setClientID(int clientID); 
+	CreateAccount(char* firstName, char* lastName, char* email, char* phoneNumber, char* streetName, char* city, char* province, char* zipcode, int accountID);
+	CreateAccount(char* src, int startBase);
 
-	 char* getUserName(); 
-	 void setUserName(char* userName); 
+	void setFirstName(char* fName);
+	char* getFirstName();
 
-	 int getUserNumber(); 
-	 void setUserNumber(int clientID); 
+	void setLastName(char* lName);
+	char* getLastName();
 
-	 char* getPassword(); 
-	 void setPassword(char* userName); 
+	void setEmail(char* email);
+	char* getEmail();
 
-	 void setAccountID(int accountID); 
+	void setPhoneNumber(char* pNumber);
+	char* getPhoneNumber();
 
-	 void display();
+	void setStreetName(char* StName);
+	char* getStreetName();
 
-	 CredentialInfo getLoginStruct();
- };
+	void setCity(char* cName);
+	char* getCity();
+
+	void setProvince(char* province);
+	char* getProvince();
+
+	void setZipcode(char* zipcode);
+	char* getZipcode();
+
+	void setAccountID(int accountID);
+	int getAccountID();
+
+	void display();
+
+	ClientInfo getClientInfoStruct();
+};
+
+class Login : public DataTypes {		//size 80
+
+	CredentialInfo login;
+
+public:
+
+	Login(char* Username, char* password);
+	Login(char* src, int startBase);
+
+	int getClientID();
+	void setClientID(int clientID);
+
+	char* getUserName();
+	void setUserName(char* userName);
+
+	int getUserNumber();
+	void setUserNumber(int clientID);
+
+	char* getPassword();
+	void setPassword(char* userName);
+
+	void setAccountID(int accountID);
+
+	void display();
+
+	CredentialInfo getLoginStruct();
+};
 
 
- class Transaction : public DataTypes {
+class Transaction : public DataTypes {
 
-	 TransactionInfo TInfo;
+	TransactionInfo TInfo;
 
- public:
+public:
 
-	 Transaction(int accID, TransactionType type, double pBalance, double nBalance, int secAcc);
-	 Transaction(char* src);
-	 Transaction();
+	Transaction(int accID, TransactionType type, double pBalance, double nBalance, int secAcc);
+	Transaction(char* src, int startBase);
+	Transaction();
 
-	 void display();
+	void display();
 
-	 int getAccID();
-	 void setAccID(int accID);
+	int getAccID();
+	void setAccID(int accID);
 
-	 int getTransactionType();
-	 void setTransactionType(TransactionType type);
+	int getTransactionType();
+	void setTransactionType(TransactionType type);
 
-	 char* getTransactionTime();
-	 void setTransactionTime();
+	char* getTransactionTime();
+	void setTransactionTime();
 
-	 double getPreviousBalance();
-	 void setPreviousBalance(double pBalance);
+	double getPreviousBalance();
+	void setPreviousBalance(double pBalance);
 
-	 double getNewBalance();
-	 void setNewBalance(double nBalance);
+	double getNewBalance();
+	void setNewBalance(double nBalance);
 
-	 int getSecondaryAccount();
-	 void setSecondaryAccount(int accNum);
+	int getSecondaryAccount();
+	void setSecondaryAccount(int accNum);
 
-	 TransactionInfo getTransactionInfoStruct();
+	TransactionInfo getTransactionInfoStruct();
 
-	 //add function to calculate new balance
- };
+	//add function to calculate new balance
+};
 
- class AccountInformation : public DataTypes {
+class AccountInformation : public DataTypes {
 
-	 AccountInfo accInfo;
+	AccountInfo accInfo;
 
- public:
-	 
-	 AccountInformation(int id, AccountType type, double balance);
-	 AccountInformation(char* src);
-	 AccountInformation();
+public:
 
-	 void display();
+	AccountInformation(int accountID, int clientID, AccountType type, double balance);
+	AccountInformation(char* src);
+	AccountInformation();
 
-	 int getClientID();
-	 void setClientID(int id);
+	void display();
 
-	 int getAccountType();
-	 void setAccountType(AccountType type);
+	int getClientID();
+	void setClientID(int id);
 
-	 double getAccountBalance();
-	 void setAccountBalance(double balance);
+	int getAccountType();
+	void setAccountType(AccountType type);
 
-	 AccountInfo getAccountInfoStruct();
- };
+	double getAccountBalance();
+	void setAccountBalance(double balance);
+
+	AccountInfo getAccountInfoStruct();
+};

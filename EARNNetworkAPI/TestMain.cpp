@@ -417,15 +417,15 @@ int main(void)
 	char city[EarnStructs::VARCHARLEN] = "city";
 	char province[EarnStructs::VARCHARLEN] = "province";
 	char zipcode[EarnStructs::ZIPLEN] = "12345";
-	int accID = 234;
+	int clientID = 234;
 
-	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, accID);
+	CreateAccount testAccount(firstName, lastName, email, phoneNumber, streetName, city, province, zipcode, clientID);
 
 	ClientInfo testClientInfo = testAccount.getClientInfoStruct();
 
 	cout << testClientInfo.email << endl;
 
-	AccountInformation oldAccount(1, SAVINGS, 20);
+	AccountInformation oldAccount(1, clientID, SAVINGS, 20);
 	AccountInformation newAccount;
 
 	memcpy(&newAccount, &oldAccount, sizeof(oldAccount));

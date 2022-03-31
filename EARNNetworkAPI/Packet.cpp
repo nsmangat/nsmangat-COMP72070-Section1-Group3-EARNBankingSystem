@@ -1,16 +1,16 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Packet.h"
-
+#include <cstring>
 #include <ctime>
 
 
 Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 
-	if (Data) {
+	//	if (Data) {
 
-		delete Data;
-	}
+	//		delete Data;
+	//	}
 	Data = new char[size];
 
 	memcpy(Data, data, size);
@@ -28,10 +28,10 @@ Packet::Packet(DataTypes* data, int size, int OpType, int accType) {
 //for parsing 2 structs ie for CreateAccount need CreateAccount and Login object 
 Packet::Packet(DataTypes* data1, int size1, DataTypes* data2, int size2, int OpType) {
 
-	if (Data) {
+	//	if (Data) {
 
-		delete Data;
-	}
+	//		delete Data;
+	//	}
 	Data = new char[size1 + size2];
 
 	memcpy(Data, data1, size1);
@@ -51,8 +51,8 @@ Packet::Packet(char* src)									//to populate header on server
 {
 	memcpy(&HEAD, src, sizeof(HEAD));
 	int previousSize = HEAD.dataSize;
-	
-	HEAD.dataSize = 0;
+
+	//HEAD.dataSize = 0;
 	Data = nullptr;
 	TxBuffer = nullptr;
 
@@ -61,7 +61,7 @@ Packet::Packet(char* src)									//to populate header on server
 
 Packet::Packet(int OpType, int AccType) {								//for client side for a request not requiring datatype ie view account 
 
-	
+
 	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
 	strcpy(HEAD.fromIP, IP_ADDR);
 
@@ -77,14 +77,14 @@ Packet::Packet(int OpType, int AccType) {								//for client side for a request
 
 Packet::Packet(char* src, int objType) {					//BFT
 
-	if (Data) {
+//	if (Data) {
 
-		delete Data;
-	}
+//		delete Data;
+//	}
 	Data = new char[BFT_SIZE];
-	
+
 	memcpy(Data, src, BFT_SIZE);
-	
+
 	strncpy(HEAD.toIP, IP_ADDR, IP_SIZE);
 	strcpy(HEAD.fromIP, IP_ADDR);
 
@@ -98,10 +98,10 @@ Packet::Packet(char* src, int objType) {					//BFT
 
 void Packet::setDataBFT(char* BFTBuffer) {
 
-	if (Data) {
+	//	if (Data) {
 
-		delete Data;
-	}
+	//		delete Data;
+	//	}
 	Data = new char[BFT_SIZE];
 
 	memcpy(Data, BFTBuffer, BFT_SIZE);
@@ -110,7 +110,7 @@ void Packet::setDataBFT(char* BFTBuffer) {
 
 void Packet::setTime() {
 
-	
+
 	strcpy(HEAD.TimeOfSend, getCurrentTime(YMD_HMS).c_str());
 }
 
@@ -118,10 +118,10 @@ void Packet::setTime() {
 
 char* Packet::serialize(int& size) {
 
-	if (TxBuffer) {
+	//	if (TxBuffer) {
 
-		delete TxBuffer;
-	}
+	//		delete TxBuffer;
+	//	}
 
 	size = sizeof(Header) + HEAD.dataSize + sizeof(int);
 
@@ -130,8 +130,8 @@ char* Packet::serialize(int& size) {
 	setTime();
 
 	memcpy(TxBuffer, &HEAD, sizeof(Header));
-	if(Data == nullptr)
-	{		
+	if (Data == nullptr)
+	{
 		memcpy(TxBuffer + sizeof(Header), &Tail, sizeof(Tail));
 	}
 	else
@@ -140,7 +140,7 @@ char* Packet::serialize(int& size) {
 
 		memcpy(TxBuffer + sizeof(Header) + HEAD.dataSize, &Tail, sizeof(Tail));
 	}
-	
+
 
 	return TxBuffer;
 }
@@ -157,9 +157,9 @@ void Packet::display() {
 	cout << "Tail:" << Tail << endl;
 	cout << "Data:" << &Data << endl;
 }
+//get operations for header
 
-int Packet::getObjectType() {									//get operations for header 
-
+int Packet::getObjectType() {
 	return HEAD.objectType;
 }
 

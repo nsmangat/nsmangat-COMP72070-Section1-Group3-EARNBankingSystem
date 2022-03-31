@@ -293,17 +293,20 @@ namespace EarnDBDrivers {
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					std::cout << "check client ID returned: " << (bool)resultRow[0] << std::endl;
 
-				std::cout << "check client ID returned: " << (bool)resultRow[0] << std::endl;
-
-				if ((bool)resultRow[0]) {
-					checkResult = DBSuccess;
+					if ((bool)resultRow[0]) {
+						checkResult = DBSuccess;
+					}
+					else {
+						checkResult = DBNoID;
+					}
 				}
 				else {
 					checkResult = DBNoID;
 				}
-
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -348,17 +351,20 @@ namespace EarnDBDrivers {
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					std::cout << "check account ID returned: " << (bool)resultRow[0] << std::endl;
 
-				std::cout << "check account ID returned: " << (bool)resultRow[0] << std::endl;
-
-				if ((bool)resultRow[0]) {
-					checkResult = DBSuccess;
+					if ((bool)resultRow[0]) {
+						checkResult = DBSuccess;
+					}
+					else {
+						checkResult = DBNoID;
+					}
 				}
 				else {
 					checkResult = DBNoID;
 				}
-
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -403,12 +409,16 @@ namespace EarnDBDrivers {
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					std::cout << "check transaction ID returned: " << (bool)resultRow[0] << std::endl;
 
-				std::cout << "check transaction ID returned: " << (bool)resultRow[0] << std::endl;
-
-				if ((bool)resultRow[0]) {
-					checkResult = DBSuccess;
+					if ((bool)resultRow[0]) {
+						checkResult = DBSuccess;
+					}
+					else {
+						checkResult = DBNoID;
+					}
 				}
 				else {
 					checkResult = DBNoID;
@@ -457,12 +467,16 @@ namespace EarnDBDrivers {
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @checkResult").execute();
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					std::cout << "check credential ID returned: " << (bool)resultRow[0] << std::endl;
 
-				std::cout << "check credential ID returned: " << (bool)resultRow[0] << std::endl;
-
-				if ((bool)resultRow[0]) {
-					checkResult = DBSuccess;
+					if ((bool)resultRow[0]) {
+						checkResult = DBSuccess;
+					}
+					else {
+						checkResult = DBNoID;
+					}
 				}
 				else {
 					checkResult = DBNoID;
@@ -532,32 +546,36 @@ namespace EarnDBDrivers {
 				//format query
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql(copyClient.getInfoFromDB()).execute();
 
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					//print results
+					std::cout << "client returned:" << std::endl;
+					std::cout << "Client ID: " << resultRow[0] << std::endl;
+					std::cout << "Client First Name: " << resultRow[1] << std::endl;
+					std::cout << "Client Last Name: " << resultRow[2] << std::endl;
+					std::cout << "Client Email: " << resultRow[3] << std::endl;
+					std::cout << "Client Phone Number: " << resultRow[4] << std::endl;
+					std::cout << "Client Street: " << resultRow[5] << std::endl;
+					std::cout << "Client City: " << resultRow[6] << std::endl;
+					std::cout << "Client Province: " << resultRow[7] << std::endl;
+					std::cout << "Client ZIP Code: " << resultRow[8] << std::endl;
 
-				//print results
-				std::cout << "client returned:" << std::endl;
-				std::cout << "Client ID: " << resultRow[0] << std::endl;
-				std::cout << "Client First Name: " << resultRow[1] << std::endl;
-				std::cout << "Client Last Name: " << resultRow[2] << std::endl;
-				std::cout << "Client Email: " << resultRow[3] << std::endl;
-				std::cout << "Client Phone Number: " << resultRow[4] << std::endl;
-				std::cout << "Client Street: " << resultRow[5] << std::endl;
-				std::cout << "Client City: " << resultRow[6] << std::endl;
-				std::cout << "Client Province: " << resultRow[7] << std::endl;
-				std::cout << "Client ZIP Code: " << resultRow[8] << std::endl;
+					//now set the info into referenced client
+					copyClient.setObjectID(resultRow[0]);
+					copyClient.setFirstName((std::string)resultRow[1]);
+					copyClient.setLastName((std::string)resultRow[2]);
+					copyClient.setEmail((std::string)resultRow[3]);
+					copyClient.setPhoneNum((std::string)resultRow[4]);
+					copyClient.setStreet((std::string)resultRow[5]);
+					copyClient.setCity((std::string)resultRow[6]);
+					copyClient.setProvince((std::string)resultRow[7]);
+					copyClient.setZip((std::string)resultRow[8]);
 
-				//now set the info into referenced client
-				copyClient.setObjectID(resultRow[0]);
-				copyClient.setFirstName((std::string)resultRow[1]);
-				copyClient.setLastName((std::string)resultRow[2]);
-				copyClient.setEmail((std::string)resultRow[3]);
-				copyClient.setPhoneNum((std::string)resultRow[4]);
-				copyClient.setStreet((std::string)resultRow[5]);
-				copyClient.setCity((std::string)resultRow[6]);
-				copyClient.setProvince((std::string)resultRow[7]);
-				copyClient.setZip((std::string)resultRow[8]);
-
-				getResult = DBSuccess;
+					getResult = DBSuccess;
+				}
+				else {
+					getResult = DBNoID;
+				}
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -600,24 +618,28 @@ namespace EarnDBDrivers {
 				//format query
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql(copyAccount.getInfoFromDB()).execute();
 
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					//print results
+					std::cout << "account returned:" << std::endl;
+					std::cout << "Account ID: " << resultRow[0] << std::endl;
+					std::cout << "Client ID: " << resultRow[1] << std::endl;
 
-				//print results
-				std::cout << "account returned:" << std::endl;
-				std::cout << "Account ID: " << resultRow[0] << std::endl;
-				std::cout << "Client ID: " << resultRow[1] << std::endl;
+					EarnStructs::AccountType getType = ((EarnStructs::AccountType)(int)resultRow[2]);
+					std::cout << "Account Type: " << EnumToString(getType) << std::endl;
+					std::cout << "Account Balance: $" << resultRow[3] << std::endl;
 
-				EarnStructs::AccountType getType = ((EarnStructs::AccountType)(int)resultRow[2]);
-				std::cout << "Account Type: " << typeid(getType).name() << std::endl;
-				std::cout << "Account Balance: $" << resultRow[3] << std::endl;
+					//now set the info into referenced account
+					copyAccount.setObjectID(resultRow[0]);
+					copyAccount.setAccountClientID((int)resultRow[1]);
+					copyAccount.setAccountType(getType);
+					copyAccount.setBalance((double)resultRow[3]);
 
-				//now set the info into referenced account
-				copyAccount.setObjectID(resultRow[0]);
-				copyAccount.setAccountClientID((int)resultRow[1]);
-				copyAccount.setAccountType(getType);
-				copyAccount.setBalance((double)resultRow[3]);
-
-				getResult = DBSuccess;
+					getResult = DBSuccess;
+				}
+				else {
+					getResult = DBNoID;
+				}
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -659,31 +681,35 @@ namespace EarnDBDrivers {
 				//format query
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql(copyTransaction.getInfoFromDB()).execute();
 
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					//print results
+					std::cout << "transaction returned:" << std::endl;
+					std::cout << "Transaction ID: " << resultRow[0] << std::endl;
+					std::cout << "Account ID: " << resultRow[1] << std::endl;
 
-				//print results
-				std::cout << "transaction returned:" << std::endl;
-				std::cout << "Transaction ID: " << resultRow[0] << std::endl;
-				std::cout << "Account ID: " << resultRow[1] << std::endl;
+					EarnStructs::TransactionType getType = ((EarnStructs::TransactionType)(int)resultRow[2]);
+					std::cout << "Transaction Type: " << EnumToString(getType) << std::endl;
+					std::cout << "Transaction Time: (UTC)" << (std::string)resultRow[3] << std::endl;
+					resultRow[3].print(std::cout);
+					std::cout << "Previous Balance: $" << resultRow[4] << std::endl;
+					std::cout << "New Balance: $" << resultRow[5] << std::endl;
+					std::cout << "Secondary Account: " << resultRow[6] << std::endl;
 
-				EarnStructs::TransactionType getType = ((EarnStructs::TransactionType)(int)resultRow[2]);
-				std::cout << "Transaction Type: " << EnumToString(getType) << std::endl;
-				std::cout << "Transaction Time: (UTC)" << (std::string) resultRow[3] << std::endl;
-				resultRow[3].print(std::cout);
-				std::cout << "Previous Balance: $" << resultRow[4] << std::endl;
-				std::cout << "New Balance: $" << resultRow[5] << std::endl;
-				std::cout << "Secondary Account: " << resultRow[6] << std::endl;
+					//now set the info into referenced client
+					copyTransaction.setObjectID(resultRow[0]);
+					copyTransaction.setTransactionAccountID((int)resultRow[1]);
+					copyTransaction.setTransactionType(getType);
+					copyTransaction.setTransactionTime((std::string)resultRow[3]);
+					copyTransaction.setTransactionPreviousBal((double)resultRow[4]);
+					copyTransaction.setTransactionNewBal((double)resultRow[5]);
+					copyTransaction.setTransactionSecondaryAcc((int)resultRow[6]);
 
-				//now set the info into referenced client
-				copyTransaction.setObjectID(resultRow[0]);
-				copyTransaction.setTransactionAccountID((int)resultRow[1]);
-				copyTransaction.setTransactionType(getType);
-				copyTransaction.setTransactionTime((std::string) resultRow[3]);
-				copyTransaction.setTransactionPreviousBal((double)resultRow[4]);
-				copyTransaction.setTransactionNewBal((double)resultRow[5]);
-				copyTransaction.setTransactionSecondaryAcc((int)resultRow[6]);
-
-				getResult = DBSuccess;
+					getResult = DBSuccess;
+				}
+				else {
+					getResult = DBNoID;
+				}
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -1036,14 +1062,16 @@ namespace EarnDBDrivers {
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @returnVal").execute();
 				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
 
-				//print results
-				std::cout << "login attempt returned client id:" << (int)resultRow[0] << std::endl;
+				if (!resultRow[0].isNull()) {
 
-				returnVal = (int)resultRow[0];
-				if (0 == returnVal) {
+					//print results
+					std::cout << "login attempt returned client id:" << (int)resultRow[0] << std::endl;
+
+					returnVal = (int)resultRow[0];
+				}
+				else {
 					returnVal = DBNoID;
 				}
-
 			}
 			catch (const mysqlx::abi2::r0::Error& err)
 			{
@@ -1064,95 +1092,10 @@ namespace EarnDBDrivers {
 		return returnVal;
 	}
 
-	EarnDBObjects::DBClient DBValidation::clientLogin(std::string username, std::string passwordHash) {
-		EarnDBObjects::DBClient returnClient;
+	DBResponses DBValidation::clientLogin(std::string username, std::string passwordHash, EarnDBObjects::DBClient& returnClient) {
+		
 		int returnVal = this->validateClient(0, username, passwordHash);
-
-		//(-3 if ID doesn't exist, -2 for conenction error, -1 for sql error)
-		if (returnVal > 0) {
-
-			//overload return ID for second operation, since it's return overwrites last...
-			returnVal = this->getObjectInfo(returnVal, returnClient);
-			if (0 < returnVal) {
-				std::cout << "Client found returning info..." << std::endl;
-			}
-			else if (DBNoID == returnVal) {
-				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
-			}
-			else if (DBConnError == returnVal) {
-				std::cerr << "ERROR: DB connection error" << std::endl;
-			}
-			else if (DBSqlError == returnVal) {
-				std::cerr << "ERROR: sql error" << std::endl;
-			}
-			else {
-				std::cerr << "ERROR: unknown error" << std::endl;
-			}
-		}
-		else if (DBNoID == returnVal) {
-			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
-		}
-		else if (DBConnError == returnVal) {
-			std::cerr << "ERROR: DB connection error" << std::endl;
-		}
-		else if (DBSqlError == returnVal) {
-			std::cerr << "ERROR: sql error" << std::endl;
-		}
-		else {
-			std::cerr << "ERROR: unknown error" << std::endl;
-		}
-
-		//return the client anyways since it will  be empty if nothing was found
-		return returnClient;
-	}
-
-	EarnDBObjects::DBClient DBValidation::clientLogin(unsigned int usernumber, std::string passwordHash) {
-		EarnDBObjects::DBClient returnClient;
-		int returnVal = this->validateClient(usernumber, "", passwordHash);
-
-		//(-3 if ID doesn't exist, -2 for conenction error, -1 for sql error)
-		if (returnVal > 0) {
-
-			//overload return ID for second operation, since it's return overwrites last...
-			returnVal = this->getObjectInfo(returnVal, returnClient);
-			if (0 < returnVal) {
-				std::cout << "Client found returning info..." << std::endl;
-			}
-			else if (DBNoID == returnVal) {
-				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
-			}
-			else if (DBConnError == returnVal) {
-				std::cerr << "ERROR: DB connection error" << std::endl;
-			}
-			else if (DBSqlError == returnVal) {
-				std::cerr << "ERROR: sql error" << std::endl;
-			}
-			else {
-				std::cerr << "ERROR: unknown error" << std::endl;
-			}
-		}
-		else if (DBNoID == returnVal) {
-			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
-		}
-		else if (DBConnError == returnVal) {
-			std::cerr << "ERROR: DB connection error" << std::endl;
-		}
-		else if (DBSqlError == returnVal) {
-			std::cerr << "ERROR: sql error" << std::endl;
-		}
-		else {
-			std::cerr << "ERROR: unknown error" << std::endl;
-		}
-
-		//return the client anyways since it will  be empty if nothing was found
-		return returnClient;
-	}
-
-	EarnDBObjects::DBClient DBValidation::clientLogin(EarnStructs::CredentialInfo inputCredentials) {
-		EarnDBObjects::DBClient returnClient;
-
-		int returnVal = this->validateClient(inputCredentials.usernumber, inputCredentials.username, inputCredentials.userPasswordHash);
-
+		DBResponses returnResponse = DBSuccess;;
 		//(DBNoID if ID doesn't exist, DBConnError for DB connection error,	DBSqlError for sql error)
 
 		if (returnVal > 0) {
@@ -1161,35 +1104,149 @@ namespace EarnDBDrivers {
 			returnVal = this->getObjectInfo(returnVal, returnClient);
 			if (DBSuccess == returnVal) {
 				std::cout << "Client found returning info..." << std::endl;
+				returnResponse = DBSuccess;
 			}
 			else if (DBNoID == returnVal) {
 				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
+				returnResponse = DBNoID;
 			}
 			else if (DBConnError == returnVal) {
 				std::cerr << "ERROR: DB connection error" << std::endl;
+				returnResponse = DBConnError;
 			}
 			else if (DBSqlError == returnVal) {
 				std::cerr << "ERROR: sql error" << std::endl;
+				returnResponse = DBSqlError;
 			}
 			else {
 				std::cerr << "ERROR: unknown error" << std::endl;
+				returnResponse = DBUnknownError;
 			}
 		}
 		else if (DBNoID == returnVal) {
 			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
+			returnResponse = DBNoID;
 		}
 		else if (DBConnError == returnVal) {
 			std::cerr << "ERROR: DB connection error" << std::endl;
+			returnResponse = DBConnError;
 		}
 		else if (DBSqlError == returnVal) {
 			std::cerr << "ERROR: sql error" << std::endl;
+			returnResponse = DBSqlError;
 		}
 		else {
 			std::cerr << "ERROR: unknown error" << std::endl;
+			returnResponse = DBUnknownError;
 		}
 
 		//return the client anyways since it will  be empty if nothing was found
-		return returnClient;
+		return returnResponse;
+
+	}
+
+	DBResponses DBValidation::clientLogin(unsigned int usernumber, std::string passwordHash, EarnDBObjects::DBClient& returnClient) {
+		int returnVal = this->validateClient(usernumber, "", passwordHash);
+		DBResponses returnResponse = DBSuccess;;
+		//(DBNoID if ID doesn't exist, DBConnError for DB connection error,	DBSqlError for sql error)
+
+		if (returnVal > 0) {
+
+			//overload return ID for second operation, since it's return overwrites last...
+			returnVal = this->getObjectInfo(returnVal, returnClient);
+			if (DBSuccess == returnVal) {
+				std::cout << "Client found returning info..." << std::endl;
+				returnResponse = DBSuccess;
+			}
+			else if (DBNoID == returnVal) {
+				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
+				returnResponse = DBNoID;
+			}
+			else if (DBConnError == returnVal) {
+				std::cerr << "ERROR: DB connection error" << std::endl;
+				returnResponse = DBConnError;
+			}
+			else if (DBSqlError == returnVal) {
+				std::cerr << "ERROR: sql error" << std::endl;
+				returnResponse = DBSqlError;
+			}
+			else {
+				std::cerr << "ERROR: unknown error" << std::endl;
+				returnResponse = DBUnknownError;
+			}
+		}
+		else if (DBNoID == returnVal) {
+			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
+			returnResponse = DBNoID;
+		}
+		else if (DBConnError == returnVal) {
+			std::cerr << "ERROR: DB connection error" << std::endl;
+			returnResponse = DBConnError;
+		}
+		else if (DBSqlError == returnVal) {
+			std::cerr << "ERROR: sql error" << std::endl;
+			returnResponse = DBSqlError;
+		}
+		else {
+			std::cerr << "ERROR: unknown error" << std::endl;
+			returnResponse = DBUnknownError;
+		}
+
+		//return the client anyways since it will  be empty if nothing was found
+		return returnResponse;
+	
+	}
+
+	DBResponses DBValidation::clientLogin(EarnStructs::CredentialInfo inputCredentials, EarnDBObjects::DBClient& returnClient) {
+
+		int returnVal = this->validateClient(inputCredentials.usernumber, inputCredentials.username, inputCredentials.userPasswordHash);
+		DBResponses returnResponse = DBSuccess;
+		//(DBNoID if ID doesn't exist, DBConnError for DB connection error,	DBSqlError for sql error)
+
+		if (returnVal > 0) {
+
+			//overload return ID for second operation, since it's return overwrites last...
+			returnVal = this->getObjectInfo(returnVal, returnClient);
+			if (DBSuccess == returnVal) {
+				std::cout << "Client found returning info..." << std::endl;
+				returnResponse = DBSuccess;
+			}
+			else if (DBNoID == returnVal) {
+				std::cerr << "ERROR: couldn't get info... ID doesn't exist" << std::endl;
+				returnResponse = DBNoID;
+			}
+			else if (DBConnError == returnVal) {
+				std::cerr << "ERROR: DB connection error" << std::endl;
+				returnResponse = DBConnError;
+			}
+			else if (DBSqlError == returnVal) {
+				std::cerr << "ERROR: sql error" << std::endl;
+				returnResponse = DBSqlError;
+			}
+			else {
+				std::cerr << "ERROR: unknown error" << std::endl;
+				returnResponse = DBUnknownError;
+			}
+		}
+		else if (DBNoID == returnVal) {
+			std::cerr << "ERROR: validation error client ID not returned..." << std::endl;
+			returnResponse = DBNoID;
+		}
+		else if (DBConnError == returnVal) {
+			std::cerr << "ERROR: DB connection error" << std::endl;
+			returnResponse = DBConnError;
+		}
+		else if (DBSqlError == returnVal) {
+			std::cerr << "ERROR: sql error" << std::endl;
+			returnResponse = DBSqlError;
+		}
+		else {
+			std::cerr << "ERROR: unknown error" << std::endl;
+			returnResponse = DBUnknownError;
+		}
+		
+		//return the client anyways since it will  be empty if nothing was found
+		return returnResponse;
 	}
 }
 
@@ -1232,15 +1289,19 @@ namespace EarnDBDrivers {
 
 				//now get OUT based on what the input var was (check function name)
 				mysqlx::abi2::r0::SqlResult returnResult = mySession.sql("SELECT @newID").execute();
-				mysqlx::abi2::r0::Row resultRow = returnResult.fetchOne();
+				mysqlx::abi2::r0::Row resultRow;
+				if (resultRow = returnResult.fetchOne()) {
+					//print results
 
-				//print results
+					std::cout << "allocated new object id:" << (int)resultRow[0] << std::endl;
 
-				std::cout << "allocated new object id:" << (int)resultRow[0] << std::endl;
-
-				if ((int)resultRow[0] > 0) {
-					inputObject.setObjectID(resultRow[0]);
-					returnVal = DBSuccess;
+					if ((int)resultRow[0] > 0) {
+						inputObject.setObjectID(resultRow[0]);
+						returnVal = DBSuccess;
+					}
+					else {
+						returnVal = DBNoID;
+					}
 				}
 				else {
 					returnVal = DBNoID;
