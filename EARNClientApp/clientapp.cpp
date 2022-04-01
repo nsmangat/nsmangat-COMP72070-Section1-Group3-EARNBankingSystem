@@ -377,9 +377,9 @@ void ClientApp::on_ViewAcc_pushButton_clicked()
     else
     {
         QMessageBox::critical(
-            this,
-            tr("View Account"),
-            tr("Unable to view account information at the moment"));
+                    this,
+                    tr("View Account"),
+                    tr("Unable to view account information at the moment"));
     }
 
 
@@ -590,9 +590,9 @@ void ClientApp::on_Send_pushButton_clicked()
     if (ui->Amount_lineEdit->text() == "" || ui->To_lineEdit->text() == "")
     {
         QMessageBox::information(
-            this,
-            tr("Transaction"),
-            tr("Transaction InCompleted"));
+                    this,
+                    tr("Transaction"),
+                    tr("Transaction InCompleted"));
     }
     else
     {
@@ -654,9 +654,9 @@ void ClientApp::on_Send_pushButton_clicked()
 
         if (status == 1) {
             QMessageBox::information(
-                this,
-                tr("Transaction"),
-                tr("Transaction Completed"));
+                        this,
+                        tr("Transaction"),
+                        tr("Transaction Completed"));
 
             if (choice == 1)
             {
@@ -671,9 +671,9 @@ void ClientApp::on_Send_pushButton_clicked()
         }
         else {
             QMessageBox::critical(
-                this,
-                tr("Transaction"),
-                tr("Transaction Incompleted. Insufficient funds."));
+                        this,
+                        tr("Transaction"),
+                        tr("Transaction Incompleted. Insufficient funds."));
         }
         ui->To_lineEdit->clear();
         ui->Amount_lineEdit->clear();
@@ -728,7 +728,7 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
 {
     //Verify that all required fields are filled
     if (!ui->FrontpageImage_label->pixmap().isNull() && !ui->BackpageImage_label->pixmap().isNull()
-        && ui->Amount_lineEdit_2->isModified())
+            && ui->Amount_lineEdit_2->isModified())
     {
         int choice;
         double amount = ui->Amount_lineEdit_2->text().toDouble();
@@ -786,9 +786,9 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
 
             //Successful message
             QMessageBox::information(
-                this,
-                tr("Deposit"),
-                tr("Deposit submitted.\nSent images will be verifed and balance will officially updated in 3 business days."));
+                        this,
+                        tr("Deposit"),
+                        tr("Deposit submitted.\nSent images will be verifed and balance will officially updated in 3 business days."));
 
             if (choice == 1)
             {
@@ -803,9 +803,9 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
         {
             //Unsuccessful message
             QMessageBox::information(
-                this,
-                tr("Deposit"),
-                tr("Deposit Unsuccessful. Please try again."));
+                        this,
+                        tr("Deposit"),
+                        tr("Deposit Unsuccessful. Please try again."));
         }
 
         //Clear input information after completing deposit
@@ -818,9 +818,9 @@ void ClientApp::on_DepositComplete_pushButton_clicked()
     {
         //Fail message if required field(s) is missing
         QMessageBox::critical(
-            this,
-            tr("Deposit"),
-            tr("Insufficient information"));
+                    this,
+                    tr("Deposit"),
+                    tr("Insufficient information"));
     }
 
 }
@@ -841,9 +841,9 @@ void ClientApp::on_AddFrontpage_pushButton_clicked()
         else
         {
             QMessageBox::warning(
-                this,
-                tr("Image Error"),
-                tr("Unable to load image."));
+                        this,
+                        tr("Image Error"),
+                        tr("Unable to load image."));
         }
     }
 }
@@ -864,9 +864,9 @@ void ClientApp::on_AddBackpage_pushButton_clicked()
         else
         {
             QMessageBox::warning(
-                this,
-                tr("Image Error"),
-                tr("Unable to load image."));
+                        this,
+                        tr("Image Error"),
+                        tr("Unable to load image."));
         }
     }
 }
@@ -985,9 +985,9 @@ void ClientApp::on_Send_pushButton_2_clicked()             //Send to my accs
     if (ui->From_comboBox_2->currentIndex() == ui->To_comboBox->currentIndex()) //if send chequing to chequing or saving to saving
     {
         QMessageBox::critical(
-            this,
-            tr("Error"),
-            tr("FROM and TO fields are the same."));
+                    this,
+                    tr("Error"),
+                    tr("FROM and TO fields are the same."));
     }
     else if (ui->Amount_lineEdit_3->text() != "")
     {
@@ -1049,9 +1049,9 @@ void ClientApp::on_Send_pushButton_2_clicked()             //Send to my accs
                 savingsLoginMain.setAccountBalance(savingsLoginMain.getAccountBalance() + amount);
 
                 QMessageBox::information(
-                    this,
-                    tr("Transaction"),
-                    tr("Transaction Completed"));
+                            this,
+                            tr("Transaction"),
+                            tr("Transaction Completed"));
 
             }
             else if (choice == 2)
@@ -1063,26 +1063,26 @@ void ClientApp::on_Send_pushButton_2_clicked()             //Send to my accs
                 chequingLoginMain.setAccountBalance(chequingLoginMain.getAccountBalance() + amount);
 
                 QMessageBox::information(
-                    this,
-                    tr("Transaction"),
-                    tr("Transaction Completed"));
+                            this,
+                            tr("Transaction"),
+                            tr("Transaction Completed"));
             }
         }
         else
         {
 
             QMessageBox::information(
-                this,
-                tr("Transaction"),
-                tr("Transaction Incompleted. Insufficient funds"));
+                        this,
+                        tr("Transaction"),
+                        tr("Transaction Incompleted. Insufficient funds"));
         }
     }
 
     else {
         QMessageBox::critical(
-            this,
-            tr("Error"),
-            tr("AMOUNT field is not filled."));
+                    this,
+                    tr("Error"),
+                    tr("AMOUNT field is not filled."));
     }
     ui->Amount_lineEdit_3->clear();
 }
@@ -1090,16 +1090,16 @@ void ClientApp::on_Send_pushButton_2_clicked()             //Send to my accs
 void ClientApp::on_Signup_pushButton_clicked()  //Create new user
 {
     if (ui->FirstName_lineEdit->text() != "" &&
-        ui->LastName_lineEdit->text() != "" &&
-        ui->UserName_lineEdit->text() != "" &&
-        ui->NewPassword_lineEdit->text() != "" &&
-        ui->ConfirmPassword_lineEdit->text() != "" &&
-        ui->Email_lineEdit->text() != "" &&
-        ui->Street_lineEdit->text() != "" &&
-        ui->City_lineEdit->text() != "" &&
-        ui->Province_lineEdit->text() != "" &&
-        ui->PostalCode_lineEdit->text() != "" &&
-        ui->Phone_lineEdit->text() != "")
+            ui->LastName_lineEdit->text() != "" &&
+            ui->UserName_lineEdit->text() != "" &&
+            ui->NewPassword_lineEdit->text() != "" &&
+            ui->ConfirmPassword_lineEdit->text() != "" &&
+            ui->Email_lineEdit->text() != "" &&
+            ui->Street_lineEdit->text() != "" &&
+            ui->City_lineEdit->text() != "" &&
+            ui->Province_lineEdit->text() != "" &&
+            ui->PostalCode_lineEdit->text() != "" &&
+            ui->Phone_lineEdit->text() != "")
     {
 
         char firstName[45] = {};
@@ -1197,15 +1197,30 @@ void ClientApp::on_Signup_pushButton_clicked()  //Create new user
 
 
 
-            /*               //ui->stackedWidget->setCurrentIndex(8);
-               double balance = chequingLoginMain.getAccountBalance();
-               QString balancestr = QString::number(balance);
-               ui->ChequingBalance_label->setText(balancestr);
-  */             QMessageBox::information(
-      this,
-      tr("Sign In"),
-      tr("Account creation is completed."));
-  ui->stackedWidget->setCurrentIndex(3);
+            /*
+            ui->stackedWidget->setCurrentIndex(8);
+            double balance = chequingLoginMain.getAccountBalance();
+            QString balancestr = QString::number(balance);
+            ui->ChequingBalance_label->setText(balancestr);
+            */
+            QMessageBox::information(
+                        this,
+                        tr("Sign In"),
+                        tr("Account creation is completed."));
+
+            ui->FirstName_lineEdit->clear();
+            ui->LastName_lineEdit->clear();
+            ui->UserName_lineEdit->clear();
+            ui->NewPassword_lineEdit->clear();
+            ui->ConfirmPassword_lineEdit->clear();
+            ui->Email_lineEdit->clear();
+            ui->Street_lineEdit->clear();
+            ui->City_lineEdit->clear();
+            ui->Province_lineEdit->clear();
+            ui->PostalCode_lineEdit->clear();
+            ui->Phone_lineEdit->clear();
+
+            ui->stackedWidget->setCurrentIndex(0);
         }
         else
         {
@@ -1217,9 +1232,9 @@ void ClientApp::on_Signup_pushButton_clicked()  //Create new user
     else
     {
         QMessageBox::critical(
-            this,
-            tr("Error"),
-            tr("All fields are not filled."));
+                    this,
+                    tr("Error"),
+                    tr("All fields are not filled."));
     }
 
 
