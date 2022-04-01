@@ -691,7 +691,6 @@ namespace EarnDBDrivers {
 					EarnStructs::TransactionType getType = ((EarnStructs::TransactionType)(int)resultRow[2]);
 					std::cout << "Transaction Type: " << EnumToString(getType) << std::endl;
 					std::cout << "Transaction Time: (UTC)" << (std::string)resultRow[3] << std::endl;
-					resultRow[3].print(std::cout);
 					std::cout << "Previous Balance: $" << resultRow[4] << std::endl;
 					std::cout << "New Balance: $" << resultRow[5] << std::endl;
 					std::cout << "Secondary Account: " << resultRow[6] << std::endl;

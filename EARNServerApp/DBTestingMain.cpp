@@ -1,4 +1,4 @@
-///*
+/*
 #include <iostream>
 #include "DBObjects.h"
 #include "DBDrivers.h"
@@ -12,7 +12,7 @@ int main(void) {
 	///operates all use cases in order, comment out sections to speed things up
 
 	//initalize / check if db exists
-	//EarnDBDrivers::DBDriverInterface::initalizeDefaultDB();
+	EarnDBDrivers::DBDriverInterface::initalizeDefaultDB();
 
 	std::string testServer = "localhost";
 

@@ -40,6 +40,7 @@ namespace EarnStructs {
 		case TRANSACTIONNULL:	return "TRANSACTIONNULL";
 		case ETRANSFER:			return "ETRANSFER";
 		case CHEQUE:			return "CHEQUE";
+		case ACCOUNTTRANSFER:	return "ACCOUNTTRANSFER";
 		default:				return "[Unknown Type]";
 		}
 	}
