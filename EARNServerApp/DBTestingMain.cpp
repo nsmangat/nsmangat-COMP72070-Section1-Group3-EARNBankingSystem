@@ -1,4 +1,4 @@
-/*
+///*
 #include <iostream>
 #include "DBObjects.h"
 #include "DBDrivers.h"
@@ -100,12 +100,17 @@ int main(void) {
 	std::cout << "Modifying credential in DB returned: " << EarnDBDrivers::EnumToString(responseVal) << std::endl;
 
 	//test each login method
-	EarnDBObjects::DBClient structClient(testValidator.clientLogin(testCredentialInfo));
+	EarnDBObjects::DBClient structClient;
+	testValidator.clientLogin(testCredentialInfo, structClient);
+	structClient.displayInfo();
 
-	EarnDBObjects::DBClient usernameClient = testValidator.clientLogin(testCredentialInfo.username,testCredentialInfo.userPasswordHash);
+	EarnDBObjects::DBClient usernameClient;
+	testValidator.clientLogin(testCredentialInfo.username, testCredentialInfo.userPasswordHash, usernameClient);
+	usernameClient.displayInfo();
 
-	EarnDBObjects::DBClient usernumberClient = testValidator.clientLogin(testCredentialInfo.usernumber,testCredentialInfo.userPasswordHash);
-
+	EarnDBObjects::DBClient usernumberClient;
+	testValidator.clientLogin(testCredentialInfo.usernumber, testCredentialInfo.userPasswordHash, usernumberClient);
+	usernumberClient.displayInfo();
 	//now add account
 
 	EarnStructs::AccountInfo testAccountInfo;
@@ -122,7 +127,7 @@ int main(void) {
 	//now add transaction
 
 	EarnStructs::TransactionInfo testTransactionInfo;
-	std::string timeStamp = EarnLogging::EARNLogger::getCurrentTime(EarnLogging::DateFormat::YMD_HMS);
+	std::string timeStamp = getCurrentTime(DateFormat::YMD_HMS);
 
 	strcpy_s(testTransactionInfo.transactionTime, EarnStructs::VARCHARLEN, timeStamp.c_str());
 
@@ -177,7 +182,7 @@ int main(void) {
 	testLogger.logData(&testTransactionLog);
 
 	//account packet logging
-	AccountInformation testAccountData(testAccount.getObjectID(), testAccount.getAccountType(), testAccount.getAccountBalance());
+	AccountInformation testAccountData(testAccount.getObjectID(), testAccount.getAccountClientID(), testAccount.getAccountType(), testAccount.getAccountBalance());
 	Packet testAccountPacket(&testAccountData, sizeof(testAccountData), EarnStructs::ACCOUNT, EarnStructs::SAVINGS);
 	testAccountPacket.setTime();
 	EarnLogging::ConnectionLog testAccountLog(&testAccountPacket, EarnLogging::CLIENTSYSTEM, EarnLogging::SEND, "test log for account");
